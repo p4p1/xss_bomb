@@ -1,4 +1,7 @@
-# xss_bomb
+XSS_BOMB
+========
 
-> So you want to know when your payloads hit?
-yes
+A simple way to get notified when a payload hits your server.
+
+### Description
+XSS_bomb is a tool package with a mobile app a notification control server and a javascript payload.
