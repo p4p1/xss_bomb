@@ -1,2 +1,4 @@
 # xss_bomb
-Some nuclear kinda stuff
+
+> So you want to know when your payloads hit?
+yes
