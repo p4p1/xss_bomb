@@ -80,8 +80,8 @@ app.post("/message", (req, res) => {
 });
 
 app.get("/stager", (req, res) => {
-  handlePushTokens("xss - stager", "uploading");
-  res.sendFile('public/stager.js');
+  handlePushTokens({title: "xss - stager", body: "uploading"});
+  res.sendFile(__dirname + "/public/stager.js");
 });
 
 app.get("/isup", function (request, response) {
