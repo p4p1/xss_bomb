@@ -80,8 +80,15 @@ app.post("/message", (req, res) => {
 });
 
 app.get("/stager", (req, res) => {
-  handlePushTokens({title: "xss - stager", body: "uploading"});
+  console.log(req.headers['user-agent']);
+  handlePushTokens({title: "xss - stager", body: req.headers['user-agent']});
   res.sendFile(__dirname + "/public/stager.js");
+});
+
+app.get("/pic", (req, res) => {
+  console.log(req.headers['user-agent']);
+  handlePushTokens({title: "xss - picture", body: req.headers['user-agent']});
+  res.sendFile(__dirname + "/public/1px.png");
 });
 
 app.get("/isup", function (request, response) {
