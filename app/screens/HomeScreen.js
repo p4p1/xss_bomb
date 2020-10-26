@@ -28,10 +28,18 @@ export default class HomeScreen extends React.Component
 
   setURI(text) {
     this.setState({ value: text });
+    try {
+      if (this.state.value == null) {
+        AsyncStorage.removeItem('link');
+      } else {
+        AsyncStorage.setItem('link', this.state.value);
+      }
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   async saveURI() {
-
     fetch(`${this.state.value}/token`, {
       method: 'POST',
       headers: {
@@ -50,17 +58,11 @@ export default class HomeScreen extends React.Component
         alert("Error: please check server credentials");
       } else {
         alert("Url has been saved you will receive notifications in time");
-        try {
-          if (this.state.value == null) {
-            AsyncStorage.removeItem('link');
-          } else {
-            AsyncStorage.setItem('link', this.state.value);
-          }
-        } catch(error) {
-          console.error(error);
-        }
       }
-    }).catch((err) =>  console.error(err));
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: please check url format");
+    });
   }
 
   render () {
@@ -68,7 +70,7 @@ export default class HomeScreen extends React.Component
       <View style={styles.container}>
         <Image style={styles.logo} source={require(logo)} />
         <TextInput style={styles.header} onChangeText={text => this.setURI(text)} value={this.state.value} />
-        <TextButton text="Save Url" run={this.saveURI} />
+        <TextButton text="Save Url" run={() => {this.saveURI()}} />
       </View>
     );
   }
@@ -76,7 +78,7 @@ export default class HomeScreen extends React.Component
 
 HomeScreen.propTypes = {
   url: PropTypes.string,
-  token: PropTypes.obj
+  token: PropTypes.string
 }
 
 const styles = StyleSheet.create({

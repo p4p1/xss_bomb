@@ -30,6 +30,7 @@ export default class App extends React.Component
     this._handleNotification = this._handleNotification.bind(this)
     this._handleNotificationResponse = this._handleNotificationResponse.bind(this)
     this.registerForPushNotificationsAsync = this.registerForPushNotificationsAsync.bind(this);
+    this.loading = this.loading.bind(this);
   }
 
   _handleNotification(notification) {
@@ -73,7 +74,7 @@ export default class App extends React.Component
     return token;
   }
 
-  async componentDidMount() {
+  async loading() {
     let token = await this.registerForPushNotificationsAsync();
 
     Notifications.addNotificationReceivedListener(this._handleNotification);
@@ -87,9 +88,14 @@ export default class App extends React.Component
       }
       this.setState({ isLoading: false });
     } catch(error) {
+      alert("could not retreive async storage");
       console.error(error);
     }
     alert(token);
+  }
+
+  componentDidMount() {
+    this.loading();
   }
 
   render () {
