@@ -9,3 +9,11 @@ When your XSS payload connects to the server it will send a notification to your
 to view wich payload hit from wich server.
 
 Youtube demo: [https://youtu.be/XSesBLblqA4](https://youtu.be/XSesBLblqA4)
+
+### Routes
+| Route         | Description                                           |
+| :------------ | ----------------------------------------------------: |
+| /token        | Register a token to the application                   |
+| /message      | send a custom notification to the registered devices. |
+| /stager       | Upload the stager on the page linked.                 |
+| /pic          | Returns a 1px size picture to include on a page.      |
