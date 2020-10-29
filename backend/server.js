@@ -3,12 +3,14 @@ const { Expo } = require("expo-server-sdk");
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-let savedPushTokens = [];
 const expo = new Expo();
 const app = express();
 
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
+
+let savedPushTokens = [];
+let notification_array = [];
 
 var port = process.env.port || 8080;
 var username = process.env.username || 'xss';
@@ -64,7 +66,6 @@ app.listen(port, function() {
 app.post("/token", (req, res) => {
   if (req.body.token == undefined || req.body.username == undefined ||
       req.body.password == undefined) {
-    console.log("here");
     res.send({ data: "ko" });
     return
   }
@@ -73,20 +74,36 @@ app.post("/token", (req, res) => {
   res.send({ data: "ok" });
 });
 
+app.post("/notifications", (req, res) => {
+  if (req.body.username == undefined || req.body.password == undefined) {
+    res.send({ data: "ko" });
+    return
+  }
+  res.send(notification_array);
+});
+
 app.post("/message", (req, res) => {
   handlePushTokens(req.body);
+  notification_array.push({
+    'route': '/message',
+    'content': req.body,
+    'user-agent': req.headers['user-agent']
+  });
   console.log(`Received message, with title: ${req.body.title}`);
   res.send(`Received message, with title: ${req.body.title}`);
 });
 
 app.get("/stager", (req, res) => {
-  console.log(req.headers['user-agent']);
-  handlePushTokens({title: "xss - stager", body: req.headers['user-agent']});
+  console.log(req.headers);
   res.sendFile(__dirname + "/public/stager.js");
 });
 
 app.get("/pic", (req, res) => {
-  console.log(req.headers['user-agent']);
+  notification_array.push({
+    'route': '/pic',
+    'content': undefined,
+    'user-agent': req.headers['user-agent']
+  });
   handlePushTokens({title: "xss - picture", body: req.headers['user-agent']});
   res.sendFile(__dirname + "/public/1px.png");
 });
