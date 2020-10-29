@@ -1,13 +1,20 @@
 import Constants from 'expo-constants';
 import React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import HomeScreen from './screens/HomeScreen.js';
+
 import SplashScreen from './screens/SplashScreen.js';
+import HomeScreen from './screens/HomeScreen.js';
+import NotificationScreen from './screens/NotificationScreen.js';
+import CredsScreen from './screens/CredsScreen.js';
+
+const Drawer = createDrawerNavigator();
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -24,13 +31,17 @@ export default class App extends React.Component
     this.state = {
       value: '',
       isLoading: true,
-      notif_token: undefined
+      notif_token: undefined,
+      notification: undefined,
+      user: '',
+      pass: ''
     }
 
     this._handleNotification = this._handleNotification.bind(this)
     this._handleNotificationResponse = this._handleNotificationResponse.bind(this)
     this.registerForPushNotificationsAsync = this.registerForPushNotificationsAsync.bind(this);
     this.loading = this.loading.bind(this);
+    this.sendTkn = this.sendTkn.bind(this);
   }
 
   _handleNotification(notification) {
@@ -40,11 +51,11 @@ export default class App extends React.Component
 
   _handleNotificationResponse(response) {
     console.log(response);
-    alert(response);
   }
 
   async registerForPushNotificationsAsync() {
     let token;
+
     if (Constants.isDevice) {
       const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
       let finalStatus = existingStatus;
@@ -58,7 +69,6 @@ export default class App extends React.Component
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -88,10 +98,37 @@ export default class App extends React.Component
       }
       this.setState({ isLoading: false });
     } catch(error) {
-      alert("could not retreive async storage");
       console.error(error);
     }
-    alert(token);
+  }
+
+  sendTkn(url, user, pass) {
+    fetch(`${url}/token`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: {
+          value: this.state.notif_token,
+        },
+        username: user,
+        password: pass
+      }),
+    }).then((response) => response.json()).then((json) => {
+      if (json.data == 'ko') {
+        alert("Error: please check server credentials");
+      } else {
+        alert("Url has been saved you will receive notifications in time");
+      }
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: please check url format");
+    });
+    this.setState({value: url});
+    this.setState({user: user});
+    this.setState({pass: pass});
   }
 
   componentDidMount() {
@@ -103,18 +140,21 @@ export default class App extends React.Component
       return (<SplashScreen />);
     }
     return (
-      <View style={styles.container}>
-        <HomeScreen url={this.state.value} token={this.state.notif_token} />
-      </View>
+      <NavigationContainer>
+        <Drawer.Navigator initialRouteName="Payload">
+          <Drawer.Screen name="Payload">
+            {props => <HomeScreen {...props} url={this.state.value}
+                    pass={this.state.pass} user={this.state.user} />}
+          </Drawer.Screen>
+          <Drawer.Screen name="Notification">
+            {props => <NotificationScreen {...props} url={this.state.value}
+                    pass={this.state.pass} user={this.state.user} />}
+          </Drawer.Screen>
+          <Drawer.Screen name="Creds">
+            {props => <CredsScreen {...props} run={this.sendTkn} url={this.state.value} token={this.state.notif_token} />}
+          </Drawer.Screen>
+        </Drawer.Navigator>
+      </NavigationContainer>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#444333',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
