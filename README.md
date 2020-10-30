@@ -44,3 +44,4 @@ npm start
 
 ### Comming up
 Dockerize the backend
+Command line interface to simulate the app
