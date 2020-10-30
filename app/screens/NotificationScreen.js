@@ -54,7 +54,9 @@ export default class HomeScreen extends React.Component
             this.state.data.length == 0 ?
               <Text style={styles.header}>Scroll to refresh</Text>
             :
-              this.state.data.map((notifData) => <Notif data={notifData} key={notifData}/>)
+              this.state.data.slice(0).reverse().map(
+                  (notifData,i) => <Notif data={notifData} key={i}/>
+              )
           }
         </ScrollView>
       </View>

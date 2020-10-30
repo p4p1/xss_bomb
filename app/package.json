@@ -10,6 +10,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-firebase/app": "^8.4.6",
+    "@react-native-picker/picker": "^1.8.3",
     "@react-navigation/drawer": "^5.10.0",
     "@react-navigation/native": "^5.8.0",
     "expo": "~39.0.2",
@@ -18,9 +19,9 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
-    "react-native-gesture-handler": "^1.8.0",
+    "react-native-gesture-handler": "~1.7.0",
     "react-native-reanimated": "^1.13.1",
-    "react-native-screens": "^2.12.0",
+    "react-native-screens": "~2.10.1",
     "react-native-textarea": "^1.0.4",
     "react-native-web": "~0.13.12"
   },

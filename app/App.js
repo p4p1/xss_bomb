@@ -92,9 +92,13 @@ export default class App extends React.Component
     this.setState({ notif_token: token });
     try {
       const link = await AsyncStorage.getItem('link');
+      const username = await AsyncStorage.getItem('user');
+      const password = await AsyncStorage.getItem('pass');
 
       if (link !== null) {
         this.setState({ value: link});
+        this.setState({ user: username});
+        this.setState({ pass: password});
       }
       this.setState({ isLoading: false });
     } catch(error) {

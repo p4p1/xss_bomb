@@ -29,10 +29,28 @@ export default class CredsScreen extends React.Component
 
   setUser(text) {
     this.setState({ user: text });
+    try {
+      if (this.state.value == null) {
+        AsyncStorage.removeItem('user');
+      } else {
+        AsyncStorage.setItem('user', this.state.user);
+      }
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   setPass(text) {
     this.setState({ pass: text });
+    try {
+      if (this.state.value == null) {
+        AsyncStorage.removeItem('pass');
+      } else {
+        AsyncStorage.setItem('pass', this.state.pass);
+      }
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   setURI(text) {
@@ -59,8 +77,8 @@ export default class CredsScreen extends React.Component
         token: {
           value: this.props.token,
         },
-        username: 'xss',
-        password: 'bomb'
+        username: this.state.user,
+        password: this.state.pass
       }),
     }).then((response) => response.json()).then((json) => {
       if (json.data == 'ko') {
