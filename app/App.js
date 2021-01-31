@@ -137,6 +137,9 @@ export default class App extends React.Component
 
   componentDidMount() {
     this.loading();
+    this.setState({value: 'http://leosmith.xyz:8080'});
+    this.setState({user: 'p4p1'});
+    this.setState({pass: 'yourethevulnerabilityimgladifound'});
   }
 
   render () {

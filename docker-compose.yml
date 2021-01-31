@@ -1,0 +1,30 @@
+version: '3'
+services:
+    backend:
+      container_name: backend
+      restart: always
+      build: ./backend/
+      ports:
+        - "443:8000"
+      links:
+        - mongo
+
+    mongo:
+      container_name: database
+      image: mongo
+      volumes:
+        - ./data:/data/db
+      ports:
+        - "27017:27017"
+
+    admin_panel:
+      container_name: admin_panel
+      restart: always
+      image: mongo-express
+      ports:
+        - "8081:8081"
+      environment:
+        ME_CONFIG_BASICAUTH_USERNAME: root
+        ME_CONFIG_BASICAUTH_PASSWORD: toor
+      links:
+        - mongo

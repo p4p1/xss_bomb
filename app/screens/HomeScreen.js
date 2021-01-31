@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, RefreshControl, StyleSheet, View, Image } from 'react-native';
+import { ScrollView, RefreshControl, StyleSheet, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Textarea from 'react-native-textarea';
 import { javascript_code_small, php_code_small, php_bash } from '../components/code.js';
