@@ -9,6 +9,7 @@
 	"author": "Leo Smith",
 	"license": "MIT",
 	"dependencies": {
+		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.19.0",
 		"cookie-parser": "^1.4.5",
 		"cors": "^2.8.5",
@@ -16,10 +17,12 @@
 		"expo-server-sdk": "^3.6.0",
 		"express": "^4.17.1",
 		"express-session": "^1.17.1",
+		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.11.14",
 		"mongoose-findorcreate": "^3.0.0",
 		"passport": "^0.4.1",
-		"session": "^0.1.0"
+		"session": "^0.1.0",
+		"shortid": "^2.2.16"
 	},
 	"devDependencies": {
 		"eslint": "^7.12.0"

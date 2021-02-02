@@ -14,7 +14,7 @@ const database_link = process.env.db || "mongo";
 require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
 
 
-var users = require('./routes/user')
+var auth = require('./routes/auth')
 
 mongoose.connect("mongodb://" +
   database_link + "/xss_bomb?retryWrites=true&w=majority", {
@@ -42,6 +42,6 @@ app.use(
     saveUninitialized: true
   })
 )
-app.use('/user', users)
+app.use('/auth', auth)
 
 module.exports = app
