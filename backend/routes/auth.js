@@ -43,7 +43,7 @@ router.post('/login', middleware.checkLogin, function (req, res, next) {
     User.find({
       username: req.body.username,
     }).exec((err, data) => {
-      if (err) {
+      if (err || data.length != 1) {
         return res.status(500).send({ msg: "User does not exist" });
       } else {
         bcrypt.compare(req.body.password, data[0].password, (bErr, bResult) => {

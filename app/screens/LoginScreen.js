@@ -9,13 +9,13 @@ export default class CredsScreen extends React.Component
   constructor(props) {
     super(props);
     this.state = {
-      value: 'http://xss-notification-server/',
-      user: 'xss',
-      pass: 'bomb'
+      user: '',
+      pass: ''
     }
 
-    this.saveURI = this.saveURI.bind(this);
-    this.setURI = this.setURI.bind(this);
+    this.setUser = this.setUser.bind(this);
+    this.setPass = this.setPass.bind(this);
+    this.login = this.login.bind(this);
   }
 
   componentDidMount() {
@@ -26,62 +26,28 @@ export default class CredsScreen extends React.Component
 
   setUser(text) {
     this.setState({ user: text });
-    try {
-      if (this.state.value == null) {
-        AsyncStorage.removeItem('user');
-      } else {
-        AsyncStorage.setItem('user', this.state.user);
-      }
-    } catch(error) {
-      console.error(error);
-    }
   }
 
   setPass(text) {
     this.setState({ pass: text });
-    try {
-      if (this.state.value == null) {
-        AsyncStorage.removeItem('pass');
-      } else {
-        AsyncStorage.setItem('pass', this.state.pass);
-      }
-    } catch(error) {
-      console.error(error);
-    }
   }
 
-  setURI(text) {
-    this.setState({ value: text });
-    try {
-      if (this.state.value == null) {
-        AsyncStorage.removeItem('link');
-      } else {
-        AsyncStorage.setItem('link', this.state.value);
-      }
-    } catch(error) {
-      console.error(error);
-    }
-  }
-
-  saveURI() {
-    fetch(`${this.state.value}/token`, {
+  login() {
+    fetch(`${this.props.url}auth/login`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        token: {
-          value: this.props.token,
-        },
         username: this.state.user,
-        password: this.state.pass
+        password: this.state.pass,
+        notificationId: 'testing'
       }),
     }).then((response) => response.json()).then((json) => {
-      if (json.data == 'ko') {
-        alert("Error: please check server credentials");
-      } else {
-        alert("Url has been saved you will receive notifications in time");
+      alert(json.msg);
+      if (json.token) {
+        this.props.run(json.token);
       }
     }).catch((err) => {
       console.error(err);
@@ -93,12 +59,10 @@ export default class CredsScreen extends React.Component
     return (
       <View style={styles.container}>
         <TextInput style={styles.header} onChangeText={text => this.setUser(text)}
-                                                      value={this.state.user} />
-        <TextInput style={styles.header} secureTextEntry={true}
-                onChangeText={text => this.setPass(text)} value={this.state.pass} />
-        <TextInput style={styles.header} onChangeText={text => this.setURI(text)}
-                                                      value={this.state.value} />
-        <TextButton text="Save Credentials" run={() => {this.props.run(this.state.value, this.state.user, this.state.pass)}} />
+          placeholderTextColor={'#fff'} placeholder={"username"} value={this.state.user} />
+        <TextInput style={styles.header} secureTextEntry={true} placeholder={"password"}
+          placeholderTextColor={'#fff'} onChangeText={text => this.setPass(text)} value={this.state.pass} />
+        <TextButton text="Login" run={() => {this.login()}} />
       </View>
     );
   }
@@ -106,7 +70,6 @@ export default class CredsScreen extends React.Component
 
 CredsScreen.propTypes = {
   url: PropTypes.string,
-  token: PropTypes.string,
   run: PropTypes.func
 }
 
