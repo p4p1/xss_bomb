@@ -1,5 +1,4 @@
 const express = require('express');
-const { Expo } = require("expo-server-sdk");
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser')
@@ -7,7 +6,6 @@ const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 
-const expo = new Expo();
 const app = express();
 const path = require('path')
 const database_link = process.env.db || "mongo";
@@ -15,6 +13,8 @@ require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
 
 
 var auth = require('./routes/auth')
+var user = require('./routes/user')
+var api = require('./routes/api')
 
 mongoose.connect("mongodb://" +
   database_link + "/xss_bomb?retryWrites=true&w=majority", {
@@ -43,5 +43,7 @@ app.use(
   })
 )
 app.use('/auth', auth)
+app.use('/user', user)
+app.use('/api', api)
 
 module.exports = app
