@@ -1,26 +1,23 @@
 import React from 'react';
-import { Text, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
-
-import Notif from '../components/Notif.js';
-
+import { Text, StyleSheet, Image, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-export default class HomeScreen extends React.Component
+import SplashScreen from './SplashScreen';
+import TextButton from '../components/TextButton.js';
+
+const logo = '../assets/icon.png';
+
+export default class UserScreen extends React.Component
 {
   constructor(props) {
     super(props);
     this.state = {
-      refreshing: false,
-      data: [],
-      bugdata: [],
+      data: undefined,
     }
-
-    this.onRefresh = this.onRefresh.bind(this);
   }
 
-  onRefresh() {
-    this.setState({refreshing: true});
-    fetch(`${this.props.url}user/get_notifications`, {
+  componentDidMount() {
+    fetch(`${this.props.url}user/get_user`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -30,39 +27,28 @@ export default class HomeScreen extends React.Component
     }).then((response) => response.json()).then((json) => {
       console.log(json);
       this.setState({ data: json });
-      this.setState({refreshing: false});
     }).catch((err) => {
       console.error(err);
       alert("Error: Could not connect");
-      this.setState({refreshing: false});
     });
   }
 
-  componentDidMount() {
-    this.onRefresh();
-  }
-
   render () {
+    if (this.state.data == undefined) {
+      return (<SplashScreen />);
+    }
     return (
       <View style={styles.container}>
-        <ScrollView style={{width:'90%', height:'80%' }}
-          refreshControl={<RefreshControl refreshing={this.state.refreshing}
-          onRefresh={this.onRefresh}/>}>
-          {
-            this.state.data.length == 0 ?
-              <Text style={styles.header}>Scroll to refresh</Text>
-            :
-              this.state.data.reverse().map(
-                  (notifData,i) => <Notif data={notifData} key={i}/>
-              )
-          }
-        </ScrollView>
+        <Image style={styles.logo} source={require(logo)} />
+        <Text style={styles.header}>{this.state.data.username}</Text>
+        <Text style={styles.para}>{this.state.data.api_id}</Text>
+        <TextButton text="Logout" run={() => {this.props.logout()}} />
       </View>
     );
   }
 }
 
-HomeScreen.propTypes = {
+UserScreen.propTypes = {
   url: PropTypes.string,
   token: PropTypes.string,
   logout: PropTypes.function,
@@ -86,14 +72,20 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 10,
     marginBottom: 15,
-    marginTop: 100,
     textAlign: 'center',
-    width: '100%',
+  },
+  para: {
+    fontSize: 25,
+    color: '#aaaaaa',
+    paddingLeft: 5,
+    paddingRight: 10,
+    marginBottom: 15,
+    textAlign: 'center',
   },
   logo: {
     width: 150,
     height: 150,
     marginBottom: 50,
-    borderRadius: 30,
+    borderRadius: 20,
   }
 });

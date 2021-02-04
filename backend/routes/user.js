@@ -47,7 +47,7 @@ router.get('/get_notifications', middleware.isLoggedIn, function (req, res) {
         if (err) {
           return res.status(500).send("Api id not found");
         } else {
-          return res.status(200).send(notifications);
+          return res.status(200).send(notifications.reverse());
         }
       })
     }

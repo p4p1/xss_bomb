@@ -21,6 +21,7 @@ export default class App extends React.Component
     this.getLink = this.getLink.bind(this);
     this.getToken = this.getToken.bind(this);
     this.saveToken = this.saveToken.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   async getLink() {
@@ -46,6 +47,7 @@ export default class App extends React.Component
       console.log(error);
     }
   }
+
   async saveToken(tkn) {
     try {
       this.setState({ token: tkn });
@@ -56,6 +58,11 @@ export default class App extends React.Component
     } catch (error) {
       console.error(error);
     }
+  }
+
+  logout() {
+    this.setState({token: undefined});
+    this.setState({url: undefined});
   }
 
   async componentDidMount() {
@@ -80,7 +87,7 @@ export default class App extends React.Component
     }
     return (
       <NavigationContainer>
-        <MainNavigator url={this.state.url} token={this.state.token} />
+        <MainNavigator url={this.state.url} token={this.state.token} logout={this.logout}/>
       </NavigationContainer>
     );
   }

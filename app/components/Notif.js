@@ -12,10 +12,10 @@ export default class Notif extends React.Component
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>{this.props.data.route}</Text>
-        <Text style={styles.date}>{this.props.data["date"]}</Text>
-        <Text style={styles.para}>{this.props.data["user-agent"]}</Text>
-        <Text style={styles.para}>{JSON.stringify(this.props.data.content)}</Text>
+        <Text style={styles.header}>{this.props.data.link}</Text>
+        <Text style={styles.date}>{this.props.data.date}</Text>
+        <Text style={styles.para}>{this.props.data.userAgent}</Text>
+        <Text style={styles.para}>{this.props.data.ipAddress}</Text>
       </View>
     );
   }
