@@ -21,6 +21,7 @@ export default class CredsScreen extends React.Component
   constructor(props) {
     super(props);
     this.state = {
+      register: false,
       user: '',
       pass: ''
     }
@@ -28,6 +29,7 @@ export default class CredsScreen extends React.Component
     this.setUser = this.setUser.bind(this);
     this.setPass = this.setPass.bind(this);
     this.login = this.login.bind(this);
+    this.register = this.register.bind(this);
 
     this._handleNotification = this._handleNotification.bind(this);
     this._handleNotificationResponse = this._handleNotificationResponse.bind(this);
@@ -106,20 +108,54 @@ export default class CredsScreen extends React.Component
       }
     }).catch((err) => {
       console.error(err);
-      alert("Error: please check url format");
+      alert("Error: Are you connected to the internet?");
+    });
+  }
+
+  register() {
+    fetch(`${this.props.url}auth/register`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: this.state.user,
+        password: this.state.pass
+      }),
+    }).then((response) => response.json()).then((json) => {
+      console.log(json);
+      alert(json.msg);
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: Are you connected to the internet?");
     });
   }
 
   render () {
-    return (
-      <View style={styles.container}>
-        <TextInput style={styles.header} onChangeText={text => this.setUser(text)}
-          placeholderTextColor={'#fff'} placeholder={"username"} value={this.state.user} />
-        <TextInput style={styles.header} secureTextEntry={true} placeholder={"password"}
-          placeholderTextColor={'#fff'} onChangeText={text => this.setPass(text)} value={this.state.pass} />
-        <TextButton text="Login" run={() => {this.login()}} />
-      </View>
-    );
+    if (this.state.register) {
+      return (
+        <View style={styles.container}>
+          <TextInput style={styles.header} onChangeText={text => this.setUser(text)}
+            placeholderTextColor={'#fff'} placeholder={"username"} value={this.state.user} />
+          <TextInput style={styles.header} secureTextEntry={true} placeholder={"password"}
+            placeholderTextColor={'#fff'} onChangeText={text => this.setPass(text)} value={this.state.pass} />
+          <TextButton text="Register" run={() => {this.register()}} />
+          <TextButton text="Login" run={() => {this.setState({register: !this.state.register})}} />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <TextInput style={styles.header} onChangeText={text => this.setUser(text)}
+            placeholderTextColor={'#fff'} placeholder={"username"} value={this.state.user} />
+          <TextInput style={styles.header} secureTextEntry={true} placeholder={"password"}
+            placeholderTextColor={'#fff'} onChangeText={text => this.setPass(text)} value={this.state.pass} />
+          <TextButton text="Login" run={() => {this.login()}} />
+          <TextButton text="Create an account" run={() => {this.setState({register: !this.state.register})}} />
+        </View>
+      );
+    }
   }
 }
 
