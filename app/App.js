@@ -59,8 +59,8 @@ export default class App extends React.Component
   }
 
   async componentDidMount() {
-    await this.getLink();
-    await this.getToken();
+    //await this.getLink();
+    //await this.getToken();
     this.setState({ isLoading: false });
   }
 

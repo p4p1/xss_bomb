@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router()
 const User = require('../models/User.js');
+const Notification = require('../models/Notification.js');
 const { Expo } = require("expo-server-sdk");
 const expo = new Expo();
 
@@ -44,12 +45,22 @@ router.get('/:id', function (req, res) {
     if (err || data.length != 1) {
       return res.status(500).send("ko");
     } else {
+      Notification.create({
+        api_id: req.params.id,
+        date: new Date(),
+        link: req.url,
+        userAgent: req.headers['user-agent'],
+        ipAddress: req.ip
+      }, function(err) {
+        if (err) {
+          console.error(err)
+        }
+      })
       sendNotification(data[0].notificationId, { title: "xss - hit",
         body: req.headers['user-agent'] })
       return res.status(200).send("ok");
     }
   });
-  return res.status(200).send("ko");
 })
 
 module.exports = router
