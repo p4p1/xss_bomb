@@ -1,8 +1,20 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, Image } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import PropTypes from 'prop-types';
 import TextButton from '../components/TextButton.js';
+
+import * as Permissions from 'expo-permissions';
+import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 export default class CredsScreen extends React.Component
 {
@@ -16,6 +28,45 @@ export default class CredsScreen extends React.Component
     this.setUser = this.setUser.bind(this);
     this.setPass = this.setPass.bind(this);
     this.login = this.login.bind(this);
+
+    this._handleNotification = this._handleNotification.bind(this);
+    this._handleNotificationResponse = this._handleNotificationResponse.bind(this);
+    this.registerForPushNotificationsAsync = this.registerForPushNotificationsAsync.bind(this);
+  }
+  async registerForPushNotificationsAsync() {
+    let token;
+
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+    return token;
+  }
+
+  _handleNotification(notification) {
+    this.setState({ notification: notification });
+  }
+
+  _handleNotificationResponse(response) {
+    console.log(response);
   }
 
   componentDidMount() {
@@ -32,7 +83,11 @@ export default class CredsScreen extends React.Component
     this.setState({ pass: text });
   }
 
-  login() {
+  async login() {
+    let not_token = await this.registerForPushNotificationsAsync();
+
+    Notifications.addNotificationReceivedListener(this._handleNotification);
+    Notifications.addNotificationResponseReceivedListener(this._handleNotificationResponse);
     fetch(`${this.props.url}auth/login`, {
       method: 'POST',
       headers: {
@@ -42,7 +97,7 @@ export default class CredsScreen extends React.Component
       body: JSON.stringify({
         username: this.state.user,
         password: this.state.pass,
-        notificationId: 'testing'
+        notificationId: not_token
       }),
     }).then((response) => response.json()).then((json) => {
       alert(json.msg);
