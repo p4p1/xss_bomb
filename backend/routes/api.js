@@ -42,13 +42,14 @@ router.get('/:id', function (req, res) {
     api_id: req.params.id,
   }).exec((err, data) => {
     if (err || data.length != 1) {
-      return res.status(500).send("");
+      return res.status(500).send("ko");
     } else {
-      sendNotification(data.notificationId, { title: "xss - hit",
+      sendNotification(data[0].notificationId, { title: "xss - hit",
         body: req.headers['user-agent'] })
+      return res.status(200).send("ok");
     }
   });
-  return res.status(200).send("ok");
+  return res.status(200).send("ko");
 })
 
 module.exports = router

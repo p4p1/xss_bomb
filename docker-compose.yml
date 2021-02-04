@@ -5,7 +5,7 @@ services:
       restart: always
       build: ./backend/
       ports:
-        - "443:8000"
+        - "8000:8000"
       links:
         - mongo
 
