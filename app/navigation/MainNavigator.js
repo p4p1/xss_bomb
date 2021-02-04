@@ -16,7 +16,10 @@ export default class MainNavigator extends React.Component
   render() {
     return (
       <Drawer.Navigator initialRouteName="Notifications" drawerContentOptions={{
-        activeTintColor:'#444333',
+        activeTintColor:'#24FF1F',
+        inactiveTintColor:'#fff',
+      }} drawerStyle={{
+        backgroundColor: '#222222',
       }}>
         <Drawer.Screen name="Notifications">
           {props => <NotificationScreen {...props} logout={this.props.logout}
