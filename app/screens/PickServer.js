@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, Modal, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import PropTypes from 'prop-types';
 
+import TextButton from '../components/TextButton.js';
 import SplashScreen from './SplashScreen';
 
 /*
@@ -16,10 +17,18 @@ export default class PickServer extends React.Component
   constructor(props) {
     super(props);
     this.state = {
-      instances: []
+      instances: [],
+      link: "",
+      modal: false
     }
 
     this.saveServer = this.saveServer.bind(this);
+    this.showModal = this.showModal.bind(this);
+    this.setLink = this.setLink.bind(this);
+  }
+
+  setLink(value) {
+    this.setState({link: value});
   }
 
   componentDidMount() {
@@ -28,7 +37,12 @@ export default class PickServer extends React.Component
     }).catch((err) => console.error(err));
   }
 
+  showModal() {
+    this.setState({ modal: !this.state.modal });
+  }
+
   async saveServer(link) {
+    this.setState({ modal: false });
     try {
       await AsyncStorage.setItem(
         '@xss_bomb:server',
@@ -47,6 +61,16 @@ export default class PickServer extends React.Component
     console.log(this.state.instances);
     return (
       <View style={styles.container}>
+        <Modal animationType={"slide"} transparent={true}
+            visible={this.state.modal} onRequestClose={this.showModal}>
+          <View style={styles.center}>
+            <View style={styles.popup}>
+              <TextInput value={this.state.link} style={styles.input_text} 
+                placeholder="https://link_here" onChangeText={text => this.setLink(text)}/>
+              <TextButton text="Save link" run={() => {this.saveServer(this.state.link)}} />
+            </View>
+          </View>
+        </Modal>
         <View style={styles.server_picker}>
           <View style={styles.header}>
             <Text style={styles.white_text}>Choose a server</Text>
@@ -60,8 +84,8 @@ export default class PickServer extends React.Component
                 </TouchableOpacity>
               );
             })}
-            <TouchableOpacity style={styles.server_btn}>
-              <Text style={styles.btn_text}>Custom Server</Text>
+            <TouchableOpacity style={styles.server_btn} onPress={this.showModal}>
+              <Text style={styles.btn_text}>+++ Custom Server +++</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
@@ -83,11 +107,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  center: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   server_picker: {
     width: '90%',
     height: '60%',
     borderRadius: 20,
     backgroundColor: '#222000',
+  },
+  popup: {
+    width: '80%',
+    height: '40%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    backgroundColor: '#555000',
   },
   header: {
     color: '#fff',
@@ -96,6 +134,16 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     width: '100%',
     height: '15%',
+  },
+  input_text: {
+    fontSize: 25,
+    color: '#fff',
+    paddingLeft: 5,
+    paddingRight: 10,
+    borderBottomWidth: 1,
+    borderColor: '#fff',
+    marginBottom: 15,
+    width: '90%',
   },
   white_text: {
     paddingTop: 10,
@@ -107,14 +155,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   btn_text: {
-    paddingTop: 10,
-    paddingBottom: 10,
     textAlign: 'center',
+    width: '95%',
     color: '#fff',
     fontSize: 20,
     fontFamily: 'monospace',
   },
   server_btn: {
     width: '100%',
+    marginBottom: 20,
   }
 });

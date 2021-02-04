@@ -35,6 +35,7 @@ export default class HomeScreen extends React.Component
       console.error(err);
       alert("Error: Could not connect");
       this.setState({refreshing: false});
+      this.props.logout();
     });
   }
 

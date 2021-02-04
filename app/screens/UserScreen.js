@@ -30,6 +30,7 @@ export default class UserScreen extends React.Component
     }).catch((err) => {
       console.error(err);
       alert("Error: Could not connect");
+      this.props.logout();
     });
   }
 
