@@ -8,6 +8,9 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-native-fontawesome": "^0.2.6",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-firebase/app": "^8.4.6",
     "@react-native-picker/picker": "^1.8.3",
@@ -22,6 +25,8 @@
     "react-native-gesture-handler": "~1.7.0",
     "react-native-reanimated": "^1.13.1",
     "react-native-screens": "~2.10.1",
+    "react-native-svg": "^12.1.0",
+    "react-native-swipeout": "^2.3.6",
     "react-native-textarea": "^1.0.4",
     "react-native-web": "~0.13.12"
   },

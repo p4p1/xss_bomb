@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose')
 const router = express.Router()
 const bcrypt = require("bcryptjs");
 
@@ -51,6 +52,17 @@ router.get('/get_notifications', middleware.isLoggedIn, function (req, res) {
         }
       })
     }
+  })
+})
+
+router.delete('/notification', middleware.isLoggedIn, function (req, res) {
+  Notification.deleteOne({
+    _id: mongoose.mongo.ObjectId(req.body.id)
+  }). then(() => {
+    return res.status(200).send({ msg: "Removed Notification" });
+  }).catch((err) => {
+    console.log(err);
+    return res.status(400).send({ msg: "Incorrect Id!" });
   })
 })
 

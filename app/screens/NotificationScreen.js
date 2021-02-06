@@ -16,6 +16,7 @@ export default class HomeScreen extends React.Component
     }
 
     this.onRefresh = this.onRefresh.bind(this);
+    this.remove = this.remove.bind(this);
   }
 
   onRefresh() {
@@ -39,6 +40,10 @@ export default class HomeScreen extends React.Component
     });
   }
 
+  remove(id) {
+    alert(id);
+  }
+
   componentDidMount() {
     this.onRefresh();
   }
@@ -54,7 +59,8 @@ export default class HomeScreen extends React.Component
               <Text style={styles.header}>Scroll to refresh</Text>
             :
               this.state.data.reverse().map(
-                  (notifData,i) => <Notif data={notifData} key={i}/>
+                (notifData,i) => <Notif data={notifData} key={i}
+                  delete={(data) => this.remove(data)} />
               )
           }
         </ScrollView>

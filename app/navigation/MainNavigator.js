@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import UserScreen from '../screens/UserScreen.js';
 import NotificationScreen from '../screens/NotificationScreen.js';
+import HelpScreen from '../screens/HelpScreen.js';
 
 const Drawer = createDrawerNavigator();
 
@@ -22,11 +23,15 @@ export default class MainNavigator extends React.Component
         backgroundColor: '#222222',
       }}>
         <Drawer.Screen name="Notifications">
-          {props => <NotificationScreen {...props} logout={this.props.logout}
+          {props => <NotificationScreen {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
         </Drawer.Screen>
         <Drawer.Screen name="Account">
-          {props => <UserScreen {...props} logout={this.props.logout}
+          {props => <UserScreen {...props} logout={() => this.props.logout()}
+          token={this.props.token} url={this.props.url} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="Help">
+          {props => <HelpScreen {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
         </Drawer.Screen>
       </Drawer.Navigator>
@@ -37,5 +42,5 @@ export default class MainNavigator extends React.Component
 MainNavigator.propTypes = {
   url: PropTypes.String,
   token: PropTypes.string,
-  logout: PropTypes.func,
+  logout: PropTypes.function,
 }

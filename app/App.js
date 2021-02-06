@@ -87,7 +87,8 @@ export default class App extends React.Component
     }
     return (
       <NavigationContainer>
-        <MainNavigator url={this.state.url} token={this.state.token} logout={this.logout}/>
+        <MainNavigator url={this.state.url} token={this.state.token}
+            logout={() => this.logout()}/>
       </NavigationContainer>
     );
   }
