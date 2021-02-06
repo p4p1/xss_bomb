@@ -58,7 +58,6 @@ export default class PickServer extends React.Component
     if (this.state.instances == undefined || this.state.instances.length < 1) {
       return (<SplashScreen />);
     }
-    console.log(this.state.instances);
     return (
       <View style={styles.container}>
         <Modal animationType={"slide"} transparent={true}

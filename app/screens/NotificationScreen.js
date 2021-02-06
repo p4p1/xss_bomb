@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, RefreshControl, StyleSheet, ScrollView, View, Clipboard, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
@@ -15,12 +16,12 @@ export default class HomeScreen extends React.Component
     this.state = {
       refreshing: false,
       data: [],
-      bugdata: [],
       api_id: undefined,
     }
 
     this.onRefresh = this.onRefresh.bind(this);
     this.remove = this.remove.bind(this);
+    this.save = this.save.bind(this);
   }
 
   onRefresh() {
@@ -33,7 +34,6 @@ export default class HomeScreen extends React.Component
         'authorization': `Bearer ${this.props.token}`
       }
     }).then((response) => response.json()).then((json) => {
-      console.log(json);
       this.setState({ data: json });
       this.setState({refreshing: false});
     }).catch((err) => {
@@ -42,6 +42,34 @@ export default class HomeScreen extends React.Component
       this.setState({refreshing: false});
       this.props.logout();
     });
+  }
+
+  async save(notification_data) {
+    try {
+      const value = await AsyncStorage.getItem('@xss_bomb:notification');
+      if (value !== null) {
+        const new_value = JSON.parse(value);
+        try {
+          await AsyncStorage.setItem(
+            '@xss_bomb:notification',
+            JSON.stringify([ ...new_value, notification_data ])
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        try {
+          await AsyncStorage.setItem(
+            '@xss_bomb:notification',
+            JSON.stringify([ notification_data ])
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   remove(notification_id) {
@@ -57,7 +85,6 @@ export default class HomeScreen extends React.Component
       }),
     }).then((response) => response.json()).then((json) => {
       this.onRefresh();
-      console.log(json);
     }).catch((err) => {
       console.error(err);
       alert("Error: Could not connect");
@@ -75,7 +102,6 @@ export default class HomeScreen extends React.Component
         'authorization': `Bearer ${this.props.token}`
       }
     }).then((response) => response.json()).then((json) => {
-      console.log(json);
       this.setState({ api_id: json.token });
     }).catch((err) => {
       console.error(err);
@@ -106,7 +132,8 @@ export default class HomeScreen extends React.Component
             :
               this.state.data.reverse().map(
                 (notifData,i) => <Notif data={notifData} key={i}
-                  delete={(data) => this.remove(data)} />
+                  delete={(data) => this.remove(data)}
+                  save={(data) => this.save(data)}/>
               )
           }
         </ScrollView>

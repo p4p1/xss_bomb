@@ -124,7 +124,6 @@ export default class CredsScreen extends React.Component
         password: this.state.pass
       }),
     }).then((response) => response.json()).then((json) => {
-      console.log(json);
       alert(json.msg);
     }).catch((err) => {
       console.error(err);

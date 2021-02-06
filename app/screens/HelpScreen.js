@@ -24,7 +24,6 @@ export default class HelpScreen extends React.Component
         'authorization': `Bearer ${this.props.token}`
       }
     }).then((response) => response.json()).then((json) => {
-      console.log(json);
       this.setState({ api_id: json.token });
     }).catch((err) => {
       console.error(err);

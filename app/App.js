@@ -29,7 +29,6 @@ export default class App extends React.Component
       const value = await AsyncStorage.getItem('@xss_bomb:server');
       if (value !== null) {
         this.setState({ url: value });
-        console.log(value);
       }
     } catch (error) {
       console.log(error);
@@ -41,7 +40,6 @@ export default class App extends React.Component
       const value = await AsyncStorage.getItem('@xss_bomb:token');
       if (value !== null) {
         this.setState({ token: value });
-        console.log(value);
       }
     } catch (error) {
       console.log(error);

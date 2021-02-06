@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import PropTypes from 'prop-types';
 
 import UserScreen from '../screens/UserScreen.js';
+import FavoritesScreen from '../screens/FavoritesScreen.js';
 import NotificationScreen from '../screens/NotificationScreen.js';
 import HelpScreen from '../screens/HelpScreen.js';
 
@@ -24,6 +25,10 @@ export default class MainNavigator extends React.Component
       }}>
         <Drawer.Screen name="Notifications">
           {props => <NotificationScreen {...props} logout={() => this.props.logout()}
+          token={this.props.token} url={this.props.url} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="Favorites">
+          {props => <FavoritesScreen {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
         </Drawer.Screen>
         <Drawer.Screen name="Account">
