@@ -1,6 +1,9 @@
 import React from 'react';
-import { Text, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
+import { Text, RefreshControl, StyleSheet, ScrollView, View, Clipboard, TouchableOpacity } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
+import SplashScreen from './SplashScreen';
 import Notif from '../components/Notif.js';
 
 import PropTypes from 'prop-types';
@@ -13,6 +16,7 @@ export default class HomeScreen extends React.Component
       refreshing: false,
       data: [],
       bugdata: [],
+      api_id: undefined,
     }
 
     this.onRefresh = this.onRefresh.bind(this);
@@ -40,15 +44,50 @@ export default class HomeScreen extends React.Component
     });
   }
 
-  remove(id) {
-    alert(id);
+  remove(notification_id) {
+    fetch(`${this.props.url}user/notification`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${this.props.token}`
+      },
+      body: JSON.stringify({
+        id: notification_id
+      }),
+    }).then((response) => response.json()).then((json) => {
+      this.onRefresh();
+      console.log(json);
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: Could not connect");
+      this.props.logout();
+    });
   }
 
   componentDidMount() {
     this.onRefresh();
+    fetch(`${this.props.url}user/get_api`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${this.props.token}`
+      }
+    }).then((response) => response.json()).then((json) => {
+      console.log(json);
+      this.setState({ api_id: json.token });
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: Could not connect");
+      this.props.logout();
+    });
   }
 
   render () {
+    if (this.state.api_id == undefined) {
+      return (<SplashScreen />);
+    }
     return (
       <View style={styles.container}>
         <ScrollView style={{width:'90%', height:'80%' }}
@@ -56,7 +95,14 @@ export default class HomeScreen extends React.Component
           onRefresh={this.onRefresh}/>}>
           {
             this.state.data.length == 0 ?
-              <Text style={styles.header}>Scroll to refresh</Text>
+              <View>
+                <Text style={styles.header}>Waiting for requests on</Text>
+                <TouchableOpacity style={styles.save_clip}
+                  onPress={() => Clipboard.setString(this.props.url + "api/" + this.state.api_id)}>
+                  <Text style={styles.para}>{this.props.url}api/{this.state.api_id}</Text>
+                  <FontAwesomeIcon size={20} color={'#aaaaaa'} icon={ faCopy } />
+                </TouchableOpacity>
+              </View>
             :
               this.state.data.reverse().map(
                 (notifData,i) => <Notif data={notifData} key={i}
@@ -86,6 +132,10 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 5,
   },
+  save_clip:{
+    justifyContent: 'center',
+    flexDirection: 'row'
+  },
   header: {
     fontSize: 25,
     fontWeight: 'bold',
@@ -96,6 +146,14 @@ const styles = StyleSheet.create({
     marginTop: 100,
     textAlign: 'center',
     width: '100%',
+  },
+  para: {
+    fontSize: 15,
+    color: '#aaaaaa',
+    paddingLeft: 5,
+    paddingRight: 10,
+    marginBottom: 15,
+    textAlign: 'center',
   },
   logo: {
     width: 150,

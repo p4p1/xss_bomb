@@ -52,7 +52,7 @@ export default class HelpScreen extends React.Component
           <Text style={styles.header}>Who do I use this app?</Text>
           <Text style={styles.para}>
             When you find a potential XSS vulnerability on a website you can add your
-            unique xss_bomb link ({this.props.url}{this.state.api_id}) when the backend
+            unique xss_bomb link ({this.props.url}api/{this.state.api_id}) when the backend
             receives a request it will send you a notification and you will be able to
             inspect it on your mobile device.
           </Text>

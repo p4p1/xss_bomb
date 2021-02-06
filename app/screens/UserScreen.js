@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, View, Clipboard } from 'react-native';
+import { Modal, Text, StyleSheet, TouchableOpacity, View, Clipboard } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
 import PropTypes from 'prop-types';
 
 import SplashScreen from './SplashScreen';
+import ChangeLoginScreen from './ChangeLoginScreen';
 import TextButton from '../components/TextButton.js';
 
 export default class UserScreen extends React.Component
@@ -14,7 +15,14 @@ export default class UserScreen extends React.Component
     super(props);
     this.state = {
       data: undefined,
+      modalVisible: false,
     }
+
+    this.showModal = this.showModal.bind(this);
+  }
+
+  showModal() {
+    this.setState({ modalVisible: ! this.state.modalVisible });
   }
 
   componentDidMount() {
@@ -41,12 +49,17 @@ export default class UserScreen extends React.Component
     }
     return (
       <View style={styles.container}>
+        <Modal animationType="slide" transparent={false}
+            visible={this.state.modalVisible} onRequestClose={this.showModal}>
+          <ChangeLoginScreen url={this.props.url} token={this.props.token} logout={this.props.logout} run={this.showModal} />
+        </Modal>
         <Text style={styles.header}>{this.state.data.username}</Text>
         <TouchableOpacity style={styles.save_clip}
-          onPress={() => Clipboard.setString(this.props.url + this.state.data.api_id)}>
-          <Text style={styles.para}>{this.props.url + this.state.data.api_id}</Text>
+          onPress={() => Clipboard.setString(this.props.url + "api/" + this.state.data.api_id)}>
+          <Text style={styles.para}>{this.props.url}api/{this.state.data.api_id}</Text>
           <FontAwesomeIcon size={20} color={'#aaaaaa'} icon={ faCopy } />
         </TouchableOpacity>
+        <TextButton text="Change username and password" run={() => {this.showModal()}} />
         <TextButton text="Logout" run={() => {this.props.logout()}} />
       </View>
     );
