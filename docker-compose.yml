@@ -15,7 +15,7 @@ services:
       volumes:
         - ./data:/data/db
       ports:
-        - "27017:27017"
+        - "127.0.0.1:27017:27017"
 
     admin_panel:
       container_name: admin_panel
