@@ -48,7 +48,7 @@ export default class HelpScreen extends React.Component
             notify you when your xss payload is ran on a target victim. The best use
             case is for blind xss research.
           </Text>
-          <Text style={styles.header}>Who do I use this app?</Text>
+          <Text style={styles.header}>How do I use this app?</Text>
           <Text style={styles.para}>
             When you find a potential XSS vulnerability on a website you can add your
             unique xss_bomb link ({this.props.url}api/{this.state.api_id}) when the backend
@@ -59,7 +59,7 @@ export default class HelpScreen extends React.Component
           <Text style={styles.para}>
             This app was built by me (p4p1) over on github and is provided for free
             there if you wish to support me this app will probably be on the store for
-            2$ ish.
+            $2 ish.
           </Text>
           <Text style={styles.header}>Is this open source?</Text>
           <Text style={styles.para}>
