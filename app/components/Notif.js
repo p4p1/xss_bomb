@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { /*faQuestion,*/ faHeart, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faHeart, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import PropTypes from 'prop-types';
 
@@ -16,11 +16,11 @@ export default class Notif extends React.Component
         backgroundColor: 'green',
         onPress: () => { this.props.save(this.props.data) }
       },
-      /*{ // TODO: add a more information feature to the notifications
+      { // TODO: add a more information feature to the notifications
         text: <FontAwesomeIcon color={'white'} icon={faQuestion} size={25} />,
         backgroundColor: 'blue',
-        onPress: () => { this.props.delete(this.props.data._id) }
-      },*/
+        onPress: () => { this.props.info(this.props.data._id) }
+      },
       {
         text: <FontAwesomeIcon color={'white'} icon={faTrash} size={25} />,
         backgroundColor: 'red',
@@ -47,6 +47,7 @@ export default class Notif extends React.Component
 Notif.propTypes = {
   data: PropTypes.object,
   delete: PropTypes.function,
+  info: PropTypes.function,
   save: PropTypes.function
 }
 

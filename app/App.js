@@ -3,9 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import SplashScreen from './screens/SplashScreen.js';
-import PickServer from './screens/PickServer.js';
-import LoginScreen from './screens/LoginScreen.js';
 
+import LoginNavigator from './navigation/LoginNavigator.js';
 import MainNavigator from './navigation/MainNavigator.js';
 
 export default class App extends React.Component
@@ -58,9 +57,15 @@ export default class App extends React.Component
     }
   }
 
-  logout() {
-    this.setState({token: undefined});
-    this.setState({url: undefined});
+  async logout() {
+    try {
+      this.setState({ url: undefined });
+      this.setState({ token: undefined });
+      await AsyncStorage.removeItem('@xss_bomb:server');
+      await AsyncStorage.removeItem('@xss_bomb:token');
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async componentDidMount() {
@@ -73,21 +78,20 @@ export default class App extends React.Component
     if (this.state.isLoading) {
       return (<SplashScreen />);
     }
-    if (this.state.url == undefined) {
+    if (this.state.url == undefined || this.state.token == undefined) {
       return (
-        <PickServer refresh={() => this.getLink()}/>
+        <NavigationContainer>
+          <LoginNavigator url={this.state.url} saveToken={(tok) => this.saveToken(tok)}
+            getLink={() => this.getLink()}/>
+        </NavigationContainer>
+      );
+    } else {
+      return (
+        <NavigationContainer>
+          <MainNavigator url={this.state.url} token={this.state.token}
+              logout={() => this.logout()}/>
+        </NavigationContainer>
       );
     }
-    if (this.state.token == undefined) {
-      return (
-        <LoginScreen url={this.state.url} run={(tok) => this.saveToken(tok)} />
-      );
-    }
-    return (
-      <NavigationContainer>
-        <MainNavigator url={this.state.url} token={this.state.token}
-            logout={() => this.logout()}/>
-      </NavigationContainer>
-    );
   }
 }

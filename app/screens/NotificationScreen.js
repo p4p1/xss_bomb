@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, RefreshControl, StyleSheet, ScrollView, View, Clipboard, TouchableOpacity } from 'react-native';
+import { Text, Modal, RefreshControl, StyleSheet, ScrollView, View, Clipboard, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
@@ -17,11 +17,13 @@ export default class HomeScreen extends React.Component
       refreshing: false,
       data: [],
       api_id: undefined,
+      modal: false
     }
 
     this.onRefresh = this.onRefresh.bind(this);
     this.remove = this.remove.bind(this);
     this.save = this.save.bind(this);
+    this.info = this.info.bind(this);
   }
 
   onRefresh() {
@@ -92,6 +94,11 @@ export default class HomeScreen extends React.Component
     });
   }
 
+  info(key) {
+    console.log(key);
+    this.setState({modal: !this.state.modal});
+  }
+
   componentDidMount() {
     this.onRefresh();
     fetch(`${this.props.url}user/get_api`, {
@@ -116,6 +123,10 @@ export default class HomeScreen extends React.Component
     }
     return (
       <View style={styles.container}>
+        <Modal animationType={"slide"} transparent={true}
+            visible={this.state.modal} onRequestClose={this.info}>
+          <Text>HELLO</Text>
+        </Modal>
         <ScrollView style={{width:'90%', height:'80%' }}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
           onRefresh={this.onRefresh}/>}>
@@ -133,7 +144,8 @@ export default class HomeScreen extends React.Component
               this.state.data.reverse().map(
                 (notifData,i) => <Notif data={notifData} key={i}
                   delete={(data) => this.remove(data)}
-                  save={(data) => this.save(data)}/>
+                  save={(data) => this.save(data)}
+                  info={(data) => this.info(data)} />
               )
           }
         </ScrollView>

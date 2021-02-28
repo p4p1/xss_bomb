@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
+import { Modal, Text, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import FavNotif from '../components/FavNotif.js';
@@ -13,10 +13,12 @@ export default class FavoritesScreen extends React.Component
     this.state = {
       refreshing: false,
       data: [],
+      modal: false,
     }
 
     this.onRefresh = this.onRefresh.bind(this);
     this.remove = this.remove.bind(this);
+    this.info = this.info.bind(this);
   }
 
   async onRefresh() {
@@ -30,6 +32,11 @@ export default class FavoritesScreen extends React.Component
       console.log(error);
     }
     this.setState({refreshing: false});
+  }
+
+  info(key) {
+    console.log(key);
+    this.setState({modal: !this.state.modal});
   }
 
   async remove(index) {
@@ -52,6 +59,10 @@ export default class FavoritesScreen extends React.Component
   render () {
     return (
       <View style={styles.container}>
+        <Modal animationType={"slide"} transparent={true}
+            visible={this.state.modal} onRequestClose={this.info}>
+          <Text>HELLO</Text>
+        </Modal>
         <ScrollView style={{width:'90%', height:'80%' }}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
           onRefresh={this.onRefresh}/>}>
@@ -63,7 +74,8 @@ export default class FavoritesScreen extends React.Component
             :
               this.state.data.reverse().map(
                 (notifData,i) => <FavNotif data={notifData} key={i}
-                  delete={() => this.remove(i)} />
+                  delete={() => this.remove(i)}
+                  info={(data) => this.info(data)} />
               )
           }
         </ScrollView>

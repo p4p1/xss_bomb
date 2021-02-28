@@ -47,6 +47,7 @@ router.get('/:id', function (req, res) {
     } else {
       Notification.create({
         api_id: req.params.id,
+        method: "GET",
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
@@ -59,6 +60,141 @@ router.get('/:id', function (req, res) {
       sendNotification(data[0].notificationId, { title: "xss - hit",
         body: req.headers['user-agent'] })
       return res.status(200).send("ok");
+    }
+  });
+})
+
+router.post('/:id', function (req, res) {
+  console.log(req.params.id);
+  User.find({
+    api_id: req.params.id,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("ko");
+    } else {
+      Notification.create({
+        api_id: req.params.id,
+        method: "POST",
+        date: new Date(),
+        link: req.url,
+        userAgent: req.headers['user-agent'],
+        ipAddress: req.ip
+      }, function(err) {
+        if (err) {
+          console.error(err)
+        }
+      })
+      sendNotification(data[0].notificationId, { title: "xss - hit",
+        body: req.headers['user-agent'] })
+      return res.status(200).send("ok");
+    }
+  });
+})
+
+router.put('/:id', function (req, res) {
+  console.log(req.params.id);
+  User.find({
+    api_id: req.params.id,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("ko");
+    } else {
+      Notification.create({
+        api_id: req.params.id,
+        method: "PUT",
+        date: new Date(),
+        link: req.url,
+        userAgent: req.headers['user-agent'],
+        ipAddress: req.ip
+      }, function(err) {
+        if (err) {
+          console.error(err)
+        }
+      })
+      sendNotification(data[0].notificationId, { title: "xss - hit",
+        body: req.headers['user-agent'] })
+      return res.status(200).send("ok");
+    }
+  });
+})
+
+router.delete('/:id', function (req, res) {
+  console.log(req.params.id);
+  User.find({
+    api_id: req.params.id,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("ko");
+    } else {
+      Notification.create({
+        api_id: req.params.id,
+        method: "DELETE",
+        date: new Date(),
+        link: req.url,
+        userAgent: req.headers['user-agent'],
+        ipAddress: req.ip
+      }, function(err) {
+        if (err) {
+          console.error(err)
+        }
+      })
+      sendNotification(data[0].notificationId, { title: "xss - hit",
+        body: req.headers['user-agent'] })
+      return res.status(200).send("ok");
+    }
+  });
+})
+
+router.get('/:id/code', function (req, res) {
+  console.log(req.params.id);
+  User.find({
+    api_id: req.params.id,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("ko");
+    } else {
+      Notification.create({
+        api_id: req.params.id,
+        method: "GET",
+        date: new Date(),
+        link: req.url,
+        userAgent: req.headers['user-agent'],
+        ipAddress: req.ip
+      }, function(err) {
+        if (err) {
+          console.error(err)
+        }
+      })
+      sendNotification(data[0].notificationId, { title: "xss - code injected",
+        body: req.headers['user-agent'] })
+      return res.status(200).send(data[0].code);
+    }
+  });
+})
+
+router.get('/:id/pic', function (req, res) {
+  console.log(req.params.id);
+  User.find({
+    api_id: req.params.id,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("ko");
+    } else {
+      Notification.create({
+        api_id: req.params.id,
+        method: "GET",
+        date: new Date(),
+        link: req.url,
+        userAgent: req.headers['user-agent'],
+        ipAddress: req.ip
+      }, function(err) {
+        if (err) {
+          console.error(err)
+        }
+      })
+      sendNotification(data[0].notificationId, { title: "xss - picture hit",
+        body: req.headers['user-agent'] })
+      return res.redirect(301, "/public/1px.png");
     }
   });
 })

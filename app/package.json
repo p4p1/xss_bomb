@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/ngrok": "^2.4.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/react-native-fontawesome": "^0.2.6",
@@ -16,6 +17,7 @@
     "@react-native-picker/picker": "^1.8.3",
     "@react-navigation/drawer": "^5.10.0",
     "@react-navigation/native": "^5.8.0",
+    "@react-navigation/stack": "^5.14.3",
     "expo": "~39.0.2",
     "expo-notifications": "~0.7.2",
     "expo-status-bar": "~1.0.2",

@@ -45,5 +45,6 @@ app.use(
 app.use('/auth', auth)
 app.use('/user', user)
 app.use('/api', api)
+app.use("/public", express.static('public'))
 
 module.exports = app

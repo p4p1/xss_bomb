@@ -6,6 +6,7 @@ var UserSchema = new mongoose.Schema({
   password: String,
   notificationId: String,
   api_id: String,
+  code: String,
 })
 
 

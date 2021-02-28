@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import PropTypes from 'prop-types';
 
@@ -11,6 +11,11 @@ export default class FavNotif extends React.Component
   constructor(props) {
     super(props);
     this.swipeData = [
+      { // TODO: add a more information feature to the notifications
+        text: <FontAwesomeIcon color={'white'} icon={faQuestion} size={25} />,
+        backgroundColor: 'blue',
+        onPress: () => { this.props.info(this.props.data._id) }
+      },
       {
         text: <FontAwesomeIcon color={'white'} icon={faTrash} size={25} />,
         backgroundColor: 'red',
@@ -37,7 +42,7 @@ export default class FavNotif extends React.Component
 FavNotif.propTypes = {
   data: PropTypes.object,
   delete: PropTypes.function,
-  save: PropTypes.function
+  info: PropTypes.function
 }
 
 const styles = StyleSheet.create({

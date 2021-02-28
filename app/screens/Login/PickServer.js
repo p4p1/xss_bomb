@@ -3,8 +3,8 @@ import { StyleSheet, ScrollView, Modal, Text, TextInput, View, TouchableOpacity 
 import AsyncStorage from '@react-native-community/async-storage';
 import PropTypes from 'prop-types';
 
-import TextButton from '../components/TextButton.js';
-import SplashScreen from './SplashScreen';
+import TextButton from '../../components/TextButton.js';
+import SplashScreen from '../SplashScreen';
 
 /*
  * This link should never change if you wish to add your own instance just edit
@@ -49,6 +49,7 @@ export default class PickServer extends React.Component
         link
       );
       this.props.refresh();
+      this.props.navigation.navigate('Login');
     } catch (error) {
       console.error(error);
     }
@@ -94,7 +95,8 @@ export default class PickServer extends React.Component
 }
 
 PickServer.propTypes = {
-  refresh: PropTypes.function
+  refresh: PropTypes.function,
+  navigation: PropTypes.object
 }
 
 const styles = StyleSheet.create({

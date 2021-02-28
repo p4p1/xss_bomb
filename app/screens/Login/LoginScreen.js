@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import PropTypes from 'prop-types';
-import TextButton from '../components/TextButton.js';
+import TextButton from '../../components/TextButton.js';
 
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications';
@@ -16,7 +16,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default class CredsScreen extends React.Component
+export default class LoginScreen extends React.Component
 {
   constructor(props) {
     super(props);
@@ -29,7 +29,6 @@ export default class CredsScreen extends React.Component
     this.setUser = this.setUser.bind(this);
     this.setPass = this.setPass.bind(this);
     this.login = this.login.bind(this);
-    this.register = this.register.bind(this);
 
     this._handleNotification = this._handleNotification.bind(this);
     this._handleNotificationResponse = this._handleNotificationResponse.bind(this);
@@ -72,7 +71,7 @@ export default class CredsScreen extends React.Component
   }
 
   componentDidMount() {
-    if (this.props.url.length > 0) {
+    if (this.props.url && this.props.url.length > 0) {
       this.setState({ value: this.props.url });
     }
   }
@@ -112,55 +111,24 @@ export default class CredsScreen extends React.Component
     });
   }
 
-  register() {
-    fetch(`${this.props.url}auth/register`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: this.state.user,
-        password: this.state.pass
-      }),
-    }).then((response) => response.json()).then((json) => {
-      alert(json.msg);
-    }).catch((err) => {
-      console.error(err);
-      alert("Error: Are you connected to the internet?");
-    });
-  }
-
   render () {
-    if (this.state.register) {
-      return (
-        <View style={styles.container}>
-          <TextInput style={styles.header} onChangeText={text => this.setUser(text)}
-            placeholderTextColor={'#fff'} placeholder={"username"} value={this.state.user} />
-          <TextInput style={styles.header} secureTextEntry={true} placeholder={"password"}
-            placeholderTextColor={'#fff'} onChangeText={text => this.setPass(text)} value={this.state.pass} />
-          <TextButton text="Register" run={() => {this.register()}} />
-          <TextButton text="Login" run={() => {this.setState({register: !this.state.register})}} />
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.container}>
-          <TextInput style={styles.header} onChangeText={text => this.setUser(text)}
-            placeholderTextColor={'#fff'} placeholder={"username"} value={this.state.user} />
-          <TextInput style={styles.header} secureTextEntry={true} placeholder={"password"}
-            placeholderTextColor={'#fff'} onChangeText={text => this.setPass(text)} value={this.state.pass} />
-          <TextButton text="Login" run={() => {this.login()}} />
-          <TextButton text="Create an account" run={() => {this.setState({register: !this.state.register})}} />
-        </View>
-      );
-    }
+    return (
+      <View style={styles.container}>
+        <TextInput style={styles.header} onChangeText={text => this.setUser(text)}
+          placeholderTextColor={'#fff'} placeholder={"username"} value={this.state.user} />
+        <TextInput style={styles.header} secureTextEntry={true} placeholder={"password"}
+          placeholderTextColor={'#fff'} onChangeText={text => this.setPass(text)} value={this.state.pass} />
+        <TextButton text="Login" run={() => {this.login()}} />
+        <TextButton text="Create an account" run={() => {this.props.navigation.navigate('Register')}} />
+      </View>
+    );
   }
 }
 
-CredsScreen.propTypes = {
+LoginScreen.propTypes = {
   url: PropTypes.string,
-  run: PropTypes.func
+  run: PropTypes.func,
+  navigation: PropTypes.object
 }
 
 const styles = StyleSheet.create({

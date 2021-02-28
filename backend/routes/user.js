@@ -88,8 +88,6 @@ router.delete('/notification', middleware.isLoggedIn, function (req, res) {
 })
 
 router.post('/change_username', middleware.isLoggedIn, function (req, res) {
-  console.log(req.body);
-  console.log(req.body.username);
   User.find({
     username: req.userData.username,
   }).exec((err, data) => {
@@ -103,6 +101,36 @@ router.post('/change_username', middleware.isLoggedIn, function (req, res) {
         }
         return res.status(200).send({ msg: "Updated username!" });
       });
+    }
+  })
+})
+
+router.post('/set_code', middleware.isLoggedIn, function (req, res) {
+  User.find({
+    username: req.userData.username,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("User not found");
+    } else {
+      User.findByIdAndUpdate(data[0]._id, {code: req.body.code}, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(401).send({ msg: "Incorrect username or password!" });
+        }
+        return res.status(200).send({ msg: "Updated code!" });
+      });
+    }
+  })
+})
+
+router.get('/get_code', middleware.isLoggedIn, function (req, res) {
+  User.find({
+    username: req.userData.username,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("User not found");
+    } else {
+      return res.status(200).send({ code: data[0].code });
     }
   })
 })
