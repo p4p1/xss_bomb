@@ -2,8 +2,9 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import PropTypes from 'prop-types';
 
-import UserScreen from '../screens/UserScreen.js';
+import EditUserNavigation from './EditUserNavigation.js';
 import FavoritesScreen from '../screens/FavoritesScreen.js';
+import CodeScreen from '../screens/CodeScreen.js';
 import NotificationScreen from '../screens/NotificationScreen.js';
 import HelpScreen from '../screens/HelpScreen.js';
 
@@ -31,8 +32,12 @@ export default class MainNavigator extends React.Component
           {props => <FavoritesScreen {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
         </Drawer.Screen>
+        <Drawer.Screen name="Code">
+          {props => <CodeScreen {...props} logout={() => this.props.logout()}
+          token={this.props.token} url={this.props.url} />}
+        </Drawer.Screen>
         <Drawer.Screen name="Account">
-          {props => <UserScreen {...props} logout={() => this.props.logout()}
+          {props => <EditUserNavigation {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
         </Drawer.Screen>
         <Drawer.Screen name="Help">

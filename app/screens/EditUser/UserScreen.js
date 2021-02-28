@@ -1,13 +1,12 @@
 import React from 'react';
-import { Modal, Text, StyleSheet, TouchableOpacity, View, Clipboard } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, View, Clipboard } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
 import PropTypes from 'prop-types';
 
-import SplashScreen from './SplashScreen';
-import ChangeLoginScreen from './ChangeLoginScreen';
-import TextButton from '../components/TextButton.js';
+import SplashScreen from '../SplashScreen.js';
+import TextButton from '../../components/TextButton.js';
 
 export default class UserScreen extends React.Component
 {
@@ -17,12 +16,6 @@ export default class UserScreen extends React.Component
       data: undefined,
       modalVisible: false,
     }
-
-    this.showModal = this.showModal.bind(this);
-  }
-
-  showModal() {
-    this.setState({ modalVisible: ! this.state.modalVisible });
   }
 
   componentDidMount() {
@@ -48,10 +41,6 @@ export default class UserScreen extends React.Component
     }
     return (
       <View style={styles.container}>
-        <Modal animationType="slide" transparent={false}
-            visible={this.state.modalVisible} onRequestClose={this.showModal}>
-          <ChangeLoginScreen url={this.props.url} token={this.props.token} logout={this.props.logout} run={this.showModal} />
-        </Modal>
         <Text style={styles.header}>{this.state.data.username}</Text>
         <TouchableOpacity style={styles.save_clip}
           onPress={() => Clipboard.setString(this.props.url + "api/" + this.state.data.api_id)}>
@@ -68,7 +57,7 @@ export default class UserScreen extends React.Component
           <Text style={styles.para}>{this.props.url}api/{this.state.data.api_id}/code</Text>
           <FontAwesomeIcon size={20} color={'#aaaaaa'} icon={ faCopy } />
         </TouchableOpacity>
-        <TextButton text="Change username and password" run={() => {this.showModal()}} />
+        <TextButton text="Change username and password" run={() => {this.props.navigation.navigate('Edit')}} />
         <TextButton text="Logout" run={() => {this.props.logout()}} />
       </View>
     );
@@ -79,6 +68,7 @@ UserScreen.propTypes = {
   url: PropTypes.string,
   token: PropTypes.string,
   logout: PropTypes.function,
+  navigation: PropTypes.object
 }
 
 const styles = StyleSheet.create({
