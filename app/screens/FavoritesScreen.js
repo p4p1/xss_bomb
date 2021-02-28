@@ -16,6 +16,7 @@ export default class FavoritesScreen extends React.Component
     }
 
     this.onRefresh = this.onRefresh.bind(this);
+    this.remove = this.remove.bind(this);
   }
 
   async onRefresh() {
@@ -31,6 +32,18 @@ export default class FavoritesScreen extends React.Component
     this.setState({refreshing: false});
   }
 
+  async remove(index) {
+    var new_data = this.state.data.filter(item => item !== this.state.data[index]);
+    try {
+      await AsyncStorage.setItem(
+        '@xss_bomb:notification',
+        JSON.stringify(new_data)
+      );
+    } catch (error) {
+      console.error(error);
+    }
+    this.onRefresh();
+  }
 
   componentDidMount() {
     this.onRefresh();
@@ -50,8 +63,7 @@ export default class FavoritesScreen extends React.Component
             :
               this.state.data.reverse().map(
                 (notifData,i) => <FavNotif data={notifData} key={i}
-                  delete={(data) => this.remove(data)}
-                  save={(data) => this.save(data)}/>
+                  delete={() => this.remove(i)} />
               )
           }
         </ScrollView>

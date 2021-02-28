@@ -55,6 +55,27 @@ router.get('/get_notifications', middleware.isLoggedIn, function (req, res) {
   })
 })
 
+router.get('/get_notification/:index', middleware.isLoggedIn, function (req, res) {
+  User.find({
+    username: req.userData.username,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("User not found");
+    } else {
+      Notification.find({
+        api_id: data[0].api_id
+      }).exec((err, notifications) => {
+        console.log(notifications.reverse()[req.params.index]);
+        if (err) {
+          return res.status(500).send("Api id not found");
+        } else {
+          return res.status(200).send(notifications.reverse()[req.params.index]);
+        }
+      })
+    }
+  })
+})
+
 router.delete('/notification', middleware.isLoggedIn, function (req, res) {
   Notification.deleteOne({
     _id: mongoose.mongo.ObjectId(req.body.id)
