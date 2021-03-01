@@ -63,13 +63,12 @@ router.get('/get_notification/:index', middleware.isLoggedIn, function (req, res
       return res.status(500).send("User not found");
     } else {
       Notification.find({
-        api_id: data[0].api_id
+        _id: mongoose.mongo.ObjectId(req.params.index)
       }).exec((err, notifications) => {
-        console.log(notifications.reverse()[req.params.index]);
         if (err) {
           return res.status(500).send("Api id not found");
         } else {
-          return res.status(200).send(notifications.reverse()[req.params.index]);
+          return res.status(200).send(notifications);
         }
       })
     }

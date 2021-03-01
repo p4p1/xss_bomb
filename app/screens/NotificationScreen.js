@@ -17,7 +17,8 @@ export default class HomeScreen extends React.Component
       refreshing: false,
       data: [],
       api_id: undefined,
-      modal: false
+      modal: false,
+      selected: undefined
     }
 
     this.onRefresh = this.onRefresh.bind(this);
@@ -96,7 +97,21 @@ export default class HomeScreen extends React.Component
 
   info(key) {
     console.log(key);
-    this.setState({modal: !this.state.modal});
+    fetch(`${this.props.url}user/get_notification/${key}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${this.props.token}`
+      }
+    }).then((response) => response.json()).then((json) => {
+      this.setState({modal: !this.state.modal});
+      this.setState({selected: json});
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: Could not connect");
+      //this.props.logout();
+    });
   }
 
   componentDidMount() {
@@ -124,8 +139,20 @@ export default class HomeScreen extends React.Component
     return (
       <View style={styles.container}>
         <Modal animationType={"slide"} transparent={true}
-            visible={this.state.modal} onRequestClose={this.info}>
-          <Text>HELLO</Text>
+            visible={this.state.modal} onRequestClose={() =>
+            this.setState({modal: !this.state.modal})}>
+          <View style={styles.modealContainer}>
+            <View style={styles.inspector}>
+              <Text style={styles.header}>
+                {this.state.selected !== undefined ? this.state.selected.method : ""} 
+                {this.state.selected !== undefined ? this.state.selected.link: ""}
+              </Text>
+              <Text style={styles.para}>
+                {this.state.selected !== undefined && (this.state.selected.body !== undefined &&
+                this.state.selected.body.length == 0) ? this.state.selected.body : "The body is empty"}
+              </Text>
+            </View>
+          </View>
         </Modal>
         <ScrollView style={{width:'90%', height:'80%' }}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
@@ -141,7 +168,7 @@ export default class HomeScreen extends React.Component
                 </TouchableOpacity>
               </View>
             :
-              this.state.data.reverse().map(
+              this.state.data.map(
                 (notifData,i) => <Notif data={notifData} key={i}
                   delete={(data) => this.remove(data)}
                   save={(data) => this.save(data)}
@@ -199,5 +226,16 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 50,
     borderRadius: 30,
+  },
+  inspector: {
+    width: '85%',
+    backgroundColor: '#222222',
+    height: '95%'
+  },
+  modealContainer: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });

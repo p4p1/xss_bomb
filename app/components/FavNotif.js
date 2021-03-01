@@ -25,11 +25,27 @@ export default class FavNotif extends React.Component
   }
 
   render() {
+    var method;
+
+    if (this.props.data.method === "GET") {
+       method = (<Text style={styles.header_GET}>{this.props.data.method}</Text>);
+    } else if (this.props.data.method === "POST") {
+       method = (<Text style={styles.header_POST}>{this.props.data.method}</Text>);
+    } else if (this.props.data.method === "PUT") {
+       method = (<Text style={styles.header_PUT}>{this.props.data.method}</Text>);
+    } else if (this.props.data.method === "DELETE") {
+       method = (<Text style={styles.header_DELETE}>{this.props.data.method}</Text>);
+    } else {
+       method = (<Text style={styles.header_OTHER}>{this.props.data.method}</Text>);
+    }
     return (
       <Swipeout style={styles.swiper} right={this.swipeData} autoClose='true'
           backgroundColor='transparent'>
         <View style={styles.container}>
-          <Text style={styles.header}>{this.props.data.link}</Text>
+          <View style={styles.title}>
+            {method}
+            <Text style={styles.header}>{this.props.data.link}</Text>
+          </View>
           <Text style={styles.date}>{this.props.data.date}</Text>
           <Text style={styles.para}>{this.props.data.userAgent}</Text>
           <Text style={styles.para}>{this.props.data.ipAddress}</Text>
@@ -49,6 +65,46 @@ const styles = StyleSheet.create({
   swiper: {
     marginBottom: 10,
     marginTop: 10,
+  },
+  header_OTHER: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'purple',
+    paddingLeft: 5,
+    paddingRight: 10,
+    marginBottom: 15,
+  },
+  header_GET: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'green',
+    paddingLeft: 5,
+    paddingRight: 10,
+    marginBottom: 15,
+  },
+  header_DELETE: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'red',
+    paddingLeft: 5,
+    paddingRight: 10,
+    marginBottom: 15,
+  },
+  header_PUT: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'cyan',
+    paddingLeft: 5,
+    paddingRight: 10,
+    marginBottom: 15,
+  },
+  header_POST: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'yellow',
+    paddingLeft: 5,
+    paddingRight: 10,
+    marginBottom: 15,
   },
   container: {
     flex: 1,
@@ -79,4 +135,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     marginBottom: 5,
   },
+  title: {
+    flexDirection: 'row',
+  }
 });
