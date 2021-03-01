@@ -51,7 +51,7 @@ router.get('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: req.body,
+        body: `${req.body}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -80,7 +80,7 @@ router.post('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: req.body,
+        body: `${req.body}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -109,7 +109,7 @@ router.put('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: req.body,
+        body: `${req.body}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -138,7 +138,7 @@ router.delete('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: req.body,
+        body: `${req.body}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -167,7 +167,7 @@ router.patch('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: req.body,
+        body: `${req.body}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -196,7 +196,7 @@ router.get('/:id/code', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: req.body,
+        body: `${req.body}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -225,7 +225,7 @@ router.get('/:id/pic', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: req.body,
+        body: `${req.body}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {

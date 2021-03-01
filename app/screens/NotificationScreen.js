@@ -104,6 +104,7 @@ export default class HomeScreen extends React.Component
         'authorization': `Bearer ${this.props.token}`
       }
     }).then((response) => response.json()).then((json) => {
+      console.log(json);
       this.setState({modal: !this.state.modal});
       this.setState({selected: json[0]});
     }).catch((err) => {
