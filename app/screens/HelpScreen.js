@@ -1,10 +1,14 @@
 import React from 'react';
-import { Text, StyleSheet, Image, View, ScrollView } from 'react-native';
+import { Text, Linking, Button, StyleSheet, Image, View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
 import SplashScreen from './SplashScreen';
 
 const logo = '../assets/icon.png';
+const githubURL = "https://github.com/p4p1/xss_bomb";
+const wikiURL= "https://github.com/p4p1/xss_bomb/wiki";
+const trelloURL= "https://github.com/p4p1/xss_bomb/projects";
+const meURL = "https://leosmith.xyz";
 
 export default class HelpScreen extends React.Component
 {
@@ -13,6 +17,18 @@ export default class HelpScreen extends React.Component
     this.state = {
       api_id: undefined,
     };
+
+    this.openURL = this.openURL.bind(this);
+  }
+
+  async openURL(url) {
+    const supported = await Linking.canOpenURL(url)
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      alert("This link is not supported by your device");
+    }
   }
 
   componentDidMount() {
@@ -55,20 +71,38 @@ export default class HelpScreen extends React.Component
             receives a request it will send you a notification and you will be able to
             inspect it on your mobile device.
           </Text>
+          <Button title={"Open wiki"} onPress={() => this.openURL(wikiURL)}/>
+          <View style={styles.padding}></View>
           <Text style={styles.header}>Who built this?</Text>
           <Text style={styles.para}>
             This app was built by me (p4p1) over on github and is provided for free
             there if you wish to support me this app will probably be on the store for
             $2 ish.
           </Text>
+          <Button title={"About author"} onPress={() => this.openURL(meURL)}/>
+          <View style={styles.padding}></View>
           <Text style={styles.header}>Is this open source?</Text>
           <Text style={styles.para}>
             Yes this app is open source and you can contribute over on github.
           </Text>
+          <Button title={"View on github"} onPress={() => this.openURL(githubURL)}/>
+          <View style={styles.padding}></View>
           <Text style={styles.header}>Can I host my own instance?</Text>
           <Text style={styles.para}>
             Yes you can host your own instance of this app and it's backend there
             is a tutorial on the official wiki of the app over on github.
+          </Text>
+          <Text style={styles.header}>Updates?</Text>
+          <Text style={styles.para}>
+            All of the updates are first pushed on github then the rest. If you wish
+            to see how this app is evolving you can view the project page.
+          </Text>
+          <Button title={"Open project logs"} onPress={() => this.openURL(trelloURL)}/>
+          <View style={styles.padding}></View>
+          <Text style={styles.header}>Bugs or an idea?</Text>
+          <Text style={styles.para}>
+            If you find a bug or you just have and idea for the app please open
+            an issue on github so that I can fix it as soon as possible.
           </Text>
         </ScrollView>
       </View>
@@ -120,5 +154,8 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  padding: {
+    marginBottom: 20,
   }
 });

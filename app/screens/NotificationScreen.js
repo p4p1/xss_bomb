@@ -110,7 +110,7 @@ export default class HomeScreen extends React.Component
     }).catch((err) => {
       console.error(err);
       alert("Error: Could not connect");
-      //this.props.logout();
+      this.props.logout();
     });
   }
 
@@ -150,6 +150,12 @@ export default class HomeScreen extends React.Component
               <Text style={styles.para}>
                 {this.state.selected !== undefined && (this.state.selected.body !== undefined &&
                 this.state.selected.body.length == 0) ? this.state.selected.body : "The body is empty"}
+              </Text>
+              <Text style={styles.para}>
+                {this.state.selected !== undefined && this.state.selected.header[0]? this.state.selected.header[0].cookie : ""}
+              </Text>
+              <Text style={styles.para}>
+                {this.state.selected !== undefined && this.state.selected.header[0]? this.state.selected.header[0].referer: ""}
               </Text>
             </View>
           </View>
