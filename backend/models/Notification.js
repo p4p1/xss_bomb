@@ -8,6 +8,8 @@ var NotificationSchema = new mongoose.Schema({
   link: String,
   userAgent: String,
   ipAddress: String,
+  body: String,
+  header: Array
 })
 
 

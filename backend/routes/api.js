@@ -51,6 +51,8 @@ router.get('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
+        body: req.body,
+        header: req.headers,
         ipAddress: req.ip
       }, function(err) {
         if (err) {
@@ -78,6 +80,8 @@ router.post('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
+        body: req.body,
+        header: req.headers,
         ipAddress: req.ip
       }, function(err) {
         if (err) {
@@ -105,6 +109,8 @@ router.put('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
+        body: req.body,
+        header: req.headers,
         ipAddress: req.ip
       }, function(err) {
         if (err) {
@@ -132,6 +138,37 @@ router.delete('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
+        body: req.body,
+        header: req.headers,
+        ipAddress: req.ip
+      }, function(err) {
+        if (err) {
+          console.error(err)
+        }
+      })
+      sendNotification(data[0].notificationId, { title: "xss - hit",
+        body: req.headers['user-agent'] })
+      return res.status(200).send("ok");
+    }
+  });
+})
+
+router.patch('/:id', function (req, res) {
+  console.log(req.params.id);
+  User.find({
+    api_id: req.params.id,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("ko");
+    } else {
+      Notification.create({
+        api_id: req.params.id,
+        method: "PATCH",
+        date: new Date(),
+        link: req.url,
+        userAgent: req.headers['user-agent'],
+        body: req.body,
+        header: req.headers,
         ipAddress: req.ip
       }, function(err) {
         if (err) {
@@ -159,6 +196,8 @@ router.get('/:id/code', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
+        body: req.body,
+        header: req.headers,
         ipAddress: req.ip
       }, function(err) {
         if (err) {
@@ -186,6 +225,8 @@ router.get('/:id/pic', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
+        body: req.body,
+        header: req.headers,
         ipAddress: req.ip
       }, function(err) {
         if (err) {

@@ -48,6 +48,10 @@ router.get('/get_notifications', middleware.isLoggedIn, function (req, res) {
         if (err) {
           return res.status(500).send("Api id not found");
         } else {
+          for (var i = 0; i < notifications.length; i++) {
+            notifications[i].body = undefined;
+            notifications[i].headers= undefined;
+          }
           return res.status(200).send(notifications.reverse());
         }
       })
@@ -65,7 +69,7 @@ router.get('/get_notification/:index', middleware.isLoggedIn, function (req, res
       Notification.find({
         _id: mongoose.mongo.ObjectId(req.params.index)
       }).exec((err, notifications) => {
-        if (err) {
+        if (err && data[0].api_id == notifications[0].api_id) {
           return res.status(500).send("Api id not found");
         } else {
           return res.status(200).send(notifications);

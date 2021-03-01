@@ -96,7 +96,6 @@ export default class HomeScreen extends React.Component
   }
 
   info(key) {
-    console.log(key);
     fetch(`${this.props.url}user/get_notification/${key}`, {
       method: 'GET',
       headers: {
@@ -106,7 +105,7 @@ export default class HomeScreen extends React.Component
       }
     }).then((response) => response.json()).then((json) => {
       this.setState({modal: !this.state.modal});
-      this.setState({selected: json});
+      this.setState({selected: json[0]});
     }).catch((err) => {
       console.error(err);
       alert("Error: Could not connect");
