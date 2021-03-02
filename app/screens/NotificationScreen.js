@@ -6,6 +6,7 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
 import SplashScreen from './SplashScreen';
 import Notif from '../components/Notif.js';
+import Inspect from '../components/Inspect.js';
 
 import PropTypes from 'prop-types';
 
@@ -105,8 +106,8 @@ export default class HomeScreen extends React.Component
       }
     }).then((response) => response.json()).then((json) => {
       console.log(json);
-      this.setState({modal: !this.state.modal});
       this.setState({selected: json[0]});
+      this.setState({modal: !this.state.modal});
     }).catch((err) => {
       console.error(err);
       alert("Error: Could not connect");
@@ -141,24 +142,8 @@ export default class HomeScreen extends React.Component
         <Modal animationType={"slide"} transparent={true}
             visible={this.state.modal} onRequestClose={() =>
             this.setState({modal: !this.state.modal})}>
-          <View style={styles.modealContainer}>
-            <View style={styles.inspector}>
-              <Text style={styles.header}>
-                {this.state.selected !== undefined ? this.state.selected.method : ""} 
-                {this.state.selected !== undefined ? this.state.selected.link: ""}
-              </Text>
-              <Text style={styles.para}>
-                {this.state.selected !== undefined && (this.state.selected.body !== undefined &&
-                this.state.selected.body.length == 0) ? this.state.selected.body : "The body is empty"}
-              </Text>
-              <Text style={styles.para}>
-                {this.state.selected !== undefined && this.state.selected.header[0]? this.state.selected.header[0].cookie : ""}
-              </Text>
-              <Text style={styles.para}>
-                {this.state.selected !== undefined && this.state.selected.header[0]? this.state.selected.header[0].referer: ""}
-              </Text>
-            </View>
-          </View>
+          <Inspect selected={this.state.selected} run={() =>
+            this.setState({modal: !this.state.modal})} />
         </Modal>
         <ScrollView style={{width:'90%', height:'80%' }}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
@@ -233,15 +218,4 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     borderRadius: 30,
   },
-  inspector: {
-    width: '85%',
-    backgroundColor: '#222222',
-    height: '95%'
-  },
-  modealContainer: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
 });
