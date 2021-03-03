@@ -12,4 +12,10 @@ app and it's api navigate to the wiki. DO NOT USE THIS SERVICE FOR ILLEGAL
 PURPOSES
 
 ## Screenshots
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/pick_server.jpg" align="left" height="550" width="250" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/login.jpg" align="left" height="550" width="250" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/inspect_requests.jpg" align="left" height="550" width="250" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/navbar.jpg" align="left" height="550" width="250" >
 <img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/edit_code.jpg" align="left" height="550" width="250" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/profile_page.jpg" align="left" height="550" width="250" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/save_del_request.jpg" align="left" height="550" width="250" >
