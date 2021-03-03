@@ -10,15 +10,20 @@ const wikiURL= "https://github.com/p4p1/xss_bomb/wiki";
 const trelloURL= "https://github.com/p4p1/xss_bomb/projects";
 const meURL = "https://leosmith.xyz";
 
+const version = "V0.1.0";
+
 export default class HelpScreen extends React.Component
 {
   constructor(props) {
     super(props);
     this.state = {
       api_id: undefined,
+      gh_version_name: undefined,
+      newVerURL: undefined
     };
 
     this.openURL = this.openURL.bind(this);
+    this.getUpdate = this.getUpdate.bind(this);
   }
 
   async openURL(url) {
@@ -31,7 +36,26 @@ export default class HelpScreen extends React.Component
     }
   }
 
+  getUpdate() {
+    fetch("https://api.github.com/repos/p4p1/xss_bomb/releases/latest", {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }).then((response) => response.json()).then((json) => {
+      console.log(json);
+      this.setState({gh_version_name: json.tag_name});
+      this.setState({newVerURL: json.assets[0].browser_download_url});
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: Could not connect");
+      this.props.logout();
+    });
+  }
+
   componentDidMount() {
+    this.getUpdate();
     fetch(`${this.props.url}user/get_api`, {
       method: 'GET',
       headers: {
@@ -57,6 +81,9 @@ export default class HelpScreen extends React.Component
         <ScrollView>
           <View style={styles.center}>
             <Image style={styles.logo} source={require(logo)} />
+            <Text style={styles.para}>
+              Version: {version}
+            </Text>
           </View>
           <Text style={styles.header}>What is XSS_BOMB?</Text>
           <Text style={styles.para}>
@@ -97,6 +124,15 @@ export default class HelpScreen extends React.Component
             All of the updates are first pushed on github then the rest. If you wish
             to see how this app is evolving you can view the project page.
           </Text>
+          { (this.state.gh_version_name !== version) ?
+              <View>
+                <Button title={"Update now you are using an older version"}
+                  onPress={() => this.openURL(this.state.newVerURL)} color={'#ED1D5D'}/>
+                <View style={styles.padding}></View>
+              </View>
+            :
+              <View></View>
+          }
           <Button title={"Open project logs"} onPress={() => this.openURL(trelloURL)}/>
           <View style={styles.padding}></View>
           <Text style={styles.header}>Bugs or an idea?</Text>
@@ -147,13 +183,14 @@ const styles = StyleSheet.create({
   logo: {
     width: 150,
     height: 150,
-    marginBottom: 50,
     borderRadius: 20,
+    marginBottom: 5,
   },
   center: {
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 10,
   },
   padding: {
     marginBottom: 20,

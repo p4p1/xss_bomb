@@ -21,6 +21,7 @@ export default class App extends React.Component
     this.getToken = this.getToken.bind(this);
     this.saveToken = this.saveToken.bind(this);
     this.logout = this.logout.bind(this);
+    this.loginCheck = this.loginCheck.bind(this);
   }
 
   async getLink() {
@@ -68,6 +69,23 @@ export default class App extends React.Component
     }
   }
 
+  loginCheck() {
+    fetch(`${this.state.url}user/check`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${this.state.token}`
+      },
+    }).then((response) => response.json()).then((json) => {
+      if (json.msg == "Your session is not valid!") {
+        this.logout();
+      }
+    }).catch((err) => {
+      console.error(err);
+    });
+  }
+
   async componentDidMount() {
     await this.getLink();
     await this.getToken();
@@ -86,6 +104,7 @@ export default class App extends React.Component
         </NavigationContainer>
       );
     } else {
+      this.loginCheck();
       return (
         <NavigationContainer>
           <MainNavigator url={this.state.url} token={this.state.token}

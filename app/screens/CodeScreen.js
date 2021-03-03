@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, RefreshControl, StyleSheet, View } from 'react-native';
 import Textarea from 'react-native-textarea';
 
-import TextButton from '../components/TextButton.js';
+import SaveButton from '../components/SaveButton.js';
 
 import PropTypes from 'prop-types';
 
@@ -82,7 +82,7 @@ export default class HomeScreen extends React.Component
               placeholderTextColor={'#c7c7c7'}
               underlineColorAndroid={'transparent'}
             />
-          <TextButton text="Save" run={() => {this.save()}} />
+          <SaveButton run={() => {this.save()}} />
         </ScrollView>
       </View>
     );
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textareaContainer: {
-    height: '70%',
+    height: '90%',
     width: '90%',
     padding: 5,
     backgroundColor: '#444666',

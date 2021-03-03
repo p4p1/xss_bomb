@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, StyleSheet, View, Clipboard, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View, Clipboard, TouchableOpacity, ScrollView } from 'react-native';
+
+import CloseButton from './CloseButton.js';
 
 import PropTypes from 'prop-types';
 
@@ -30,30 +32,33 @@ export default class Inspect extends React.Component
     return (
       <View style={styles.modealContainer}>
         <View style={styles.inspector}>
-          <View style={styles.title}>
-            {method}
-            <Text style={styles.header}>{this.props.selected.link}</Text>
-          </View>
-          <Text style={styles.para_norm}>
-            {this.props.selected.ipAddress} / {this.props.selected.userAgent}
-          </Text>
-          <Text style={styles.para_norm}>
-            {this.props.selected.date}
-          </Text>
-          <TouchableOpacity onPress={() => Clipboard.setString(this.props.selected.header[0].cookie)}>
-            <Text style={styles.para}>
-              {this.props.selected.header[0] ? this.props.selected.header[0].cookie: ""}
+          <ScrollView style={{marginTop: 40}}>
+            <View style={styles.title}>
+              {method}
+              <Text style={styles.header}>{this.props.selected.link}</Text>
+            </View>
+            <Text style={styles.para_norm}>
+              {this.props.selected.ipAddress} / {this.props.selected.userAgent}
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => Clipboard.setString(this.props.selected.header[0].referer)}>
-            <Text style={styles.para}>
-              {this.props.selected.header[0] ? this.props.selected.header[0].referer: ""}
+            <Text style={styles.para_norm}>
+              {this.props.selected.date}
             </Text>
-          </TouchableOpacity>
-          <Text style={styles.para}>
-            {this.props.selected.body !== undefined && this.props.selected.body.length == 0 ?
-            this.props.selected.body : "The body is empty"}
-          </Text>
+            <TouchableOpacity onPress={() => Clipboard.setString(this.props.selected.header[0].cookie)}>
+              <Text style={styles.para}>
+                {this.props.selected.header[0] ? this.props.selected.header[0].cookie: ""}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Clipboard.setString(this.props.selected.header[0].referer)}>
+              <Text style={styles.para}>
+                {this.props.selected.header[0] ? this.props.selected.header[0].referer: ""}
+              </Text>
+            </TouchableOpacity>
+            <Text style={styles.para}>
+              {this.props.selected.body !== undefined && this.props.selected.body.length == 0 ?
+              this.props.selected.body : "The body is empty"}
+            </Text>
+          </ScrollView>
+          <CloseButton run={this.props.run}/>
         </View>
       </View>
     );
