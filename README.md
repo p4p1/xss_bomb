@@ -12,4 +12,4 @@ app and it's api navigate to the wiki. DO NOT USE THIS SERVICE FOR ILLEGAL
 PURPOSES
 
 ## Screenshots
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/edit_code.jpg" align="left" height="48" width="48" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/edit_code.jpg" align="left" height="750" width="250" >
