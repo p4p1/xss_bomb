@@ -16,6 +16,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "permissions":[
+        "NOTIFICATION",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "READ_INTERNAL_STORAGE"
+      ]
+    },
     "ios": {
       "supportsTablet": true
     },
