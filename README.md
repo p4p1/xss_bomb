@@ -13,8 +13,10 @@ PURPOSES.
 
 ## Installation (Phone)
 [<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/get-it-on-google-play.png" align="left" height="80" width="250" >](https://play.google.com/store/apps/details?id=com.p4p1.xss_bomb)
-You can help me out by buying this app on the android play store here for $2 or you can download for free the app from the releases :)
-
+You can help me out by buying this app on the android play store here for $2
+or you can download for free from the releases :) I keep the releases update as much
+as the play store version. There is no benefit or advantage to paying for this app other
+than helping me out.
 
 ## Installation (Server)
 For the server you can create your own instance and host it online using docker.
