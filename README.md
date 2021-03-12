@@ -53,10 +53,10 @@ the app. If you dont trust me. Don't use my instance spin up yours and connect t
 
 <img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/log_file.png" >
 
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/pick_server.jpg" align="left" height="450" width="200" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/login.jpg" align="left" height="450" width="200" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/inspect_requests.jpg" align="left" height="450" width="200" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/navbar.jpg" align="left" height="450" width="200" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/edit_code.jpg" align="left" height="450" width="200" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/profile_page.jpg" align="left" height="450" width="200" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/save_del_request.jpg" align="left" height="450" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/pick_server.jpg" align="left" height="400" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/login.jpg" align="left" height="400" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/inspect_requests.jpg" align="left" height="400" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/navbar.jpg" align="left" height="400" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/edit_code.jpg" align="left" height="400" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/profile_page.jpg" align="left" height="400" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/save_del_request.jpg" align="left" height="400" width="200" >
