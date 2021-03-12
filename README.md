@@ -24,6 +24,9 @@ It can be local or private / public if you decide to share the link or not you c
 the public-instance.json file and send a pull request if you wish to be featured as a
 server on the list during startup of the app :)
 
+## Application Programming Interface Documentation
+The API documentation is available inside of the wiki and on postman [here](https://documenter.getpostman.com/view/10616927/Tz5p6y9A)
+
 ## Project architecture
 
 ```
