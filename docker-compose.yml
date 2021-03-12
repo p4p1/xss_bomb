@@ -28,5 +28,6 @@ services:
       environment:
         ME_CONFIG_BASICAUTH_USERNAME: root
         ME_CONFIG_BASICAUTH_PASSWORD: toor
+        ME_CONFIG_OPTIONS_EDITORTHEME: material
       links:
         - mongo
