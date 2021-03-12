@@ -1,6 +1,6 @@
 const express = require('express');
 const middleware = require("../middleware/middleware.js");
-const User = require('../models/User.js');
+const User = require('../lib/models/User.js');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const shortid = require("shortid");

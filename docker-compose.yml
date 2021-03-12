@@ -4,6 +4,8 @@ services:
       container_name: backend
       restart: always
       build: ./backend/
+      volumes:
+        - ./logs:/winston_logs
       ports:
         - "8000:8000"
       links:

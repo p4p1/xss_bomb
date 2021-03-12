@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const router = express.Router()
 const bcrypt = require("bcryptjs");
 
-const User = require('../models/User.js');
-const Notification = require('../models/Notification.js');
+const User = require('../lib/models/User.js');
+const Notification = require('../lib/models/Notification.js');
 const middleware = require("../middleware/middleware.js");
 
 router.get('/check', middleware.isLoggedIn, function (req, res) {

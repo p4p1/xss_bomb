@@ -1,7 +1,8 @@
 const express = require('express');
-const mongoose = require('mongoose')
+const helmet = require('helmet');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
@@ -25,26 +26,27 @@ mongoose.connect("mongodb://" +
 .catch(err => console.error(err))
 
 app.use(cors());
-app.use(cookieParser())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(cookieParser());
+app.use(helmet());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(
   bodyParser.json({
     limit: '50mb',
     type: 'application/json'
   })
-)
+);
 app.use(
   session({
     secret: 's3cr3t',
     resave: true,
     saveUninitialized: true
   })
-)
-app.use('/auth', auth)
-app.use('/user', user)
-app.use('/api', api)
-app.use("/public", express.static('public'))
+);
+app.use('/auth', auth);
+app.use('/user', user);
+app.use('/api', api);
+app.use("/public", express.static('public'));
 
 module.exports = app

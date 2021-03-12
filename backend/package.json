@@ -17,12 +17,14 @@
 		"expo-server-sdk": "^3.6.0",
 		"express": "^4.17.1",
 		"express-session": "^1.17.1",
+		"helmet": "^4.4.1",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.11.14",
 		"mongoose-findorcreate": "^3.0.0",
 		"passport": "^0.4.1",
 		"session": "^0.1.0",
 		"shortid": "^2.2.16",
+		"winston": "^3.3.3",
 		"ws": "^7.4.3"
 	},
 	"devDependencies": {

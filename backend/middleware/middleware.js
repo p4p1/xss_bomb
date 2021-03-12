@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const User = require('../models/User.js');
+const User = require('../lib/models/User.js');
+const logger = require('../lib/logger.js');
 
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
@@ -12,12 +13,14 @@ module.exports = {
       // extract the authorization after Bearer
       const token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, SECRETKEY);
+      var date = new Date();
 
       req.userData = decoded;
-      console.log(decoded);
+      logger.info("[" + date + "] - " + req.ip + " - " + req.originalUrl);
       next();
     } catch (err) {
       console.log(err);
+      logger.error("Invalid token: ", err);
       return res.status(401).send({ msg: "Your session is not valid!" });
     }
   },
@@ -25,8 +28,8 @@ module.exports = {
     User.find({
       username: req.body.username,
     }).exec((err, data) => {
-      console.log(data);
-      console.log(err);
+      var date = new Date();
+
       if (err || data.length == 0) {
         if (!req.body.username || req.body.username.length < 3) {
           return res.status(400).send({
@@ -43,10 +46,13 @@ module.exports = {
             msg: "User already exists"
           });
       }
+      logger.info("[" + date + "] - " + req.ip + " - " + req.originalUrl);
       next();
     })
   },
   checkLogin: (req, res, next) => {
+    var date = new Date();
+
     if (!req.body.username || req.body.username.length < 3) {
       return res.status(400).send({
         msg: "Please enter a username with min. 3 chars"
@@ -62,6 +68,7 @@ module.exports = {
         msg: "You need to login using a phone :/"
       });
     }
+    logger.info("[" + date + "] - " + req.ip + " - " + req.originalUrl);
     next();
   }
 }

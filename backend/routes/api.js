@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
-const User = require('../models/User.js');
-const Notification = require('../models/Notification.js');
+const User = require('../lib/models/User.js');
+const Notification = require('../lib/models/Notification.js');
 const { Expo } = require("expo-server-sdk");
 const expo = new Expo();
 
