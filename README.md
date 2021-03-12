@@ -50,10 +50,13 @@ my personnal instance on leosmith.xyz and I decided to make it public for people
 the app. If you dont trust me. Don't use my instance spin up yours and connect to it.
 
 ## Screenshots
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/pick_server.jpg" align="left" height="550" width="250" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/login.jpg" align="left" height="550" width="250" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/inspect_requests.jpg" align="left" height="550" width="250" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/navbar.jpg" align="left" height="550" width="250" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/edit_code.jpg" align="left" height="550" width="250" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/profile_page.jpg" align="left" height="550" width="250" >
-<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/save_del_request.jpg" align="left" height="550" width="250" >
+
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/log_file.png" >
+
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/pick_server.jpg" align="left" height="500" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/login.jpg" align="left" height="500" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/inspect_requests.jpg" align="left" height="500" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/navbar.jpg" align="left" height="500" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/edit_code.jpg" align="left" height="500" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/profile_page.jpg" align="left" height="500" width="200" >
+<img src="https://raw.githubusercontent.com/p4p1/xss_bomb/main/assets/save_del_request.jpg" align="left" height="500" width="200" >
