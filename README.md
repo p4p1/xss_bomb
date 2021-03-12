@@ -18,7 +18,7 @@ or you can download for free from the releases page :) I keep the releases updat
 as the play store version. There is no benefit or advantage to paying for this app other
 than helping me out.
 
-## Installation (Server)
+## Installation (Server | API)
 For the server you can create your own instance and host it online using docker.
 It can be local or private / public if you decide to share the link or not you can edit
 the public-instance.json file and send a pull request if you wish to be featured as a
