@@ -8,6 +8,7 @@ const logo = '../assets/icon.png';
 const githubURL = "https://github.com/p4p1/xss_bomb";
 const wikiURL= "https://github.com/p4p1/xss_bomb/wiki";
 const trelloURL= "https://github.com/p4p1/xss_bomb/projects";
+const playURL = "https://play.google.com/store/apps/details?id=com.p4p1.xss_bomb";
 const meURL = "https://leosmith.xyz";
 
 const version = "V0.1.0";
@@ -107,6 +108,9 @@ export default class HelpScreen extends React.Component
             $2 ish.
           </Text>
           <Button title={"About author"} onPress={() => this.openURL(meURL)}/>
+          <View style={styles.padding}></View>
+          <Button title={"Support me (Google Play)"} onPress={() =>
+            this.openURL(playURL)} color={'#2CAA4C'}/>
           <View style={styles.padding}></View>
           <Text style={styles.header}>Is this open source?</Text>
           <Text style={styles.para}>
