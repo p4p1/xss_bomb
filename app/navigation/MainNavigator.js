@@ -8,7 +8,6 @@ import BottomTabBar from './BottomTabBar.js';
 import EditUserNavigation from './EditUserNavigation.js';
 import NotifNavigator from './NotifNavigator.js';
 import CodeScreen from '../screens/CodeScreen.js';
-import HelpScreen from '../screens/HelpScreen.js';
 
 const Tab = createBottomTabNavigator();
 

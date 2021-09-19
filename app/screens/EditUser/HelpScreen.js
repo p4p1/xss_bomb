@@ -2,16 +2,16 @@ import React from 'react';
 import { Text, Linking, Button, StyleSheet, Image, View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
-import SplashScreen from './SplashScreen';
+import SplashScreen from '../SplashScreen';
 
-const logo = '../assets/icon.png';
+const logo = '../../assets/icon.png';
 const githubURL = "https://github.com/p4p1/xss_bomb";
 const wikiURL= "https://github.com/p4p1/xss_bomb/wiki";
 const trelloURL= "https://github.com/p4p1/xss_bomb/projects";
 const playURL = "https://play.google.com/store/apps/details?id=com.p4p1.xss_bomb";
 const meURL = "https://leosmith.xyz";
 
-const version = "V0.1.0";
+const version = "V0.1.1";
 
 export default class HelpScreen extends React.Component
 {
@@ -45,13 +45,11 @@ export default class HelpScreen extends React.Component
         'Content-Type': 'application/json',
       }
     }).then((response) => response.json()).then((json) => {
-      console.log(json);
       this.setState({gh_version_name: json.tag_name});
       this.setState({newVerURL: json.assets[0].browser_download_url});
     }).catch((err) => {
       console.error(err);
-      alert("Error: Could not connect");
-      this.props.logout();
+      alert("Error: Could not get latest version from github");
     });
   }
 
