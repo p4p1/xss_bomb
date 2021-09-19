@@ -38,7 +38,6 @@ function sendNotification (pushToken, notification) {
 }
 
 router.get('/:id', function (req, res) {
-  console.log(req.params.id);
   User.find({
     api_id: req.params.id,
   }).exec((err, data) => {
@@ -51,7 +50,7 @@ router.get('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: `${req.body}`,
+        body: `${JSON.stringify(req.body)}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -67,7 +66,6 @@ router.get('/:id', function (req, res) {
 })
 
 router.post('/:id', function (req, res) {
-  console.log(req.params.id);
   User.find({
     api_id: req.params.id,
   }).exec((err, data) => {
@@ -80,7 +78,7 @@ router.post('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: `${req.body}`,
+        body: `${JSON.stringify(req.body)}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -96,7 +94,6 @@ router.post('/:id', function (req, res) {
 })
 
 router.put('/:id', function (req, res) {
-  console.log(req.params.id);
   User.find({
     api_id: req.params.id,
   }).exec((err, data) => {
@@ -109,7 +106,7 @@ router.put('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: `${req.body}`,
+        body: `${JSON.stringify(req.body)}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -125,7 +122,6 @@ router.put('/:id', function (req, res) {
 })
 
 router.delete('/:id', function (req, res) {
-  console.log(req.params.id);
   User.find({
     api_id: req.params.id,
   }).exec((err, data) => {
@@ -138,7 +134,7 @@ router.delete('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: `${req.body}`,
+        body: `${JSON.stringify(req.body)}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -154,7 +150,6 @@ router.delete('/:id', function (req, res) {
 })
 
 router.patch('/:id', function (req, res) {
-  console.log(req.params.id);
   User.find({
     api_id: req.params.id,
   }).exec((err, data) => {
@@ -167,7 +162,7 @@ router.patch('/:id', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: `${req.body}`,
+        body: `${JSON.stringify(req.body)}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -183,7 +178,6 @@ router.patch('/:id', function (req, res) {
 })
 
 router.get('/:id/code', function (req, res) {
-  console.log(req.params.id);
   User.find({
     api_id: req.params.id,
   }).exec((err, data) => {
@@ -196,7 +190,7 @@ router.get('/:id/code', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: `${req.body}`,
+        body: `${JSON.stringify(req.body)}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
@@ -212,7 +206,6 @@ router.get('/:id/code', function (req, res) {
 })
 
 router.get('/:id/pic', function (req, res) {
-  console.log(req.params.id);
   User.find({
     api_id: req.params.id,
   }).exec((err, data) => {
@@ -225,7 +218,7 @@ router.get('/:id/pic', function (req, res) {
         date: new Date(),
         link: req.url,
         userAgent: req.headers['user-agent'],
-        body: `${req.body}`,
+        body: `${JSON.stringify(req.body)}`,
         header: req.headers,
         ipAddress: req.ip
       }, function(err) {
