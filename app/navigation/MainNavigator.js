@@ -1,14 +1,16 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PropTypes from 'prop-types';
 
+import BottomTabBar from './BottomTabBar.js';
+
+
 import EditUserNavigation from './EditUserNavigation.js';
-import FavoritesScreen from '../screens/FavoritesScreen.js';
+import NotifNavigator from './NotifNavigator.js';
 import CodeScreen from '../screens/CodeScreen.js';
-import NotificationScreen from '../screens/NotificationScreen.js';
 import HelpScreen from '../screens/HelpScreen.js';
 
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 export default class MainNavigator extends React.Component
 {
@@ -18,33 +20,25 @@ export default class MainNavigator extends React.Component
 
   render() {
     return (
-      <Drawer.Navigator initialRouteName="Notifications" drawerContentOptions={{
-        activeTintColor:'#24FF1F',
-        inactiveTintColor:'#fff',
-      }} drawerStyle={{
-        backgroundColor: '#222222',
-      }}>
-        <Drawer.Screen name="Notifications">
-          {props => <NotificationScreen {...props} logout={() => this.props.logout()}
+      <Tab.Navigator  initialRouteName="Notifications"
+        tabBar={(props) => <BottomTabBar {...props} />}>
+        <Tab.Screen name="Notifications">
+          {props => <NotifNavigator{...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
-        </Drawer.Screen>
-        <Drawer.Screen name="Favorites">
-          {props => <FavoritesScreen {...props} logout={() => this.props.logout()}
-          token={this.props.token} url={this.props.url} />}
-        </Drawer.Screen>
-        <Drawer.Screen name="Code">
+        </Tab.Screen>
+        <Tab.Screen name="Code">
           {props => <CodeScreen {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
-        </Drawer.Screen>
-        <Drawer.Screen name="Account">
+        </Tab.Screen>
+        <Tab.Screen name="Account">
           {props => <EditUserNavigation {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
-        </Drawer.Screen>
-        <Drawer.Screen name="Help">
+        </Tab.Screen>
+        <Tab.Screen name="Help">
           {props => <HelpScreen {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
-        </Drawer.Screen>
-      </Drawer.Navigator>
+        </Tab.Screen>
+      </Tab.Navigator>
     );
   }
 }

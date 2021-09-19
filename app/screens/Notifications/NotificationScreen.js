@@ -4,9 +4,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
-import SplashScreen from './SplashScreen';
-import Notif from '../components/Notif.js';
-import Inspect from '../components/Inspect.js';
+import SplashScreen from '../SplashScreen';
+import Notif from '../../components/Notif.js';
+import Inspect from '../../components/Inspect.js';
 
 import PropTypes from 'prop-types';
 

@@ -35,6 +35,8 @@ export default class Inspect extends React.Component
           <ScrollView style={{marginTop: 40}}>
             <View style={styles.title}>
               {method}
+            </View>
+            <View style={styles.title}>
               <Text style={styles.header}>{this.props.selected.link}</Text>
             </View>
             <Text style={styles.para_norm}>
@@ -107,6 +109,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header_OTHER: {
+    width: '100%',
+    textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'purple',
@@ -115,6 +119,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header_GET: {
+    width: '100%',
+    textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'green',
@@ -123,6 +129,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header_DELETE: {
+    width: '100%',
+    textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'red',
@@ -131,6 +139,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header_PUT: {
+    width: '100%',
+    textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'cyan',
@@ -139,6 +149,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header_POST: {
+    width: '100%',
+    textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'yellow',

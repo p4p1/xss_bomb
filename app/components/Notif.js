@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header_OTHER: {
+    width: '25%',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'purple',
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header_GET: {
+    width: '25%',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'green',
@@ -104,6 +106,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header_DELETE: {
+    width: '25%',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'red',
@@ -112,6 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header_PUT: {
+    width: '25%',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'cyan',
@@ -120,6 +124,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   header_POST: {
+    width: '25%',
     fontSize: 25,
     fontWeight: 'bold',
     color: 'yellow',

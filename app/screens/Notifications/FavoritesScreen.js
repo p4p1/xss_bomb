@@ -2,8 +2,8 @@ import React from 'react';
 import { Modal, Text, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import FavNotif from '../components/FavNotif.js';
-import Inspect from '../components/Inspect.js';
+import FavNotif from '../../components/FavNotif.js';
+import Inspect from '../../components/Inspect.js';
 
 import PropTypes from 'prop-types';
 
