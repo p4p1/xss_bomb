@@ -56,7 +56,7 @@ export default class Inspect extends React.Component
               </Text>
             </TouchableOpacity>
             <Text style={styles.para}>
-              {this.props.selected.body !== undefined && this.props.selected.body.length == 0 ?
+              {this.props.selected.body !== undefined || this.props.selected.body.length == 0 ?
               this.props.selected.body : "The body is empty"}
             </Text>
           </ScrollView>
