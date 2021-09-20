@@ -34,11 +34,13 @@ xss_bomb/
 ├── app/                    # The source code of the front-end app
 │   └── [React Native Source Code]
 ├── assets/                 # Image files for the logo and such
-│   └── [Source Code]
+│   └── [Images]
 ├── backend/                # The source code of the back-end
 │   └── [Node Js Source Code]
-├── data/                   # Folder containing the database
-│   └── [Database Raw Files]
+├── data/                   # Folder containing the main database
+│   └── [MongoDB Raw Files]
+├── redis/                  # Folder containing the database for the refresh tokens
+│   └── [Redis Raw Files]
 ├── logs/                   # Folder containing the log file with every requests
 │   └── xss_bomb.log
 ├── docker-compose.yml      # The Docker file used to launch the database and back-end
