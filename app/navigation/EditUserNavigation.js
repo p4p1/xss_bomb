@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import ChangeLoginScreen from '../screens/EditUser/ChangeLoginScreen.js';
 import UserScreen from '../screens/EditUser/UserScreen.js';
+import DeleteScreen from '../screens/EditUser/DeleteScreen.js';
 import HelpScreen from '../screens/EditUser/HelpScreen.js';
 
 const Stack = createStackNavigator();
@@ -24,8 +25,13 @@ export default class EditUserNavigation extends React.Component
             token={this.props.token} url={this.props.url} />}
         </Stack.Screen>
         <Stack.Screen name="Edit" options={{ headerStyle: { height: navbarHeight },
-          title: 'Edit Username & Password', headerTransparent: true }}>
+          title: 'Edit username or password', headerTransparent: true }}>
           {props => <ChangeLoginScreen {...props} logout={() => this.props.logout()}
+            token={this.props.token} url={this.props.url} />}
+        </Stack.Screen>
+        <Stack.Screen name="Delete" options={{ headerStyle: { height: navbarHeight },
+          title: 'Delete account', headerTransparent: true }}>
+          {props => <DeleteScreen {...props} logout={() => this.props.logout()}
             token={this.props.token} url={this.props.url} />}
         </Stack.Screen>
         <Stack.Screen name="Help" options={{ headerStyle: { height: navbarHeight },

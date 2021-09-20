@@ -65,6 +65,7 @@ export default class UserScreen extends React.Component
             <FontAwesomeIcon size={20} color={'#aaaaaa'} icon={ faCopy } />
           </TouchableOpacity>
           <TextButton text="Change username and password" run={() => {this.props.navigation.navigate('Edit')}} />
+          <TextButton text="Delete account" run={() => {this.props.navigation.navigate('Delete')}} />
           <TextButton text="Logout" run={() => {this.props.logout()}} />
         </View>
       </View>

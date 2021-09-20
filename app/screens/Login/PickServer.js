@@ -42,17 +42,20 @@ export default class PickServer extends React.Component
   }
 
   async saveServer(link) {
-    this.setState({ modal: false });
     try {
       await AsyncStorage.setItem(
         '@xss_bomb:server',
         link
       );
-      this.props.refresh();
-      this.props.navigation.navigate('Login');
     } catch (error) {
       console.error(error);
     }
+    fetch(link).then(() => {
+      this.setState({ modal: false });
+      this.props.refresh();
+      this.props.navigation.navigate('Login');
+    }).catch(() => {alert('Server seems down!');});
+
   }
 
   render () {

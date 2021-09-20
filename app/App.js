@@ -39,7 +39,18 @@ export default class App extends React.Component
     try {
       const value = await AsyncStorage.getItem('@xss_bomb:token');
       if (value !== null) {
-        this.setState({ token: value });
+        fetch(`${this.state.url}auth/refresh`, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'authorization': `Bearer ${value}`
+          },
+        }).then((response) => response.json()).then((json) => {
+          this.setState({ token: json.token});
+        }).catch((err) => {
+          console.error(err);
+        });
       }
     } catch (error) {
       console.log(error);
@@ -48,11 +59,22 @@ export default class App extends React.Component
 
   async saveToken(tkn) {
     try {
-      this.setState({ token: tkn });
       await AsyncStorage.setItem(
         '@xss_bomb:token',
         tkn
       );
+      fetch(`${this.state.url}auth/refresh`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'authorization': `Bearer ${tkn}`
+        },
+      }).then((response) => response.json()).then((json) => {
+        this.setState({ token: json.token});
+      }).catch((err) => {
+        console.error(err);
+      });
     } catch (error) {
       console.error(error);
     }
