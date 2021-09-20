@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import BottomTabBar from './BottomTabBar.js';
 
 
-import EditUserNavigation from './EditUserNavigation.js';
-import NotifNavigator from './NotifNavigator.js';
-import CodeScreen from '../screens/CodeScreen.js';
+import EditUserNavigation from './User/EditUserNavigation.js';
+import NotifNavigator from './Notif/NotifNavigator.js';
+import CodeNavigator from './Code/CodeNavigator.js';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,15 +26,11 @@ export default class MainNavigator extends React.Component
           token={this.props.token} url={this.props.url} />}
         </Tab.Screen>
         <Tab.Screen name="Code">
-          {props => <CodeScreen {...props} logout={() => this.props.logout()}
+          {props => <CodeNavigator{...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
         </Tab.Screen>
         <Tab.Screen name="Account">
           {props => <EditUserNavigation {...props} logout={() => this.props.logout()}
-          token={this.props.token} url={this.props.url} />}
-        </Tab.Screen>
-        <Tab.Screen name="Help">
-          {props => <HelpScreen {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
         </Tab.Screen>
       </Tab.Navigator>

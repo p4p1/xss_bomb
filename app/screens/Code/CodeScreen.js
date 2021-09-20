@@ -2,7 +2,8 @@ import React from 'react';
 import { ScrollView, RefreshControl, StyleSheet, View } from 'react-native';
 import Textarea from 'react-native-textarea';
 
-import SaveButton from '../components/SaveButton.js';
+import SaveButton from '../../components/SaveButton.js';
+import ShareButton from '../../components/ShareButton.js';
 
 import PropTypes from 'prop-types';
 
@@ -15,11 +16,14 @@ export default class HomeScreen extends React.Component
       code: `functiom some_js_code() {
   console.log(document.cookie);
 }`,
+      name: "",
+      description: ""
     };
 
     this.changeCode = this.changeCode.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
     this.save = this.save.bind(this);
+    this.share = this.share.bind(this);
   }
 
   save() {
@@ -32,6 +36,26 @@ export default class HomeScreen extends React.Component
       },
       body: JSON.stringify({
         code: this.state.code,
+      }),
+    }).then((response) => response.json()).then((body) => {
+      alert(body.msg);
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: please check url format");
+    });
+  }
+
+  share() {
+    fetch(`${this.props.url}code/share`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${this.props.token}`
+      },
+      body: JSON.stringify({
+        name: this.state.name,
+        description: this.state.description,
       }),
     }).then((response) => response.json()).then((body) => {
       alert(body.msg);
@@ -83,6 +107,7 @@ export default class HomeScreen extends React.Component
               underlineColorAndroid={'transparent'}
             />
           <SaveButton run={() => {this.save()}} />
+          <ShareButton run={() => {this.save()}} />
         </ScrollView>
       </View>
     );

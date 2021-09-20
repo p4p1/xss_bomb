@@ -5,8 +5,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import TopTabBar from './TopTabBar.js';
 
-import FavoritesScreen from '../screens/Notifications/FavoritesScreen.js';
-import NotificationScreen from '../screens/Notifications/NotificationScreen.js';
+import FavoritesScreen from '../../screens/Notifications/FavoritesScreen.js';
+import NotificationScreen from '../../screens/Notifications/NotificationScreen.js';
 
 const Tab = createMaterialTopTabNavigator();
 

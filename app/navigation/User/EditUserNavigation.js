@@ -2,10 +2,10 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
 
-import ChangeLoginScreen from '../screens/EditUser/ChangeLoginScreen.js';
-import UserScreen from '../screens/EditUser/UserScreen.js';
-import DeleteScreen from '../screens/EditUser/DeleteScreen.js';
-import HelpScreen from '../screens/EditUser/HelpScreen.js';
+import ChangeLoginScreen from '../../screens/User/ChangeLoginScreen.js';
+import UserScreen from '../../screens/User/UserScreen.js';
+import DeleteScreen from '../../screens/User/DeleteScreen.js';
+import HelpScreen from '../../screens/User/HelpScreen.js';
 
 const Stack = createStackNavigator();
 const navbarHeight = 65;
@@ -49,6 +49,3 @@ EditUserNavigation.propTypes = {
   token: PropTypes.string,
   logout: PropTypes.function,
 }
-
-
-

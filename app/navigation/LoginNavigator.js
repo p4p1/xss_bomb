@@ -42,6 +42,3 @@ LoginNavigator.propTypes = {
   saveToken: PropTypes.function,
   url: PropTypes.string,
 }
-
-
-
