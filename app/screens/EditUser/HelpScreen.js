@@ -6,12 +6,14 @@ import SplashScreen from '../SplashScreen';
 
 const logo = '../../assets/icon.png';
 const githubURL = "https://github.com/p4p1/xss_bomb";
+const githubNewIssueURL = "https://github.com/p4p1/xss_bomb/issues/new";
 const wikiURL= "https://github.com/p4p1/xss_bomb/wiki";
+const apiDocURL = "https://documenter.getpostman.com/view/10616927/Tz5p6y9A";
 const trelloURL= "https://github.com/p4p1/xss_bomb/projects";
 const playURL = "https://play.google.com/store/apps/details?id=com.p4p1.xss_bomb";
 const meURL = "https://leosmith.xyz";
 
-const version = "V0.1.1";
+const version = "V0.1.2";
 
 export default class HelpScreen extends React.Component
 {
@@ -99,6 +101,9 @@ export default class HelpScreen extends React.Component
           </Text>
           <Button title={"Open wiki"} onPress={() => this.openURL(wikiURL)}/>
           <View style={styles.padding}></View>
+          <Button title={"Postman documentation"} onPress={() => this.openURL(apiDocURL)}
+          color={'#FF6C37'} />
+          <View style={styles.padding}></View>
           <Text style={styles.header}>Who built this?</Text>
           <Text style={styles.para}>
             This app was built by me (p4p1) over on github and is provided for free
@@ -142,6 +147,9 @@ export default class HelpScreen extends React.Component
             If you find a bug or you just have and idea for the app please open
             an issue on github so that I can fix it as soon as possible.
           </Text>
+          <Button title={"Open a new issue"}
+            onPress={() => this.openURL(githubNewIssueURL)} color={'#ED1D5D'}/>
+          <View style={styles.padding}></View>
         </ScrollView>
       </View>
     );
