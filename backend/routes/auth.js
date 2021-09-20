@@ -1,6 +1,7 @@
 const express = require('express');
 const middleware = require("../middleware/middleware.js");
 const User = require('../lib/models/User.js');
+const redis = require('../lib/redis.js');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const shortid = require("shortid");
@@ -10,6 +11,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
 
 const router = express.Router()
 const SECRETKEY = process.env.SECRETKEY;
+const REFRESH_SECRETKEY = process.env.REFRESH_SECRETKEY;
 
 router.post('/register', middleware.validateRegister, function (req, res, next) {
   try {
@@ -17,13 +19,12 @@ router.post('/register', middleware.validateRegister, function (req, res, next) 
       if (err) {
         return res.status(500).send({msg: err});
       } else {
-        console.log(hash);
         User.create(
           {
             username: req.body.username,
             password: hash,
             api_id: shortid.generate(),
-            code: "alert(1);"
+            code: "alert(document.domain);"
           },
           function (err, user) {
             if (err) {
@@ -45,7 +46,7 @@ router.post('/login', middleware.checkLogin, function (req, res, next) {
       username: req.body.username,
     }).exec((err, data) => {
       if (err || data.length != 1) {
-        return res.status(500).send({ msg: "User does not exist" });
+        return res.status(500).send({ msg: "Username or password incorrect!" });
       } else {
         bcrypt.compare(req.body.password, data[0].password, (bErr, bResult) => {
           if (bErr) {
@@ -54,6 +55,7 @@ router.post('/login', middleware.checkLogin, function (req, res, next) {
           if (bResult) {
             const token = jwt.sign({ username: req.body.username }, SECRETKEY,
               { expiresIn: "7d" });
+            redis.set(data[0]["_id"].toString(), token);
             User.findByIdAndUpdate(data[0]._id, {notificationId:
                                   req.body.notificationId}, (err) => {
               if (err) {
@@ -66,6 +68,35 @@ router.post('/login', middleware.checkLogin, function (req, res, next) {
             return res.status(401).send({ msg: "Incorrect password!" });
           }
          });
+      }
+    })
+  } catch (e) {
+    return res.send(e)
+  }
+})
+
+router.get('/refresh', middleware.refreshToken, function (req, res, next) {
+  try {
+    User.find({
+      username: req.userData.username,
+    }).exec((err, data) => {
+      if (err || data.length != 1) {
+        return res.status(500).send({ msg: "Username or password incorrect!" });
+      } else {
+        redis.get(data[0]["_id"].toString(), function(err, val) {
+          if (err || val == null) {
+            console.log(err);
+            return res.status(401).send({ msg: "Incorrect token!" });
+          } else {
+            if (val == req.userToken) {
+              const token = jwt.sign({ username: req.userData.username }, REFRESH_SECRETKEY,
+                { expiresIn: "24h" });
+              return res.status(200).send({ msg: "Logged in!", token: token });
+            } else {
+              return res.status(401).send({ msg: "Incorrect token!" });
+            }
+          }
+        });
       }
     })
   } catch (e) {

@@ -1,27 +1,45 @@
 const jwt = require("jsonwebtoken");
 const User = require('../lib/models/User.js');
 const logger = require('../lib/logger.js');
+const redis = require('../lib/redis.js');
 
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
 
 const SECRETKEY = process.env.SECRETKEY;
+const REFRESH_SECRETKEY = process.env.REFRESH_SECRETKEY;
 
 module.exports = {
   isLoggedIn: (req, res, next) => {
     try {
       // extract the authorization after Bearer
       const token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, SECRETKEY);
+      const decoded = jwt.verify(token, REFRESH_SECRETKEY);
       var date = new Date();
 
       req.userData = decoded;
-      logger.info("[" + date + "] - " + req.ip + " - " + req.originalUrl);
+      logger.info("[" + date + "] - " + req.ip + " - " + decoded.username + " - " +req.originalUrl);
       next();
     } catch (err) {
-      console.log(err);
-      logger.error("Invalid token: ", err);
-      return res.status(401).send({ msg: "Your session is not valid!" });
+      //console.log(err);
+      //logger.error("Invalid token: ", err);
+      //return res.status(401).send({ msg: "Your session is not valid!" });
+      /*
+       * Remove when all users updated to new auth method
+      */
+      try {
+        const token = req.headers.authorization.split(" ")[1];
+        const decoded = jwt.verify(token, SECRETKEY);
+        var date = new Date();
+
+        req.userData = decoded;
+        logger.info("[" + date + "] - " + req.ip + " - " + decoded.username + " - " +req.originalUrl);
+        next();
+      } catch (err2) {
+        console.log(err2);
+        logger.error("Invalid token: ", err2);
+        return res.status(401).send({ msg: "Your session is not valid!" });
+      }
     }
   },
   validateRegister: (req, res, next) => {
@@ -70,5 +88,22 @@ module.exports = {
     }
     logger.info("[" + date + "] - " + req.ip + " - " + req.originalUrl);
     next();
+  },
+  refreshToken: (req, res, next) => {
+    try {
+      // extract the authorization after Bearer
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, SECRETKEY);
+      var date = new Date();
+
+      req.userData = decoded;
+      req.userToken = token;
+      logger.info("[" + date + "] - " + req.ip + " - " + req.originalUrl);
+      next();
+    } catch (err) {
+      console.log(err);
+      logger.error("Invalid token: ", err);
+      return res.status(401).send({ msg: "Your session is not valid!" });
+    }
   }
 }

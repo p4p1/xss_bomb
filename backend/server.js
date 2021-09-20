@@ -9,8 +9,10 @@ const session = require('express-session');
 
 const app = express();
 const path = require('path')
-const database_link = process.env.db || "mongo";
 require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
+
+const admin_email = process.env.admin_email;
+const database_link = process.env.db || "mongo";
 
 
 var auth = require('./routes/auth')
@@ -48,5 +50,14 @@ app.use('/auth', auth);
 app.use('/user', user);
 app.use('/api', api);
 app.use("/public", express.static('public'));
+app.get("/", function (req, res) {
+  /*
+   * Edit this to change the MOTD
+   */
+  return res.status(200).send(`Welcome to XSS_BOMB api
+  this server is currently online. For any problem please contact <a href="mailto:${admin_email}">
+  website administrator</a>. We will work with you to find a solution to your
+  inquirery.`);
+});
 
 module.exports = app

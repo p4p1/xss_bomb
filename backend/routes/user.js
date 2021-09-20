@@ -90,22 +90,53 @@ router.delete('/notification', middleware.isLoggedIn, function (req, res) {
   })
 })
 
-router.post('/change_username', middleware.isLoggedIn, function (req, res) {
-  User.find({
-    username: req.userData.username,
-  }).exec((err, data) => {
-    if (err || data.length != 1) {
-      return res.status(500).send("User not found");
-    } else {
-      User.findByIdAndUpdate(data[0]._id, {username: req.body.username}, (err) => {
-        if (err) {
-          console.log(err);
-          return res.status(401).send({ msg: "Incorrect username!" });
-        }
-        return res.status(200).send({ msg: "Updated username!" });
-      });
-    }
-  })
+router.delete('/nuke', middleware.isLoggedIn, function (req, res) {
+  try {
+    User.find({
+      username: req.userData.username,
+    }).exec((err, data) => {
+      if (err || data.length != 1) {
+        return res.status(500).send({ msg: "Username or password incorrect!" });
+      } else {
+        bcrypt.compare(req.body.password, data[0].password, (bErr, bResult) => {
+          if (bErr) {
+            return res.status(401).send({msg: "Username or password incorrect!"});
+          }
+          if (bResult) {
+            Notification.find({
+              api_id: data[0].api_id
+            }).exec((err, notifications) => {
+              if (err) {
+                return res.status(500).send("Api id not found");
+              } else {
+                for (var i = 0; i < notifications.length; i++) {
+                  Notification.deleteOne({
+                    _id: mongoose.mongo.ObjectId(notifications[i]._id)
+                  }). then(() => {
+                    console.log("Removed notification of:" + req.userData.username);
+                  }).catch((err) => {
+                    console.log(err);
+                  })
+                }
+              }
+            })
+            User.deleteOne({
+              _id: mongoose.mongo.ObjectId(data[0]._id)
+            }). then(() => {
+              console.log("Removed user of:" + req.userData.username);
+            }).catch((err) => {
+              console.log(err);
+            })
+            return res.status(200).send({ msg: "User deleted!" });
+          } else {
+            return res.status(401).send({ msg: "Incorrect password!" });
+          }
+       });
+      }
+    })
+  } catch (e) {
+    return res.send(e)
+  }
 })
 
 router.post('/set_code', middleware.isLoggedIn, function (req, res) {
@@ -134,6 +165,24 @@ router.get('/get_code', middleware.isLoggedIn, function (req, res) {
       return res.status(500).send("User not found");
     } else {
       return res.status(200).send({ code: data[0].code });
+    }
+  })
+})
+
+router.post('/change_username', middleware.isLoggedIn, function (req, res) {
+  User.find({
+    username: req.userData.username,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("User not found");
+    } else {
+      User.findByIdAndUpdate(data[0]._id, {username: req.body.username}, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(401).send({ msg: "Incorrect username!" });
+        }
+        return res.status(200).send({ msg: "Updated username!" });
+      });
     }
   })
 })

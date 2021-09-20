@@ -19,6 +19,15 @@ services:
       ports:
         - "127.0.0.1:27017:27017"
 
+    redis:
+      container_name: redis
+      image: "redis:alpine"
+      command: redis-server --requirepass XSS_bomb_RedisPass321@!
+      volumes:
+        - ./redis:/data
+      ports:
+        - "127.0.0.1:6379:6379"
+
     admin_panel:
       container_name: admin_panel
       restart: always
