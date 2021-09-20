@@ -30,6 +30,7 @@ router.get('/get_user', middleware.isLoggedIn, function (req, res) {
     if (err || data.length != 1) {
       return res.status(500).send("User not found");
     } else {
+      data[0].password = undefined;
       return res.status(200).send(data[0]);
     }
   })
