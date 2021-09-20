@@ -31,6 +31,26 @@ router.get('/get_user', middleware.isLoggedIn, function (req, res) {
       return res.status(500).send("User not found");
     } else {
       data[0].password = undefined;
+      data[0].notificationId = undefined;
+      data[0].__v = undefined;
+      return res.status(200).send(data[0]);
+    }
+  })
+})
+
+router.get('/get_user/:index', middleware.isLoggedIn, function (req, res) {
+  User.find({
+    _id: mongoose.mongo.ObjectId(req.params.index),
+  }).exec((err, data) => {
+    if (err || data.length != 1 || data[0].public === undefined || data[0].public == false) {
+      return res.status(500).send("User not found");
+    } else {
+      data[0].password = undefined;
+      data[0].__v = undefined;
+      data[0].code = undefined;
+      data[0].api_id = undefined;
+      data[0].notificationId = undefined;
+      data[0].public = undefined;
       return res.status(200).send(data[0]);
     }
   })
@@ -138,6 +158,27 @@ router.delete('/nuke', middleware.isLoggedIn, function (req, res) {
   } catch (e) {
     return res.send(e)
   }
+})
+
+router.patch('/set_public', middleware.isLoggedIn, function (req, res) {
+  User.find({
+    username: req.userData.username,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("User not found");
+    } else {
+      User.findByIdAndUpdate(data[0]._id, {public: !data[0].public}, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(401).send({ msg: "Incorrect username or password!" });
+        }
+        if (data[0].public == false) {
+          return res.status(200).send({ msg: "Set to public!" });
+        }
+        return res.status(200).send({ msg: "Set to private!" });
+      });
+    }
+  })
 })
 
 router.post('/set_code', middleware.isLoggedIn, function (req, res) {

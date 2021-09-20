@@ -24,7 +24,14 @@ router.post('/register', middleware.validateRegister, function (req, res, next) 
             username: req.body.username,
             password: hash,
             api_id: shortid.generate(),
-            code: "alert(document.domain);"
+            code: "alert(document.domain);",
+            public: false,
+            posts: [],
+            favorites: [],
+            total_hits: 0,
+            code_injected: 0,
+            image_shown: 0,
+            payload_download: 0
           },
           function (err, user) {
             if (err) {

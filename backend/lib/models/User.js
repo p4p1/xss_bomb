@@ -7,6 +7,12 @@ var UserSchema = new mongoose.Schema({
   notificationId: String,
   api_id: String,
   code: String,
+  public: Boolean,
+  posts: Array,
+  total_hits: Number,
+  code_injected: Number,
+  image_shown: Number,
+  payload_download: Number,
 })
 
 

@@ -18,6 +18,7 @@ const database_link = process.env.db || "mongo";
 var auth = require('./routes/auth')
 var user = require('./routes/user')
 var api = require('./routes/api')
+var code = require('./routes/code')
 
 mongoose.connect("mongodb://" +
   database_link + "/xss_bomb?retryWrites=true&w=majority", {
@@ -49,6 +50,7 @@ app.use(
 app.use('/auth', auth);
 app.use('/user', user);
 app.use('/api', api);
+app.use('/code', code);
 app.use("/public", express.static('public'));
 app.get("/", function (req, res) {
   /*

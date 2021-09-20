@@ -60,6 +60,11 @@ router.get('/:id', function (req, res) {
       })
       sendNotification(data[0].notificationId, { title: "xss - hit",
         body: req.headers['user-agent'] })
+      User.findByIdAndUpdate(data[0]._id, {total_hits: (data[0].total_hits) ? data[0].total_hits + 1 : 1}, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
       return res.status(200).send("ok");
     }
   });
@@ -88,6 +93,11 @@ router.post('/:id', function (req, res) {
       })
       sendNotification(data[0].notificationId, { title: "xss - hit",
         body: req.headers['user-agent'] })
+      User.findByIdAndUpdate(data[0]._id, {total_hits: (data[0].total_hits) ? data[0].total_hits + 1 : 1}, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
       return res.status(200).send("ok");
     }
   });
@@ -116,6 +126,11 @@ router.put('/:id', function (req, res) {
       })
       sendNotification(data[0].notificationId, { title: "xss - hit",
         body: req.headers['user-agent'] })
+      User.findByIdAndUpdate(data[0]._id, {total_hits: (data[0].total_hits) ? data[0].total_hits + 1 : 1}, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
       return res.status(200).send("ok");
     }
   });
@@ -144,6 +159,11 @@ router.delete('/:id', function (req, res) {
       })
       sendNotification(data[0].notificationId, { title: "xss - hit",
         body: req.headers['user-agent'] })
+      User.findByIdAndUpdate(data[0]._id, {total_hits: (data[0].total_hits) ? data[0].total_hits + 1 : 1}, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
       return res.status(200).send("ok");
     }
   });
@@ -172,6 +192,11 @@ router.patch('/:id', function (req, res) {
       })
       sendNotification(data[0].notificationId, { title: "xss - hit",
         body: req.headers['user-agent'] })
+      User.findByIdAndUpdate(data[0]._id, {total_hits: (data[0].total_hits) ? data[0].total_hits + 1 : 1}, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
       return res.status(200).send("ok");
     }
   });
@@ -200,6 +225,16 @@ router.get('/:id/code', function (req, res) {
       })
       sendNotification(data[0].notificationId, { title: "xss - code injected",
         body: req.headers['user-agent'] })
+      User.findByIdAndUpdate(data[0]._id, {total_hits: (data[0].total_hits) ? data[0].total_hits + 1 : 1}, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      User.findByIdAndUpdate(data[0]._id, {code_injected: (data[0].code_injected) ? data[0].code_injected + 1 : 1}, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
       return res.status(200).send(data[0].code);
     }
   });
@@ -228,6 +263,16 @@ router.get('/:id/pic', function (req, res) {
       })
       sendNotification(data[0].notificationId, { title: "xss - picture hit",
         body: req.headers['user-agent'] })
+      User.findByIdAndUpdate(data[0]._id, {total_hits: (data[0].total_hits) ? data[0].total_hits + 1 : 1}, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      User.findByIdAndUpdate(data[0]._id, {image_shown: (data[0].image_shown) ? data[0].image_shown + 1 : 1}, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
       return res.redirect(301, "/public/1px.png");
     }
   });
