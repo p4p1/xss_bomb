@@ -60,6 +60,27 @@ router.get('/:page', middleware.isLoggedIn, function (req, res) {
     }
   });
 })
+
+router.get('/get_code/:id', middleware.isLoggedIn, function (req, res) {
+  Code.find({
+    _id: mongoose.mongo.ObjectId(req.params.id),
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("Code not found");
+    } else {
+      User.find({
+        _id: mongoose.mongo.ObjectId(data[0].userId),
+      }).exec((err, data2) => {
+        if (err || data2.length != 1) {
+          return res.status(500).send("User not found");
+        } else {
+          return res.status(200).send(data[0]);
+        }
+      });
+    }
+  });
+})
+
 router.get('/dl/:id', middleware.isLoggedIn, function (req, res) {
   Code.find({
     _id: mongoose.mongo.ObjectId(req.params.id),
