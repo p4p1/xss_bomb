@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
 
 import PropTypes from 'prop-types';
 
@@ -15,12 +15,14 @@ export default class Code extends React.Component
     }
     return (
       <View style={styles.container}>
-        <View style={styles.title}>
-          <Text style={styles.header}>{this.props.data.name}</Text>
-        </View>
-        <Text style={styles.date}>{this.props.data.description}</Text>
-        <Text style={styles.para}>{this.props.data.code.substring(0, 200)}</Text>
-        <Text style={styles.para}>Popularity: {this.props.data.downloads}</Text>
+        <TouchableOpacity onPress={this.props.run}>
+          <View style={styles.title}>
+            <Text style={styles.header}>{this.props.data.name}</Text>
+          </View>
+          <Text style={styles.date}>{this.props.data.description}</Text>
+          <Text style={styles.para}>{this.props.data.code.substring(0, 200)}</Text>
+          <Text style={styles.para}>Popularity: {this.props.data.downloads}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -28,6 +30,7 @@ export default class Code extends React.Component
 
 Code.propTypes = {
   data: PropTypes.object,
+  run: PropTypes.function
 }
 
 const styles = StyleSheet.create({

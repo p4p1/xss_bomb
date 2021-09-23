@@ -68,15 +68,7 @@ router.get('/get_code/:id', middleware.isLoggedIn, function (req, res) {
     if (err || data.length != 1) {
       return res.status(500).send("Code not found");
     } else {
-      User.find({
-        _id: mongoose.mongo.ObjectId(data[0].userId),
-      }).exec((err, data2) => {
-        if (err || data2.length != 1) {
-          return res.status(500).send("User not found");
-        } else {
-          return res.status(200).send(data[0]);
-        }
-      });
+      return res.status(200).send(data[0]);
     }
   });
 })
@@ -99,23 +91,31 @@ router.get('/dl/:id', middleware.isLoggedIn, function (req, res) {
               console.log(err);
               return res.status(401).send({ msg: "Incorrect username or password!" });
             }
+            // else { /* BELOW CODE SHOULD BE HERE BUT UGLY */ }
           });
         }
       })
-      User.find({
-        _id: mongoose.mongo.ObjectId(data[0].userId),
-      }).exec((err, data2) => {
-        if (err || data2.length != 1) {
-          return res.status(500).send("User not found");
-        } else {
-          User.findByIdAndUpdate(data2[0]._id, {payload_download: (data[0].payload_download) ? data[0].payload_download+ 1 : 1}, (err) => {
-            if (err) {
-              console.log(err);
-            }
-            return res.status(200).send(data[0]);
-          });
-        }
-      });
+      /*
+       * TODO: THIS CODE SHOULD BE PUT UP THERE IN AN ELSE
+       */
+      if (data[0].userId !== undefined) { // if the user is in private mode do not increment download number !
+        User.find({
+          _id: mongoose.mongo.ObjectId(data[0].userId),
+        }).exec((err, data2) => {
+          if (err || data2.length != 1) {
+            return res.status(500).send("User not found");
+          } else {
+            User.findByIdAndUpdate(data2[0]._id, {payload_download: (data[0].payload_download) ? data[0].payload_download + 1 : 1}, (err) => {
+              if (err) {
+                console.log(err);
+              }
+              return res.status(200).send(data[0]);
+            });
+          }
+        });
+      } else { // otherwise increment it
+        return res.status(200).send(data[0]);
+      }
     }
   });
 })

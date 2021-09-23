@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
+import { Text, RefreshControl, StyleSheet, TouchableOpacity, ScrollView, View } from 'react-native';
 
 import Code from '../../components/Code.js';
 
@@ -57,7 +57,8 @@ export default class SubmitedScreen extends React.Component
               </View>
             :
               this.state.data.map(
-                (codeData,i) => <Code data={codeData} key={i} />
+                (codeData,i) => <Code data={codeData}
+                  run={() => this.props.setCode(codeData._id)} key={i} />
               )
           }
         </ScrollView>
@@ -70,6 +71,7 @@ SubmitedScreen.propTypes = {
   url: PropTypes.string,
   token: PropTypes.string,
   logout: PropTypes.function,
+  setCode: PropTypes.function,
 }
 
 const styles = StyleSheet.create({

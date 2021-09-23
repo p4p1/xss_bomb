@@ -30,10 +30,10 @@ module.exports = {
       try {
         const token = req.headers.authorization.split(" ")[1];
         const decoded = jwt.verify(token, SECRETKEY);
-        var date = new Date();
+        var date2 = new Date();
 
         req.userData = decoded;
-        logger.info("[" + date + "] - " + req.ip + " - " + decoded.username + " - " +req.originalUrl);
+        logger.info("[" + date2 + "] - " + req.ip + " - " + decoded.username + " - " +req.originalUrl);
         next();
       } catch (err2) {
         console.log(err2);
