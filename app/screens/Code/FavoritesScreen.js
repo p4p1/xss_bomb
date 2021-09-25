@@ -1,9 +1,8 @@
 import React from 'react';
-import { Modal, Text, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
+import { Text, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import FavNotif from '../../components/FavNotif.js';
-import Inspect from '../../components/Inspect.js';
+import Code from '../../components/Code.js';
 
 import PropTypes from 'prop-types';
 
@@ -19,7 +18,6 @@ export default class FavoritesScreen extends React.Component
 
     this.onRefresh = this.onRefresh.bind(this);
     this.remove = this.remove.bind(this);
-    this.info = this.info.bind(this);
   }
 
   async onRefresh() {
@@ -33,25 +31,6 @@ export default class FavoritesScreen extends React.Component
       console.log(error);
     }
     this.setState({refreshing: false});
-  }
-
-  info(key) {
-    fetch(`${this.props.url}code/dl/${key}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'authorization': `Bearer ${this.props.token}`
-      }
-    }).then((response) => response.json()).then((json) => {
-      console.log(json);
-      this.setState({selected: json[0]});
-      this.setState({modal: !this.state.modal});
-    }).catch((err) => {
-      console.error(err);
-      alert("Error: Could not connect");
-      this.props.logout();
-    });
   }
 
   async remove(index) {
@@ -74,25 +53,18 @@ export default class FavoritesScreen extends React.Component
   render () {
     return (
       <View style={styles.container}>
-        <Modal animationType={"slide"} transparent={true}
-            visible={this.state.modal} onRequestClose={() =>
-            this.setState({modal: !this.state.modal})}>
-          <Inspect selected={this.state.selected} run={() =>
-            this.setState({modal: !this.state.modal})} />
-        </Modal>
         <ScrollView style={{width:'90%', height:'80%' }}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
           onRefresh={this.onRefresh}/>}>
           {
             this.state.data.length == 0 ?
               <View>
-                <Text style={styles.header}>You do not have any favorites!</Text>
+                <Text style={styles.header}>Nothing saved as favorite!</Text>
               </View>
             :
-              this.state.data.reverse().map(
-                (notifData,i) => <FavNotif data={notifData} key={i}
-                  delete={() => this.remove(i)}
-                  info={(data) => this.info(data)} />
+              this.state.data.map(
+                (codeData,i) => <Code data={codeData}
+                  run={() => this.props.navigation.navigate('InspectFavCode', {"data" : codeData})} key={i} />
               )
           }
         </ScrollView>
@@ -105,6 +77,7 @@ FavoritesScreen.propTypes = {
   url: PropTypes.string,
   token: PropTypes.string,
   logout: PropTypes.function,
+  navigation: PropTypes.object
 }
 
 const styles = StyleSheet.create({

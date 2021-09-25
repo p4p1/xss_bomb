@@ -125,7 +125,7 @@ export default class HomeScreen extends React.Component
             </View>
           </View>
         </Modal>
-        <ScrollView contentContainerStyle={styles.container} style={{width: '100%', height: '100%'}}
+        <ScrollView contentContainerStyle={styles.container} style={{width: '100%', height: '100%', marginTop: 30}}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
           onRefresh={this.onRefresh}/>}>
             <Textarea containerStyle={styles.textareaContainer}

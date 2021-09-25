@@ -28,6 +28,7 @@ export default class UserScreen extends React.Component
         'authorization': `Bearer ${this.props.token}`
       }
     }).then((response) => response.json()).then((json) => {
+      console.log(json);
       this.setState({ data: json });
     }).catch((err) => {
       console.error(err);
@@ -48,7 +49,7 @@ export default class UserScreen extends React.Component
           </TouchableOpacity>
         </View>
         <View style={styles.mainCont}>
-          <Text style={styles.header}>{this.state.data.username}</Text>
+          <Text style={styles.header}>{this.state.data.username} (posts: {this.state.data.posts.length})</Text>
           <TouchableOpacity style={styles.save_clip}
             onPress={() => Clipboard.setString(this.props.url + "api/" + this.state.data.api_id)}>
             <Text style={styles.para}>{this.props.url}api/{this.state.data.api_id}</Text>

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import SplashScreen from '../SplashScreen.js';
 import TextButton from '../../components/TextButton.js';
 
-export default class ViewCodeScreen extends React.Component
+export default class FavCodeScreen extends React.Component
 {
   constructor(props) {
     super(props);
@@ -15,55 +15,30 @@ export default class ViewCodeScreen extends React.Component
       data: undefined,
     }
 
-    this.downloadCode = this.downloadCode.bind(this);
-    this.favoriteCode = this.favoriteCode.bind(this);
+    this.setCode = this.setCode.bind(this);
   }
 
-  async favoriteCode(code_data) {
-    try {
-      const value = await AsyncStorage.getItem('@xss_bomb:code');
-      if (value !== null) {
-        const new_value = JSON.parse(value);
-        try {
-          await AsyncStorage.setItem(
-            '@xss_bomb:code',
-            JSON.stringify([ ...new_value, code_data ])
-          );
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        try {
-          await AsyncStorage.setItem(
-            '@xss_bomb:code',
-            JSON.stringify([ code_data ])
-          );
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  downloadCode() {
-    fetch(`${this.props.url}code/dl/${this.props.route.params["codeId"]}`, {
-      method: 'GET',
+  setCode() {
+    fetch(`${this.props.url}user/set_code`, {
+      method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'authorization': `Bearer ${this.props.token}`
       },
-    }).then((response) => response.json()).then((json) => {
-      alert("You have set this code as your own :)");
+      body: JSON.stringify({
+        code: this.state.data.code,
+      }),
+    }).then((response) => response.json()).then((body) => {
+      alert(body.msg);
     }).catch((err) => {
       console.error(err);
+      alert("Error: please check url format");
     });
   }
 
   componentDidMount() {
-    fetch(`${this.props.url}code/get_code/${this.props.route.params["codeId"]}`, {
+    /*fetch(`${this.props.url}code/get_code/${this.props.route.params["codeId"]}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -74,7 +49,8 @@ export default class ViewCodeScreen extends React.Component
       this.setState({data: json});
     }).catch((err) => {
       console.error(err);
-    });
+    });*/
+    this.setState({data: this.props.route.params["data"]});
   }
 
   render () {
@@ -89,19 +65,17 @@ export default class ViewCodeScreen extends React.Component
           <View style={styles.sourceCode}>
             <Text style={styles.para}>{this.state.data.code}</Text>
           </View>
-          <TextButton text="Set as my own!" run={() => {this.downloadCode()}} />
-          <TextButton text="Save as a favorite!" run={() => {this.favoriteCode(this.state.data)}} />
+          <TextButton text="Set as my own!" run={() => {this.setCode()}} />
         </View>
       </View>
     );
   }
 }
 
-ViewCodeScreen.propTypes = {
+FavCodeScreen.propTypes = {
   url: PropTypes.string,
   token: PropTypes.string,
   logout: PropTypes.function,
-  navigation: PropTypes.object,
   route: PropTypes.object,
 }
 

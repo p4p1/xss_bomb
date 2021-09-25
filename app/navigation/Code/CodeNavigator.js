@@ -7,6 +7,7 @@ import CodeScreen from '../../screens/Code/CodeScreen.js';
 import SubmitedScreen from '../../screens/Code/SubmitedScreen.js';
 import FavoritesScreen from '../../screens/Code/FavoritesScreen.js';
 import ViewCodeScreen from '../../screens/Code/ViewCodeScreen.js';
+import FavCodeScreen from '../../screens/Code/FavCodeScreen.js';
 
 const Stack = createStackNavigator();
 const navbarHeight = 65;
@@ -54,6 +55,11 @@ export default class CodeNavigator extends React.Component
         <Stack.Screen name="InspectCode" options={{ headerStyle: { height: navbarHeight },
           title: '', headerTransparent: true }}>
           {props => <ViewCodeScreen {...props} logout={() => this.props.logout()}
+            token={this.props.token} url={this.props.url}/>}
+        </Stack.Screen>
+        <Stack.Screen name="InspectFavCode" options={{ headerStyle: { height: navbarHeight },
+          title: '', headerTransparent: true }}>
+          {props => <FavCodeScreen {...props} logout={() => this.props.logout()}
             token={this.props.token} url={this.props.url}/>}
         </Stack.Screen>
       </Stack.Navigator>

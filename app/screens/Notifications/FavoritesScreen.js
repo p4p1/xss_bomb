@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#444333',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 30,
     paddingBottom: 5,
   },
   save_clip:{

@@ -24,7 +24,7 @@ export default class MainScreen extends React.Component
           <TextButton text="Edit Code" run={() => {this.props.navigation.navigate('CodeEditor')}} />
           <TextButton text="Favorites" run={() => {this.props.navigation.navigate('CodeFavorites')}} />
           <TextButton text="User Submited Code" run={() => {this.props.navigation.navigate('CodeSubmited')}} />
-          <TextButton text="Burp Payload List" run={() => {this.props.navigation.navigate('CodeEditor')}} />
+          {/*<TextButton text="Burp Payload List" run={() => {this.props.navigation.navigate('CodeEditor')}} />*/}
         </View>
       </View>
     );

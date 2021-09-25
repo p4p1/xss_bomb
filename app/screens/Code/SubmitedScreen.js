@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, RefreshControl, StyleSheet, TouchableOpacity, ScrollView, View } from 'react-native';
+import { Text, RefreshControl, StyleSheet, FlatList, View } from 'react-native';
 
 import Code from '../../components/Code.js';
 
@@ -11,17 +11,19 @@ export default class SubmitedScreen extends React.Component
     super(props);
     this.state = {
       refreshing: false,
+      loadingMore: true,
       data: [],
       page: 0,
       selected: undefined
     }
 
     this.onRefresh = this.onRefresh.bind(this);
+    this.loadMore = this.loadMore.bind(this);
   }
 
   onRefresh() {
     this.setState({refreshing: true});
-    fetch(`${this.props.url}code/${this.state.page}`, {
+    fetch(`${this.props.url}code/0`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -29,7 +31,7 @@ export default class SubmitedScreen extends React.Component
         'authorization': `Bearer ${this.props.token}`
       }
     }).then((response) => response.json()).then((json) => {
-      console.log(json);
+      this.setState({page: 0});
       this.setState({data: json});
       this.setState({refreshing: false});
     }).catch((err) => {
@@ -40,28 +42,50 @@ export default class SubmitedScreen extends React.Component
     });
   }
 
+  loadMore() {
+    var current_page = this.state.page + 1;
+    fetch(`${this.props.url}code/${current_page}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${this.props.token}`
+      }
+    }).then((response) => response.json()).then((json) => {
+      console.log(json);
+      this.setState({data: [...this.state.data, ...json]});
+      this.setState({page: current_page});
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: Could not connect");
+      this.props.logout();
+    });
+  }
+
   componentDidMount() {
     this.onRefresh();
   }
 
   render () {
+    if (this.state.data.length == 0) {
+      return (
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.header}>Nothing has been shared yet!</Text>
+          </View>
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
-        <ScrollView style={{width:'90%', height:'80%' }}
+        <FlatList style={{width:'100%', height:'100%' }}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
-          onRefresh={this.onRefresh}/>}>
-          {
-            this.state.data.length == 0 ?
-              <View>
-                <Text style={styles.header}>Nothing has been shared yet!</Text>
-              </View>
-            :
-              this.state.data.map(
-                (codeData,i) => <Code data={codeData}
-                  run={() => this.props.setCode(codeData._id)} key={i} />
-              )
-          }
-        </ScrollView>
+          onRefresh={this.onRefresh}/>} keyExtractor={item => item._id} data={this.state.data}
+          renderItem={({item}) => (
+            <Code data={item} run={() => this.props.setCode(item._id)} />
+          )} onEndReached={this.loadMore} onEndReachedThreshold={0.5} initialNumToRender={10}
+          ListFooterComponent={<View style={{height:80}}></View>}
+          ListHeaderComponent={<View style={{height:50}}></View>} />
       </View>
     );
   }
@@ -77,17 +101,12 @@ SubmitedScreen.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     width: '100%',
     height: '100%',
     backgroundColor: '#444333',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 30,
     paddingBottom: 5,
-  },
-  save_clip:{
-    justifyContent: 'center',
-    flexDirection: 'row'
   },
   header: {
     fontSize: 25,
@@ -99,19 +118,5 @@ const styles = StyleSheet.create({
     marginTop: 100,
     textAlign: 'center',
     width: '100%',
-  },
-  para: {
-    fontSize: 15,
-    color: '#aaaaaa',
-    paddingLeft: 5,
-    paddingRight: 10,
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  logo: {
-    width: 150,
-    height: 150,
-    marginBottom: 50,
-    borderRadius: 30,
   },
 });

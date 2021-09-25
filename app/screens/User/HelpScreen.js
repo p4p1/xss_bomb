@@ -80,6 +80,7 @@ export default class HelpScreen extends React.Component
     return (
       <View style={styles.container}>
         <ScrollView>
+          <View style={styles.padding}></View>
           <View style={styles.center}>
             <Image style={styles.logo} source={require(logo)} />
             <Text style={styles.para}>
@@ -150,6 +151,10 @@ export default class HelpScreen extends React.Component
           <Button title={"Open a new issue"}
             onPress={() => this.openURL(githubNewIssueURL)} color={'#ED1D5D'}/>
           <View style={styles.padding}></View>
+          <View style={styles.padding}></View>
+          <View style={styles.padding}></View>
+          <View style={styles.padding}></View>
+          <View style={styles.padding}></View>
         </ScrollView>
       </View>
     );
@@ -170,7 +175,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#444333',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 30,
     paddingBottom: 5,
   },
   header: {

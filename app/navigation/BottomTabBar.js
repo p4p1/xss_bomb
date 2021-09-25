@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Keyboard, TouchableOpacity, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -12,12 +12,15 @@ export default class BottomTabBar extends React.Component
   constructor(props) {
     super(props);
     this.state = {
-      selected: 0
+      selected: 0,
+      keyboard: false
     };
 
     this.navigateNotifications = this.navigateNotifications.bind(this);
     this.navigateCode = this.navigateCode.bind(this);
     this.navigateProfile = this.navigateProfile.bind(this);
+
+    this._keyboardHandle = this._keyboardHandle.bind(this);
   }
 
   navigateNotifications() {
@@ -33,7 +36,19 @@ export default class BottomTabBar extends React.Component
     this.setState({selected: 2});
   }
 
+  _keyboardHandle() {
+    this.setState({keyboard: !this.state.keyboard});
+  }
+
+  componentDidMount() {
+    Keyboard.addListener('keyboardDidShow', this._keyboardHandle);
+    Keyboard.addListener('keyboardDidHide', this._keyboardHandle);
+  }
+
   render () {
+    if (this.state.keyboard == true) {
+      return (<View></View>);
+    }
     return (
       <View style={styles.container}>
         <View style={styles.button_container}>
@@ -61,7 +76,8 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-around',
     flexDirection: 'row',
-    backgroundColor: '#444333',
+    position: 'absolute',
+    bottom: 0,
   },
   button_container: {
     backgroundColor: '#000',

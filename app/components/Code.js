@@ -10,6 +10,7 @@ export default class Code extends React.Component
   }
 
   render() {
+    console.log(this.props.data);
     if (this.props.data === undefined) {
       return (<View></View>);
     }
@@ -35,9 +36,10 @@ Code.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginBottom: 10,
     marginTop: 10,
+    marginRight: 10,
+    marginLeft: 10,
     backgroundColor: '#333333',
     justifyContent: 'center',
     paddingTop: 10,
@@ -48,51 +50,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     color: '#fff',
-    paddingLeft: 5,
-    paddingRight: 10,
-    marginBottom: 15,
-  },
-  header_OTHER: {
-    width: '25%',
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: 'purple',
-    paddingLeft: 5,
-    paddingRight: 10,
-    marginBottom: 15,
-  },
-  header_GET: {
-    width: '25%',
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: 'green',
-    paddingLeft: 5,
-    paddingRight: 10,
-    marginBottom: 15,
-  },
-  header_DELETE: {
-    width: '25%',
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: 'red',
-    paddingLeft: 5,
-    paddingRight: 10,
-    marginBottom: 15,
-  },
-  header_PUT: {
-    width: '25%',
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: 'cyan',
-    paddingLeft: 5,
-    paddingRight: 10,
-    marginBottom: 15,
-  },
-  header_POST: {
-    width: '25%',
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: 'yellow',
     paddingLeft: 5,
     paddingRight: 10,
     marginBottom: 15,
