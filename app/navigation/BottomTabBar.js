@@ -37,7 +37,8 @@ export default class BottomTabBar extends React.Component
   }
 
   _keyboardHandle() {
-    this.setState({keyboard: !this.state.keyboard});
+ //   this.setState({keyboard: !this.state.keyboard});
+    // TODO: this bugs in production please fix
   }
 
   componentDidMount() {
