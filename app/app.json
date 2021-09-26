@@ -2,7 +2,7 @@
   "expo": {
     "name": "xss_bomb",
     "slug": "xss_bomb",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,7 +23,7 @@
       "favicon": "./assets/favicon.png"
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 3,
       "package": "com.p4p1.xss_bomb",
       "googleServicesFile": "./google-services.json",
       "permissions":[
