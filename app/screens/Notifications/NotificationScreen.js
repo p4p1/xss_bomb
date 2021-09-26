@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Modal, RefreshControl, StyleSheet, ScrollView, View, Clipboard, TouchableOpacity } from 'react-native';
+import { FlatList, Text, Modal, RefreshControl, StyleSheet, ScrollView, View, Clipboard, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
@@ -136,6 +136,24 @@ export default class HomeScreen extends React.Component
     if (this.state.api_id == undefined) {
       return (<SplashScreen />);
     }
+    if (this.state.data.length == 0) {
+      return (
+        <View style={styles.container}>
+        <ScrollView style={{width:'90%', height:'80%' }}
+        refreshControl={<RefreshControl refreshing={this.state.refreshing}
+        onRefresh={this.onRefresh}/>}>
+          <View>
+            <Text style={styles.header}>Waiting for requests on</Text>
+            <TouchableOpacity style={styles.save_clip}
+              onPress={() => Clipboard.setString(this.props.url + "api/" + this.state.api_id)}>
+              <Text style={styles.para}>{this.props.url}api/{this.state.api_id}</Text>
+              <FontAwesomeIcon size={20} color={'#aaaaaa'} icon={ faCopy } />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <Modal animationType={"slide"} transparent={true}
@@ -144,28 +162,17 @@ export default class HomeScreen extends React.Component
           <Inspect selected={this.state.selected} run={() =>
             this.setState({modal: !this.state.modal})} />
         </Modal>
-        <ScrollView style={{width:'90%', height:'80%' }}
+        <FlatList style={{width:'100%', height:'100%' }}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
-          onRefresh={this.onRefresh}/>}>
-          {
-            this.state.data.length == 0 ?
-              <View>
-                <Text style={styles.header}>Waiting for requests on</Text>
-                <TouchableOpacity style={styles.save_clip}
-                  onPress={() => Clipboard.setString(this.props.url + "api/" + this.state.api_id)}>
-                  <Text style={styles.para}>{this.props.url}api/{this.state.api_id}</Text>
-                  <FontAwesomeIcon size={20} color={'#aaaaaa'} icon={ faCopy } />
-                </TouchableOpacity>
-              </View>
-            :
-              this.state.data.map(
-                (notifData,i) => <Notif data={notifData} key={i}
+          onRefresh={this.onRefresh}/>} keyExtractor={item => item._id} data={this.state.data}
+          renderItem={({item}) => (
+            <Notif data={item}
                   delete={(data) => this.remove(data)}
                   save={(data) => this.save(data)}
                   info={(data) => this.info(data)} />
-              )
-          }
-        </ScrollView>
+          )} onEndReached={this.loadMore} onEndReachedThreshold={0.5} initialNumToRender={10}
+          ListFooterComponent={<View style={{height:80}}></View>}
+          ListHeaderComponent={<View style={{height:70}}></View>} />
       </View>
     );
   }

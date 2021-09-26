@@ -12,6 +12,8 @@ const apiDocURL = "https://documenter.getpostman.com/view/10616927/Tz5p6y9A";
 const trelloURL= "https://github.com/p4p1/xss_bomb/projects";
 const playURL = "https://play.google.com/store/apps/details?id=com.p4p1.xss_bomb";
 const meURL = "https://leosmith.xyz";
+const blogPost1 = "https://leosmith.xyz/blog/xss-bomb.html";
+const blogPost2 = "https://leosmith.xyz/blog/xss-bomb-devlog1.html";
 
 const version = "V0.1.2";
 
@@ -108,13 +110,22 @@ export default class HelpScreen extends React.Component
           <Text style={styles.header}>Who built this?</Text>
           <Text style={styles.para}>
             This app was built by me (p4p1) over on github and is provided for free
-            there if you wish to support me this app will probably be on the store for
-            $2 ish.
+            there if you wish to support me this app is on the play store:
           </Text>
           <Button title={"About author"} onPress={() => this.openURL(meURL)}/>
           <View style={styles.padding}></View>
           <Button title={"Support me (Google Play)"} onPress={() =>
             this.openURL(playURL)} color={'#2CAA4C'}/>
+          <View style={styles.padding}></View>
+          <Text style={styles.para}>
+            This app also has a few blog posts provided on the author's website
+            kind of like a devlog here are the posts:
+          </Text>
+          <Button title={"General architecture of the app"} onPress={() =>
+            this.openURL(blogPost1)} color={'#9315b7'}/>
+          <View style={styles.padding}></View>
+          <Button title={"The social network update"} onPress={() =>
+            this.openURL(blogPost2)} color={'#9315b7'}/>
           <View style={styles.padding}></View>
           <Text style={styles.header}>Is this open source?</Text>
           <Text style={styles.para}>

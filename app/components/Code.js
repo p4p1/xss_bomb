@@ -10,7 +10,6 @@ export default class Code extends React.Component
   }
 
   render() {
-    console.log(this.props.data);
     if (this.props.data === undefined) {
       return (<View></View>);
     }
@@ -38,8 +37,6 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
     marginTop: 10,
-    marginRight: 10,
-    marginLeft: 10,
     backgroundColor: '#333333',
     justifyContent: 'center',
     paddingTop: 10,

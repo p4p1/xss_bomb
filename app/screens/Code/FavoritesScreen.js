@@ -53,9 +53,10 @@ export default class FavoritesScreen extends React.Component
   render () {
     return (
       <View style={styles.container}>
-        <ScrollView style={{width:'90%', height:'80%' }}
+        <ScrollView style={{width:'100%', height:'100%' }}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
           onRefresh={this.onRefresh}/>}>
+          <View style={{height: 50}}></View>
           {
             this.state.data.length == 0 ?
               <View>
@@ -67,6 +68,7 @@ export default class FavoritesScreen extends React.Component
                   run={() => this.props.navigation.navigate('InspectFavCode', {"data" : codeData})} key={i} />
               )
           }
+          <View style={{height: 80}}></View>
         </ScrollView>
       </View>
     );
@@ -88,8 +90,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#444333',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 30,
-    paddingBottom: 5,
   },
   save_clip:{
     justifyContent: 'center',

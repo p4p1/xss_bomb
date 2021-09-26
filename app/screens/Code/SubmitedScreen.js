@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, RefreshControl, StyleSheet, FlatList, View } from 'react-native';
+import { Text, RefreshControl, StyleSheet, FlatList, ScrollView, View } from 'react-native';
 
 import Code from '../../components/Code.js';
 
@@ -52,7 +52,6 @@ export default class SubmitedScreen extends React.Component
         'authorization': `Bearer ${this.props.token}`
       }
     }).then((response) => response.json()).then((json) => {
-      console.log(json);
       this.setState({data: [...this.state.data, ...json]});
       this.setState({page: current_page});
     }).catch((err) => {
@@ -70,9 +69,11 @@ export default class SubmitedScreen extends React.Component
     if (this.state.data.length == 0) {
       return (
         <View style={styles.container}>
-          <View>
+        <ScrollView style={{width:'90%', height:'80%' }}
+          refreshControl={<RefreshControl refreshing={this.state.refreshing}
+          onRefresh={this.onRefresh}/>}>
             <Text style={styles.header}>Nothing has been shared yet!</Text>
-          </View>
+        </ScrollView>
         </View>
       );
     }

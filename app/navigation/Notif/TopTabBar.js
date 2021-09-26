@@ -52,7 +52,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     alignItems: 'center',
     flexDirection: 'row-reverse',
-    backgroundColor: '#444333',
+    position: 'absolute',
+    top: 0,
+    zIndex: 1,
   },
   button_container: {
     backgroundColor: '#000',

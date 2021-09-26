@@ -80,9 +80,10 @@ export default class FavoritesScreen extends React.Component
           <Inspect selected={this.state.selected} run={() =>
             this.setState({modal: !this.state.modal})} />
         </Modal>
-        <ScrollView style={{width:'90%', height:'80%' }}
+        <ScrollView style={{width:'100%', height:'80%' }}
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
           onRefresh={this.onRefresh}/>}>
+          <View style={{height: 80}}></View>
           {
             this.state.data.length == 0 ?
               <View>
@@ -95,6 +96,7 @@ export default class FavoritesScreen extends React.Component
                   info={(data) => this.info(data)} />
               )
           }
+          <View style={{height: 80}}></View>
         </ScrollView>
       </View>
     );
