@@ -4,6 +4,7 @@ var findOrCreate = require('mongoose-findorcreate')
 var CodeSchema = new mongoose.Schema({
   name: String,
   description: String,
+  isPublic: Boolean,
   userId: String,
   code: String,
   downloads: Number

@@ -5,6 +5,8 @@ const bcrypt = require("bcryptjs");
 
 const User = require('../lib/models/User.js');
 const Notification = require('../lib/models/Notification.js');
+const Code = require('../lib/models/Code.js');
+
 const middleware = require("../middleware/middleware.js");
 
 router.get('/check', middleware.isLoggedIn, function (req, res) {
@@ -168,6 +170,23 @@ router.delete('/nuke', middleware.isLoggedIn, function (req, res) {
                     _id: mongoose.mongo.ObjectId(notifications[i]._id)
                   }). then(() => {
                     console.log("Removed notification of:" + req.userData.username);
+                  }).catch((err) => {
+                    console.log(err);
+                  })
+                }
+              }
+            })
+            Code.find({
+              userId: data[0]._id
+            }).exec((err, code) => {
+              if (err) {
+                return res.status(500).send("Code id not found");
+              } else {
+                for (var i = 0; i < code.length; i++) {
+                  Code.deleteOne({
+                    _id: mongoose.mongo.ObjectId(code[i]._id)
+                  }). then(() => {
+                    console.log("Removed code of:" + req.userData.username);
                   }).catch((err) => {
                     console.log(err);
                   })

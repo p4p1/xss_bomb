@@ -23,7 +23,8 @@ router.post('/share', middleware.isLoggedIn, function (req, res) {
         {
           name: req.body.name,
           description: req.body.description,
-          userId: (data[0].public) ? data[0]._id : undefined,
+          userId: data[0]._id,
+          isPublic: data[0].public,
           code: data[0].code,
           downloads: 0
         },
@@ -49,13 +50,20 @@ router.post('/share', middleware.isLoggedIn, function (req, res) {
 })
 
 router.get('/:page', middleware.isLoggedIn, function (req, res) {
-  Code.find({})
-    .limit((req.params.page == 0) ? 10 : req.params.page * 10)
-    .skip(req.params.page  * 10).exec((err, data) => {
+  Code.find({}).limit((req.params.page == 0) ? 10 : req.params.page * 10)
+  .skip(req.params.page  * 10).exec((err, data) => {
     if (err) {
       console.log(err);
       return res.status(500).send("Nothing found");
     } else {
+      var cleared_data = data;
+
+      for (var i = 0; i < cleared_data.length; i++) {
+        if (cleared_data[i].isPublic === false) {
+          cleared_data[i].userId = undefined;
+        }
+        cleared_data[i].isPublic = undefined;
+      }
       return res.status(200).send(data);
     }
   });
@@ -68,7 +76,13 @@ router.get('/get_code/:id', middleware.isLoggedIn, function (req, res) {
     if (err || data.length != 1) {
       return res.status(500).send("Code not found");
     } else {
-      return res.status(200).send(data[0]);
+      var cleared_data = data[0];
+
+      if (cleared_data.isPublic === false) {
+        cleared_data.userId = undefined;
+      }
+      cleared_data.isPublic = undefined;
+      return res.status(200).send(cleared_data);
     }
   });
 })
@@ -89,12 +103,20 @@ router.get('/dl/:id', middleware.isLoggedIn, function (req, res) {
           User.findByIdAndUpdate(data3[0]._id, {code: data[0].code}, (err) => {
             if (err) {
               console.log(err);
-              return res.status(401).send({ msg: "Incorrect username or password!" });
+              return res.status(401).send({ msg: "User code not found!" });
             }
             // else { /* BELOW CODE SHOULD BE HERE BUT UGLY */ }
           });
         }
       })
+      Code.findByIdAndUpdate(data[0]._id, {downloads: data[0].downloads + 1}, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(401).send({ msg: "Wrong code id?" });
+        }
+        // else { /* SAME HERE THIS CODE IS KINDA UGLY */ }
+      });
+
       /*
        * TODO: THIS CODE SHOULD BE PUT UP THERE IN AN ELSE
        */
