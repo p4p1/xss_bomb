@@ -30,28 +30,14 @@ export default class FavoritesScreen extends React.Component
         this.setState({ data: JSON.parse(value) });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     this.setState({refreshing: false});
   }
 
-  info(key) {
-    fetch(`${this.props.url}user/get_notification/${key}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'authorization': `Bearer ${this.props.token}`
-      }
-    }).then((response) => response.json()).then((json) => {
-      console.log(json);
-      this.setState({selected: json[0]});
-      this.setState({modal: !this.state.modal});
-    }).catch((err) => {
-      console.error(err);
-      alert("Error: Could not connect");
-      this.props.logout();
-    });
+  info(index) {
+    this.setState({selected: this.state.data[index]});
+    this.setState({modal: !this.state.modal});
   }
 
   async remove(index) {
@@ -93,7 +79,7 @@ export default class FavoritesScreen extends React.Component
               this.state.data.reverse().map(
                 (notifData,i) => <FavNotif data={notifData} key={i}
                   delete={() => this.remove(i)}
-                  info={(data) => this.info(data)} />
+                  info={() => this.info(i)} />
               )
           }
           <View style={{height: 80}}></View>

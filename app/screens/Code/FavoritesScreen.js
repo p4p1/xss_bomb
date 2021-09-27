@@ -28,7 +28,7 @@ export default class FavoritesScreen extends React.Component
         this.setState({ data: JSON.parse(value) });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     this.setState({refreshing: false});
   }

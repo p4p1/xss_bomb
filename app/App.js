@@ -31,7 +31,7 @@ export default class App extends React.Component
         this.setState({ url: value });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -53,7 +53,7 @@ export default class App extends React.Component
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

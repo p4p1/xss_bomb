@@ -15,6 +15,7 @@ export default class HomeScreen extends React.Component
   constructor(props) {
     super(props);
     this.state = {
+      page: 0,
       refreshing: false,
       data: [],
       api_id: undefined,
@@ -23,14 +24,16 @@ export default class HomeScreen extends React.Component
     }
 
     this.onRefresh = this.onRefresh.bind(this);
+    this.loadMore = this.loadMore.bind(this);
     this.remove = this.remove.bind(this);
     this.save = this.save.bind(this);
+    this.fav = this.fav.bind(this);
     this.info = this.info.bind(this);
   }
 
   onRefresh() {
     this.setState({refreshing: true});
-    fetch(`${this.props.url}user/get_notifications`, {
+    fetch(`${this.props.url}user/notifications/0`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -48,7 +51,44 @@ export default class HomeScreen extends React.Component
     });
   }
 
+  loadMore() {
+    var current_page = this.state.page + 1;
+    fetch(`${this.props.url}user/notifications/${current_page}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${this.props.token}`
+      }
+    }).then((response) => response.json()).then((json) => {
+      this.setState({data: [...this.state.data, ...json]});
+      this.setState({page: current_page});
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: Could not connect");
+      this.props.logout();
+    });
+  }
+
+  fav(notification_data) {
+    fetch(`${this.props.url}user/get_notification/${notification_data._id}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${this.props.token}`
+      }
+    }).then((response) => response.json()).then((json) => {
+      this.save(json[0]);
+    }).catch((err) => {
+      console.error(err);
+      alert("Error: Could not connect");
+      this.props.logout();
+    });
+  }
+
   async save(notification_data) {
+
     try {
       const value = await AsyncStorage.getItem('@xss_bomb:notification');
       if (value !== null) {
@@ -72,7 +112,7 @@ export default class HomeScreen extends React.Component
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -168,7 +208,7 @@ export default class HomeScreen extends React.Component
           renderItem={({item}) => (
             <Notif data={item}
                   delete={(data) => this.remove(data)}
-                  save={(data) => this.save(data)}
+                  save={(data) => this.fav(data)}
                   info={(data) => this.info(data)} />
           )} onEndReached={this.loadMore} onEndReachedThreshold={0.5} initialNumToRender={10}
           ListFooterComponent={<View style={{height:80}}></View>}
