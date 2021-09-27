@@ -19,8 +19,6 @@ export default class BottomTabBar extends React.Component
     this.navigateNotifications = this.navigateNotifications.bind(this);
     this.navigateCode = this.navigateCode.bind(this);
     this.navigateProfile = this.navigateProfile.bind(this);
-
-    this._keyboardHandle = this._keyboardHandle.bind(this);
   }
 
   navigateNotifications() {
@@ -36,18 +34,17 @@ export default class BottomTabBar extends React.Component
     this.setState({selected: 2});
   }
 
-  _keyboardHandle() {
- //   this.setState({keyboard: !this.state.keyboard});
-    // TODO: this bugs in production please fix
-  }
-
   componentDidMount() {
-    Keyboard.addListener('keyboardDidShow', this._keyboardHandle);
-    Keyboard.addListener('keyboardDidHide', this._keyboardHandle);
+    Keyboard.addListener('keyboardDidShow', () => {
+      this.setState({keyboard: true});
+    });
+    Keyboard.addListener('keyboardDidHide', () => {
+      this.setState({keyboard: false});
+    });
   }
 
   render () {
-    if (this.state.keyboard == true) {
+    if (this.state.keyboard === true) {
       return (<View></View>);
     }
     return (

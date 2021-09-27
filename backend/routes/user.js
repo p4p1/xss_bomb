@@ -56,6 +56,9 @@ router.get('/get_user/:index', middleware.isLoggedIn, function (req, res) {
   })
 })
 
+/*
+ * TODO: Remove this legacy code
+ */
 router.get('/get_notifications', middleware.isLoggedIn, function (req, res) {
   User.find({
     username: req.userData.username,
@@ -71,9 +74,39 @@ router.get('/get_notifications', middleware.isLoggedIn, function (req, res) {
         } else {
           for (var i = 0; i < notifications.length; i++) {
             notifications[i].body = undefined;
-            notifications[i].headers= undefined;
+            notifications[i].header = undefined;
           }
           return res.status(200).send(notifications.reverse());
+        }
+      })
+    }
+  })
+})
+
+/*
+ * New version of notification system do not remove this, remove previous function
+ * later
+ */
+router.get('/notifications/:page', middleware.isLoggedIn, function (req, res) {
+  User.find({
+    username: req.userData.username,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("User not found");
+    } else {
+      Notification.find({
+        api_id: data[0].api_id
+      }).sort({date:-1}).limit((req.params.page == 0) ? 10 : req.params.page * 10)
+        .skip(req.params.page  * 10).exec((err, notifications) => {
+        if (err) {
+          return res.status(500).send("Api id not found");
+        } else {
+          var data = notifications;
+          for (var i = 0; i < data.length; i++) {
+            data[i].body = undefined;
+            data[i].header = undefined;
+          }
+          return res.status(200).send(data);
         }
       })
     }

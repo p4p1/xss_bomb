@@ -28,7 +28,6 @@ export default class UserScreen extends React.Component
         'authorization': `Bearer ${this.props.token}`
       }
     }).then((response) => response.json()).then((json) => {
-      console.log(json);
       this.setState({ data: json });
     }).catch((err) => {
       console.error(err);
