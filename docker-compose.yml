@@ -8,6 +8,7 @@ services:
         - ./logs:/winston_logs
       ports:
         - "8000:8000"
+        - "8001:8001"
       links:
         - mongo
         - redis

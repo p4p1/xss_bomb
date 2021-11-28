@@ -52,7 +52,7 @@ var httpsServer = https.createServer({
   cert: fs.readFileSync('cert.pem')
 }, app);
 
-server.listen(port + 1)
+server.listen(normalizePort('8001'))
 httpsServer.listen(port);
 httpsServer.on('error', onError);
 httpsServer.on('listening', onListening);
