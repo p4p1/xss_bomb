@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const router = express.Router()
 const User = require('../lib/models/User.js');
 const Notification = require('../lib/models/Notification.js');
@@ -65,7 +66,15 @@ router.get('/:id', function (req, res) {
           console.log(err);
         }
       });
-      return res.status(200).send("ok");
+      if (req.query.url !== undefined) {
+        return res.status(200).redirect(req.query.url);
+      } else {
+        if (req.query.inject !== undefined) {
+          return res.status(200).send(req.query.inject);
+        } else {
+          return res.status(200).send("ok");
+        }
+      }
     }
   });
 })
@@ -98,7 +107,15 @@ router.post('/:id', function (req, res) {
           console.log(err);
         }
       });
-      return res.status(200).send("ok");
+      if (req.query.url !== undefined) {
+        return res.status(200).redirect(req.query.url);
+      } else {
+        if (req.query.inject !== undefined) {
+          return res.status(200).send(req.query.inject);
+        } else {
+          return res.status(200).send("ok");
+        }
+      }
     }
   });
 })
@@ -131,7 +148,15 @@ router.put('/:id', function (req, res) {
           console.log(err);
         }
       });
-      return res.status(200).send("ok");
+      if (req.query.url !== undefined) {
+        return res.status(200).redirect(req.query.url);
+      } else {
+        if (req.query.inject !== undefined) {
+          return res.status(200).send(req.query.inject);
+        } else {
+          return res.status(200).send("ok");
+        }
+      }
     }
   });
 })
@@ -164,7 +189,15 @@ router.delete('/:id', function (req, res) {
           console.log(err);
         }
       });
-      return res.status(200).send("ok");
+      if (req.query.url !== undefined) {
+        return res.status(200).redirect(req.query.url);
+      } else {
+        if (req.query.inject !== undefined) {
+          return res.status(200).send(req.query.inject);
+        } else {
+          return res.status(200).send("ok");
+        }
+      }
     }
   });
 })
@@ -197,7 +230,55 @@ router.patch('/:id', function (req, res) {
           console.log(err);
         }
       });
-      return res.status(200).send("ok");
+      if (req.query.url !== undefined) {
+        return res.status(200).redirect(req.query.url);
+      } else {
+        if (req.query.inject !== undefined) {
+          return res.status(200).send(req.query.inject);
+        } else {
+          return res.status(200).send("ok");
+        }
+      }
+    }
+  });
+})
+
+router.get('/:id/frame', function (req, res) {
+  User.find({
+    api_id: req.params.id,
+  }).exec((err, data) => {
+    if (err || data.length != 1 || req.query.url === undefined) {
+      return res.status(500).send("ko");
+    } else {
+      Notification.create({
+        api_id: req.params.id,
+        method: "GET",
+        date: new Date(),
+        link: req.url,
+        userAgent: req.headers['user-agent'],
+        body: `${JSON.stringify(req.body)}`,
+        header: req.headers,
+        ipAddress: req.ip
+      }, function(err) {
+        if (err) {
+          console.error(err)
+        }
+      })
+      sendNotification(data[0].notificationId, { title: "xss - frame injected",
+        body: req.headers['user-agent'] })
+      fs.readFile('public/frame.html', 'utf8', function (err,data) {
+        if (err) {
+          return console.log(err);
+        }
+        data = data.replace(/CHANGEURL/g, req.query.url);
+        if (req.query.title !== undefined) {
+          data = data.replace(/CHANGETITLE/g, req.query.title);
+        }
+        if (req.query.inject !== undefined) {
+          data = data.replace(/\/\*CHANGEJS\*\//g, req.query.inject);
+        }
+        return res.status(200).send(data);
+      });
     }
   });
 })
@@ -235,7 +316,11 @@ router.get('/:id/code', function (req, res) {
           console.log(err);
         }
       });
-      return res.status(200).send(data[0].code);
+      if (req.query.inject !== undefined) {
+        return res.status(200).send(data[0].code + req.query.inject);
+      } else {
+        return res.status(200).send(data[0].code);
+      }
     }
   });
 })
