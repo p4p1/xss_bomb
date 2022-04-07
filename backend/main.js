@@ -1,4 +1,5 @@
 var app = require('./server');
+var wsServer = require('./websockserver.js');
 var http = require('http');
 var fs = require('fs');
 var https  = require('https');
@@ -52,9 +53,20 @@ var httpsServer = https.createServer({
   cert: fs.readFileSync('cert.pem')
 }, app);
 
+
 server.listen(normalizePort('8001'))
 httpsServer.listen(port);
 httpsServer.on('error', onError);
 httpsServer.on('listening', onListening);
 server.on('error', onError);
 server.on('listening', onListening);
+httpsServer.on('upgrade', (request, socket, head) => {
+  wsServer.handleUpgrade(request, socket, head, socket => {
+    wsServer.emit('connection', socket, request);
+  });
+});
+server.on('upgrade', (request, socket, head) => {
+  wsServer.handleUpgrade(request, socket, head, socket => {
+    wsServer.emit('connection', socket, request);
+  });
+});

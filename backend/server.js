@@ -19,6 +19,7 @@ var auth = require('./routes/auth')
 var user = require('./routes/user')
 var api = require('./routes/api')
 var code = require('./routes/code')
+var websocket = require('./routes/websocket')
 
 mongoose.connect("mongodb://" +
   database_link + "/xss_bomb?retryWrites=true&w=majority", {
@@ -51,6 +52,7 @@ app.use('/auth', auth);
 app.use('/user', user);
 app.use('/api', api);
 app.use('/code', code);
+app.use('/websocket', websocket);
 app.use("/public", express.static('public'));
 app.get("/", function (req, res) {
   /*
