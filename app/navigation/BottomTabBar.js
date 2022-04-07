@@ -3,7 +3,7 @@ import { Keyboard, TouchableOpacity, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEdit, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faBell, faBars, faUserCircle } from '@fortawesome/free-solid-svg-icons'
 
 const iconSize = 25;
 
@@ -17,6 +17,7 @@ export default class BottomTabBar extends React.Component
     };
 
     this.navigateNotifications = this.navigateNotifications.bind(this);
+    this.navigateWebSocket = this.navigateWebSocket.bind(this);
     this.navigateCode = this.navigateCode.bind(this);
     this.navigateProfile = this.navigateProfile.bind(this);
   }
@@ -25,13 +26,17 @@ export default class BottomTabBar extends React.Component
     this.props.navigation.navigate('Notifications');
     this.setState({selected: 0});
   }
+  navigateWebSocket() {
+    this.props.navigation.navigate('Notifications');
+    this.setState({selected: 1});
+  }
   navigateCode() {
     this.props.navigation.navigate('Code');
-    this.setState({selected: 1});
+    this.setState({selected: 2});
   }
   navigateProfile() {
     this.props.navigation.navigate('Account');
-    this.setState({selected: 2});
+    this.setState({selected: 3});
   }
 
   componentDidMount() {
@@ -53,10 +58,13 @@ export default class BottomTabBar extends React.Component
           <TouchableOpacity onPress={this.navigateNotifications} style={(this.state.selected == 0) ? styles.btn_container_selected : styles.btn_container}>
             <FontAwesomeIcon size={iconSize} style={styles.icons} icon={ faBell }/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.navigateCode} style={(this.state.selected == 1) ? styles.btn_container_selected : styles.btn_container}>
+          <TouchableOpacity onPress={this.navigateWebSocket} style={(this.state.selected == 1) ? styles.btn_container_selected : styles.btn_container}>
+            <FontAwesomeIcon size={iconSize} style={styles.icons} icon={ faBars }/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.navigateCode} style={(this.state.selected == 2) ? styles.btn_container_selected : styles.btn_container}>
             <FontAwesomeIcon size={iconSize} style={styles.icons} icon={ faEdit }/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.navigateProfile} style={(this.state.selected == 2) ? styles.btn_container_selected : styles.btn_container}>
+          <TouchableOpacity onPress={this.navigateProfile} style={(this.state.selected == 3) ? styles.btn_container_selected : styles.btn_container}>
             <FontAwesomeIcon size={iconSize} style={styles.icons} icon={ faUserCircle }/>
           </TouchableOpacity>
         </View>
