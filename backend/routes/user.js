@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose')
 const router = express.Router()
+const logger = require('../lib/logger.js');
 const bcrypt = require("bcryptjs");
 
 const User = require('../lib/models/User.js');
@@ -166,6 +167,7 @@ router.delete('/nuke', middleware.isLoggedIn, function (req, res) {
               _id: mongoose.mongo.ObjectId(data[0]._id)
             }). then(() => {
               console.log("Removed user of:" + req.userData.username);
+              logger.error(`User ${req.userData.username} just nuked himself`);
             }).catch((err) => {
               console.log(err);
             })

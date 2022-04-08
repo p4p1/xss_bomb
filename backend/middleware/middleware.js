@@ -21,25 +21,9 @@ module.exports = {
       logger.info("[" + date + "] - " + req.ip + " - " + decoded.username + " - " +req.originalUrl);
       next();
     } catch (err) {
-      //console.log(err);
-      //logger.error("Invalid token: ", err);
-      //return res.status(401).send({ msg: "Your session is not valid!" });
-      /*
-       * Remove when all users updated to new auth method
-      */
-      try {
-        const token = req.headers.authorization.split(" ")[1];
-        const decoded = jwt.verify(token, SECRETKEY);
-        var date2 = new Date();
-
-        req.userData = decoded;
-        logger.info("[" + date2 + "] - " + req.ip + " - " + decoded.username + " - " +req.originalUrl);
-        next();
-      } catch (err2) {
-        console.log(err2);
-        logger.error("Invalid token: ", err2);
-        return res.status(401).send({ msg: "Your session is not valid!" });
-      }
+      console.log(err);
+      logger.error("Invalid token: ", err);
+      return res.status(401).send({ msg: "Your session is not valid!" });
     }
   },
   validateRegister: (req, res, next) => {

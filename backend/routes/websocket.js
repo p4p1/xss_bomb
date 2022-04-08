@@ -6,7 +6,7 @@ const User = require('../lib/models/User.js');
 
 const middleware = require("../middleware/middleware.js");
 
-router.get('/ws/:page', middleware.isLoggedIn, function (req, res) {
+router.get('/:page', middleware.isLoggedIn, function (req, res) {
   User.find({
     username: req.userData.username,
   }).exec((err, data) => {

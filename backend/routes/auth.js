@@ -24,14 +24,10 @@ router.post('/register', middleware.validateRegister, function (req, res, next) 
             username: req.body.username,
             password: hash,
             api_id: shortid.generate(),
-            code: "alert(document.domain);",
+            code: "alert(document.domain);", // Replace this for default code on new user
             public: false,
             posts: [],
-            favorites: [],
-            total_hits: 0,
-            code_injected: 0,
-            image_shown: 0,
-            payload_download: 0
+            favorites: []
           },
           function (err, user) {
             if (err) {
@@ -55,6 +51,9 @@ router.post('/login', middleware.checkLogin, function (req, res, next) {
       if (err || data.length != 1) {
         return res.status(500).send({ msg: "Username or password incorrect!" });
       } else {
+        if (data[0].isLocked) {
+            return res.status(401).send({msg: "You are locked out for 24Hours"});
+        }
         bcrypt.compare(req.body.password, data[0].password, (bErr, bResult) => {
           if (bErr) {
             return res.status(401).send({msg: "Username or password incorrect!"});
@@ -72,6 +71,11 @@ router.post('/login', middleware.checkLogin, function (req, res, next) {
               return res.status(200).send({ msg: "Logged in!", token: token });
             });
           } else {
+            data[0].failLoginIncrement(function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
             return res.status(401).send({ msg: "Incorrect password!" });
           }
          });
