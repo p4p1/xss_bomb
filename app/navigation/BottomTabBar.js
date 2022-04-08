@@ -27,7 +27,7 @@ export default class BottomTabBar extends React.Component
     this.setState({selected: 0});
   }
   navigateWebSocket() {
-    this.props.navigation.navigate('Notifications');
+    this.props.navigation.navigate('Websocket');
     this.setState({selected: 1});
   }
   navigateCode() {

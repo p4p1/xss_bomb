@@ -8,6 +8,7 @@ import BottomTabBar from './BottomTabBar.js';
 import EditUserNavigation from './User/EditUserNavigation.js';
 import NotifNavigator from './Notif/NotifNavigator.js';
 import CodeNavigator from './Code/CodeNavigator.js';
+import WebsocketScreen from '../screens/Websockets/WebsocketScreen.js';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,10 @@ export default class MainNavigator extends React.Component
         tabBar={(props) => <BottomTabBar {...props} />}>
         <Tab.Screen name="Notifications">
           {props => <NotifNavigator{...props} logout={() => this.props.logout()}
+          token={this.props.token} url={this.props.url} />}
+        </Tab.Screen>
+        <Tab.Screen name="Websocket">
+          {props => <WebsocketScreen {...props} logout={() => this.props.logout()}
           token={this.props.token} url={this.props.url} />}
         </Tab.Screen>
         <Tab.Screen name="Code">

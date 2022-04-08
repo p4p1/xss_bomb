@@ -64,6 +64,11 @@ export default class UserScreen extends React.Component
             <Text style={styles.para}>{this.props.url}api/{this.state.data.api_id}/code</Text>
             <FontAwesomeIcon size={20} color={'#aaaaaa'} icon={ faCopy } />
           </TouchableOpacity>
+          <TouchableOpacity style={styles.save_clip}
+            onPress={() => Clipboard.setString(this.props.url.replace("https://", "wss://") + this.state.data.api_id)}>
+            <Text style={styles.para}>{this.props.url.replace("https://", "wss://")}{this.state.data.api_id}</Text>
+            <FontAwesomeIcon size={20} color={'#aaaaaa'} icon={ faCopy } />
+          </TouchableOpacity>
           <TextButton text="Change username and password" run={() => {this.props.navigation.navigate('Edit')}} />
           <TextButton text="Delete account" run={() => {this.props.navigation.navigate('Delete')}} />
           <TextButton text="Logout" run={() => {this.props.logout()}} />

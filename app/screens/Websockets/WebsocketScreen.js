@@ -1,16 +1,14 @@
 import React from 'react';
 import { FlatList, Text, Modal, RefreshControl, StyleSheet, ScrollView, View, Clipboard, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
 import SplashScreen from '../SplashScreen';
-import Notif from '../../components/Notif.js';
 import Inspect from '../../components/Inspect.js';
 
 import PropTypes from 'prop-types';
 
-export default class HomeScreen extends React.Component
+export default class WebsocketScreen extends React.Component
 {
   constructor(props) {
     super(props);
@@ -25,15 +23,11 @@ export default class HomeScreen extends React.Component
 
     this.onRefresh = this.onRefresh.bind(this);
     this.loadMore = this.loadMore.bind(this);
-    this.remove = this.remove.bind(this);
-    this.save = this.save.bind(this);
-    this.fav = this.fav.bind(this);
-    this.info = this.info.bind(this);
   }
 
   onRefresh() {
     this.setState({refreshing: true});
-    fetch(`${this.props.url}user/notifications/0`, {
+    fetch(`${this.props.url}websocket/0`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -54,7 +48,7 @@ export default class HomeScreen extends React.Component
 
   loadMore() {
     var current_page = this.state.page + 1;
-    fetch(`${this.props.url}user/notifications/${current_page}`, {
+    fetch(`${this.props.url}websocket/${current_page}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -64,90 +58,6 @@ export default class HomeScreen extends React.Component
     }).then((response) => response.json()).then((json) => {
       this.setState({data: [...this.state.data, ...json]});
       this.setState({page: current_page});
-    }).catch((err) => {
-      console.error(err);
-      alert("Error: Could not connect");
-      this.props.logout();
-    });
-  }
-
-  fav(notification_data) {
-    fetch(`${this.props.url}user/get_notification/${notification_data._id}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'authorization': `Bearer ${this.props.token}`
-      }
-    }).then((response) => response.json()).then((json) => {
-      this.save(json[0]);
-    }).catch((err) => {
-      console.error(err);
-      alert("Error: Could not connect");
-      this.props.logout();
-    });
-  }
-
-  async save(notification_data) {
-
-    try {
-      const value = await AsyncStorage.getItem('@xss_bomb:notification');
-      if (value !== null) {
-        const new_value = JSON.parse(value);
-        try {
-          await AsyncStorage.setItem(
-            '@xss_bomb:notification',
-            JSON.stringify([ ...new_value, notification_data ])
-          );
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        try {
-          await AsyncStorage.setItem(
-            '@xss_bomb:notification',
-            JSON.stringify([ notification_data ])
-          );
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  remove(notification_id) {
-    fetch(`${this.props.url}user/notification`, {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'authorization': `Bearer ${this.props.token}`
-      },
-      body: JSON.stringify({
-        id: notification_id
-      }),
-    }).then((response) => response.json()).then((json) => {
-      this.onRefresh();
-    }).catch((err) => {
-      console.error(err);
-      alert("Error: Could not connect");
-      this.props.logout();
-    });
-  }
-
-  info(key) {
-    fetch(`${this.props.url}user/get_notification/${key}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'authorization': `Bearer ${this.props.token}`
-      }
-    }).then((response) => response.json()).then((json) => {
-      this.setState({selected: json[0]});
-      this.setState({modal: !this.state.modal});
     }).catch((err) => {
       console.error(err);
       alert("Error: Could not connect");
@@ -186,8 +96,8 @@ export default class HomeScreen extends React.Component
           <View>
             <Text style={styles.header}>Waiting for requests on</Text>
             <TouchableOpacity style={styles.save_clip}
-              onPress={() => Clipboard.setString(this.props.url + "api/" + this.state.api_id)}>
-              <Text style={styles.para}>{this.props.url}api/{this.state.api_id}</Text>
+              onPress={() => Clipboard.setString(this.props.url.replace("https://", "wss://") + this.state.api_id)}>
+              <Text style={styles.para}>{this.props.url.replace("https://", "wss://")}{this.state.api_id}</Text>
               <FontAwesomeIcon size={20} color={'#aaaaaa'} icon={ faCopy } />
             </TouchableOpacity>
           </View>
@@ -207,10 +117,7 @@ export default class HomeScreen extends React.Component
           refreshControl={<RefreshControl refreshing={this.state.refreshing}
           onRefresh={this.onRefresh}/>} keyExtractor={item => item._id} data={this.state.data}
           renderItem={({item}) => (
-            <Notif data={item}
-                  delete={(data) => this.remove(data)}
-                  save={(data) => this.fav(data)}
-                  info={(data) => this.info(data)} />
+            <Text style={styles.content}>{item.content}</Text>
           )} onEndReached={this.loadMore} onEndReachedThreshold={0.5} initialNumToRender={10}
           ListFooterComponent={<View style={{height:80}}></View>}
           ListHeaderComponent={<View style={{height:70}}></View>} />
@@ -219,7 +126,7 @@ export default class HomeScreen extends React.Component
   }
 }
 
-HomeScreen.propTypes = {
+WebsocketScreen.propTypes = {
   url: PropTypes.string,
   token: PropTypes.string,
   logout: PropTypes.function,
@@ -257,6 +164,16 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     marginBottom: 15,
     textAlign: 'center',
+  },
+  content: {
+    fontSize: 15,
+    color: '#fff',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 0,
+    marginBottom: 0,
+    backgroundColor: '#333333',
+    textAlign: 'left',
   },
   logo: {
     width: 150,

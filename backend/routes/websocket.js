@@ -15,7 +15,7 @@ router.get('/:page', middleware.isLoggedIn, function (req, res) {
     } else {
       Websocket.find({
         api_id: data[0].api_id
-      }).sort({date:-1}).limit((req.params.page == 0) ? 10 : req.params.page * 10)
+      }).limit((req.params.page == 0) ? 10 : req.params.page * 10)
         .skip(req.params.page  * 10).exec((err, data) => {
         if (err) {
           return res.status(500).send("Api id not found");
