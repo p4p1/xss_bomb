@@ -1,0 +1,15 @@
+xss-bomb.txt     For Vim. Last change: 2020 Jun 29
+
+                     VIM - xss-bomb pluggin
+
+SOME DOCUMENTATION
+
+      VARIABLES               DESCRIPTION
+    g:var                  SOME DESCRIPTION
+
+.vimrc:
+    VIMRC INFO
+
+
+MORE INFO:
+SOME INFO
