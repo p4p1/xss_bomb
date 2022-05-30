@@ -36,7 +36,7 @@ function xss_bomb#main()
 	let l:file = system("mktemp")
 	execute 'edit' l:file
 	execute "normal! i" . l:code
-	:%s/\\n/\r/g
+	execute "silent! :%s/\\n/\r/g"
 	let g:xss_bomb_url = l:url
 	let g:xss_bomb_token = l:ref_token
 	autocmd BufWritePost * call xss_bomb#UpdateFile(g:xss_bomb_url, g:xss_bomb_token)
