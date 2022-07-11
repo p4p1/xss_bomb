@@ -27,10 +27,12 @@ module.exports = {
     }
   },
   validateRegister: (req, res, next) => {
+    console.log("in middleware");
     User.find({
       username: req.body.username,
     }).exec((err, data) => {
       var date = new Date();
+      console.log(data);
 
       if (err || data.length == 0) {
         if (!req.body.username || req.body.username.length < 3) {
@@ -63,6 +65,11 @@ module.exports = {
     if (!req.body.password || req.body.password.length < 6) {
       return res.status(400).send({
         msg: "Please enter a password with min. 6 chars"
+      });
+    }
+    if (!req.body.otp_code) {
+      return res.status(400).send({
+        msg: "2FA is missing!"
       });
     }
     if (!req.body.notificationId) {

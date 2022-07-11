@@ -1,10 +1,14 @@
 const express = require('express');
-const middleware = require("../middleware/middleware.js");
-const User = require('../lib/models/User.js');
-const redis = require('../lib/redis.js');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const shortid = require("shortid");
+const uuid = require('uuid');
+const notp = require('notp');
+const base32 = require('thirty-two');
+
+const middleware = require("../middleware/middleware.js");
+const User = require('../lib/models/User.js');
+const redis = require('../lib/redis.js');
 
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
@@ -19,10 +23,12 @@ router.post('/register', middleware.validateRegister, function (req, res, next) 
       if (err) {
         return res.status(500).send({msg: err});
       } else {
+        var totp_key_local = uuid.v4();
         User.create(
           {
             username: req.body.username,
             password: hash,
+            totp_key: totp_key_local,
             api_id: shortid.generate(),
             code: "alert(document.domain);", // Replace this for default code on new user
             public: false,
@@ -35,7 +41,8 @@ router.post('/register', middleware.validateRegister, function (req, res, next) 
             }
           }
         )
-        return res.status(200).send({ msg: "Account created!" });
+        var encoded_totp = base32.encode(totp_key_local).toString().replace(/=/g, '');
+        return res.status(200).send({ msg: "Account created!", code: `otpauth://totp/${req.body.username}@xss_bomb?secret=${encoded_totp}` });
       }
     });
   } catch (e) {
@@ -59,17 +66,28 @@ router.post('/login', middleware.checkLogin, function (req, res, next) {
             return res.status(401).send({msg: "Username or password incorrect!"});
           }
           if (bResult) {
-            const token = jwt.sign({ username: req.body.username }, SECRETKEY,
-              { expiresIn: "7d" });
-            redis.set(data[0]["_id"].toString(), token);
-            User.findByIdAndUpdate(data[0]._id, {notificationId:
-                                  req.body.notificationId}, (err) => {
-              if (err) {
-                console.log(err);
-                return res.status(401).send({ msg: "Incorrect password!" });
-              }
-              return res.status(200).send({ msg: "Logged in!", token: token });
-            });
+            var otp = notp.totp.verify(req.body.otp_code, data[0].totp_key);
+
+            if (otp) {
+              const token = jwt.sign({ username: req.body.username }, SECRETKEY,
+                { expiresIn: "7d" });
+              redis.set(data[0]["_id"].toString(), token);
+              User.findByIdAndUpdate(data[0]._id, {notificationId:
+                                    req.body.notificationId}, (err) => {
+                if (err) {
+                  console.log(err);
+                  return res.status(401).send({ msg: "Incorrect password!" });
+                }
+                return res.status(200).send({ msg: "Logged in!", token: token });
+              });
+            } else {
+              data[0].failLoginIncrement(function(err) {
+                  if (err) {
+                      console.log(err);
+                  }
+              });
+              return res.status(401).send({ msg: "Incorrect password!" });
+            }
           } else {
             data[0].failLoginIncrement(function(err) {
                 if (err) {

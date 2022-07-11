@@ -9,6 +9,7 @@ const MAX_LOGIN_ATTEMPT = process.env.MAX_LOGIN_ATTEMPT;
 var UserSchema = new mongoose.Schema({
   username: String,
   password: String,
+  totp_key: String,
   notificationId: String,
   api_id: String,
   code: String,
