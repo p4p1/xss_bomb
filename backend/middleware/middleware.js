@@ -27,12 +27,10 @@ module.exports = {
     }
   },
   validateRegister: (req, res, next) => {
-    console.log("in middleware");
     User.find({
       username: req.body.username,
     }).exec((err, data) => {
       var date = new Date();
-      console.log(data);
 
       if (err || data.length == 0) {
         if (!req.body.username || req.body.username.length < 3) {

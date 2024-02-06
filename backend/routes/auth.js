@@ -31,9 +31,6 @@ router.post('/register', middleware.validateRegister, function (req, res, next) 
             totp_key: totp_key_local,
             api_id: shortid.generate(),
             code: "alert(document.domain);", // Replace this for default code on new user
-            public: false,
-            posts: [],
-            favorites: []
           },
           function (err, user) {
             if (err) {
@@ -56,6 +53,7 @@ router.post('/login', middleware.checkLogin, function (req, res, next) {
       username: req.body.username,
     }).exec((err, data) => {
       if (err || data.length != 1) {
+        // TODO: insert here check with other servers
         return res.status(500).send({ msg: "Username or password incorrect!" });
       } else {
         if (data[0].isLocked) {
@@ -110,6 +108,7 @@ router.get('/refresh', middleware.refreshToken, function (req, res, next) {
       username: req.userData.username,
     }).exec((err, data) => {
       if (err || data.length != 1) {
+        // TODO: insert here check with other servers
         return res.status(500).send({ msg: "Username or password incorrect!" });
       } else {
         redis.get(data[0]["_id"].toString(), function(err, val) {

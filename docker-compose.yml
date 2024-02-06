@@ -7,7 +7,8 @@ services:
       volumes:
         - ./logs:/winston_logs
       ports:
-        - "8000:8000"
+        - "127.0.0.1:8000:8000"
+        - "127.0.0.1:8001:8001"
       links:
         - mongo
         - redis
@@ -32,12 +33,13 @@ services:
     admin_panel:
       container_name: admin_panel
       restart: always
-      image: mongo-express
+      image: mongo-express:1.0.0-alpha.4
       ports:
         - "127.0.0.1:8081:8081"
       environment:
         ME_CONFIG_BASICAUTH_USERNAME: root
         ME_CONFIG_BASICAUTH_PASSWORD: toor
         ME_CONFIG_OPTIONS_EDITORTHEME: material
+        ME_CONFIG_MONGODB_SERVER: mongo
       links:
         - mongo
