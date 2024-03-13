@@ -13,6 +13,7 @@ var UserSchema = new mongoose.Schema({
   notificationId: String,
   api_id: String,
   code: String,
+  mime: { type: String, required: true, default: "text/html; charset=utf-8" },
   public: { type: Boolean, required: true, default: false },
   posts: { type: Array, required: true, default: [] },
   favorites: { type: Array, required: true, default: [] },

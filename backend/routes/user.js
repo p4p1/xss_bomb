@@ -203,6 +203,23 @@ router.patch('/set_public', middleware.isLoggedIn, function (req, res) {
     }
   })
 })
+router.post('/set_mime', middleware.isLoggedIn, function (req, res) {
+  User.find({
+    username: req.userData.username,
+  }).exec((err, data) => {
+    if (err || data.length != 1) {
+      return res.status(500).send("User not found");
+    } else {
+      User.findByIdAndUpdate(data[0]._id, {mime: req.body.mime}, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(401).send({ msg: "Incorrect username or password!" });
+        }
+        return res.status(200).send({ msg: "Updated mime type!" });
+      });
+    }
+  })
+})
 
 router.post('/set_code', middleware.isLoggedIn, function (req, res) {
   User.find({

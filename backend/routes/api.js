@@ -317,9 +317,9 @@ router.get('/:id/code', function (req, res) {
         }
       });
       if (req.query.inject !== undefined) {
-        return res.status(200).send(data[0].code + req.query.inject);
+        return res.status(200).setHeader('Content-Type', data[0].mime).send(data[0].code + req.query.inject);
       } else {
-        return res.status(200).send(data[0].code);
+        return res.status(200).setHeader('Content-Type', data[0].mime).send(data[0].code);
       }
     }
   });
