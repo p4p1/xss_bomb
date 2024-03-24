@@ -44,8 +44,9 @@ xss_bomb/
 
 ## Privacy and other things
 If you dont want someone seeing your requests and data do not use a public instance I host
-my personnal instance on leosmith.xyz and I decided to make it public for people to try out
-the app. If you dont trust me. Don't use my instance spin up yours and connect to it.
+my personnal instance on xss.leosmith.wtf it does not allow you to create accounts since I don't
+wan't to be seeing your bits on my db instance but you can publish your own instance publicly if you
+want and I'll add them to the public list if you message me.
 
 ## Screenshots
 
