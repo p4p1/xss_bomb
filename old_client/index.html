@@ -1,0 +1,81 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="dashboard/css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <title>Loading into xss_bomb...</title>
+<style>
+* {transition: all 0.1s;}
+body {
+  display: flex;
+  background-color: #2f2b2f;
+  height:100%;
+  align-items: center;
+  animation: fadeIn 5s forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+#content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+    color: #fff;
+}
+#content img {
+  width: 30rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+#myProgress {
+  width: 100%;
+  background-color: grey;
+  border-radius: 20px;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #24FF1F;
+  border-radius: 20px;
+}
+
+</style>
+  </head>
+  <body>
+    <div class="center" id="content">
+      <div>
+        <img src="favicon.png" />
+        <h2 class="text-center">XSS bomb is loading...</h2>
+        <div id="myProgress">
+            <div id="myBar"></div>
+        </div>
+      </div>
+    </div>
+    <script>var i = 0;function move() {if (i == 0) {i = 1;var elem = document.getElementById("myBar");var width = 1;var id = setInterval(frame, 30);function frame() {if (width >= 100) {clearInterval(id);i = 0;window.location.href = "dashboard/";} else {width++;elem.style.width = width + "%";}}}};move();</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="dashboard/js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="dashboard/assets/demo/chart-area-demo.js"></script>
+    <script src="dashboard/assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="dashboard/js/datatables-simple-demo.js"></script>
+    <script>
+function set_default_server() {
+  localStorage.setItem("url", "https://xss.leosmith.wtf");
+}
+if (localStorage.getItem("url") == null) {
+  set_default_server();
+}
+    </script>
+  </body>
+</html>

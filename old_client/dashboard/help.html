@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- QrCode -->
+        <script src="https://unpkg.com/@bitjson/qr-code@1.0.2/dist/qr-code.js"></script>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>xss_bomb</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="javascript:window.top.location = '/'">xss_bomb</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <ul class="nav navbar-nav ms-auto order-2" id="login_area">
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="modal" data-target="#loginModal">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="modal" data-target="#registerModal">Register</a>
+              </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Core</div>
+                            <a class="nav-link" href="index.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-gauge"></i></div>
+                                Dashboard
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-code"></i></div>
+                                Development
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="endpoint.html">
+                                      <div class="sb-nav-link-icon"><i class="fas fa-arrow-pointer"></i></div>
+                                      My endpoints
+                                    </a>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapsePayload" aria-expanded="false" aria-controls="pagesCollapsePayload">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-file"></i></div>
+                                        Payloads
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapsePayload" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="my_payload.html">
+                                              <div class="sb-nav-link-icon"><i class="fas fa-pen"></i></div>
+                                              My payload
+                                            </a>
+                                            <a class="nav-link" href="shared_payload.html">
+                                              <div class="sb-nav-link-icon"><i class="fas fa-satellite-dish"></i></div>
+                                              Shared
+                                            </a>
+                                        </nav>
+                                    </div>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseHelp" aria-expanded="false" aria-controls="collapseHelp">
+                                <div class="sb-nav-link-icon"><i class="fas fa-circle-info"></i></div>
+                                Help
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseHelp" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="help.html#what_is">
+                                      <div class="sb-nav-link-icon"><i class="fas fa-question"></i></div>
+                                      What is this
+                                    </a>
+                                    <a class="nav-link" href="help.html#navigation">
+                                      <div class="sb-nav-link-icon"><i class="fas fa-gauge"></i></div>
+                                      Navigation
+                                    </a>
+                                    <a class="nav-link" href="help.html#endpoints">
+                                      <div class="sb-nav-link-icon"><i class="fas fa-arrow-pointer"></i></div>
+                                      Endpoints
+                                    </a>
+                                    <a class="nav-link" href="help.html#backend">
+                                      <div class="sb-nav-link-icon"><i class="fas fa-server"></i></div>
+                                      Backend
+                                    </a>
+                                </nav>
+                            </div>
+                            <a class="nav-link" href="profile.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                                My Profile
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Extra</div>
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#serverModal">
+                                <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
+                                Pick Server
+                            </a>
+                            <a class="nav-link" href="https://github.com/p4p1/xss_bomb" target="_blank">
+                                <div class="sb-nav-link-icon"><i class="fa-brands fa-github"></i></div>
+                                Github Repo
+                            </a>
+                            <a class="nav-link" href="https://documenter.getpostman.com/view/10616927/Tz5p6y9A" target="_blank">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                                API documentation
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                      <div class="small">Using server:</div>
+                      <span class="small" id="server_name"></span>
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Help</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Help</li>
+                        </ol>
+                        <img class="img-fluid rounded" src="/projects/xss_bomb/favicon.png" alt="">
+                        <p class="text-muted">
+                          Testing website security with ease!
+                        </p>
+                        <h2 class="mt-4">What is this</h2>
+                        <p>
+                          xss_bomb is a API server that can be used to test website security,
+                          ex filtrate data from web pages, servers and in some cases
+                          not easily accessible content. With xss_bomb you can host a payload
+                          per user that can be ran on targeted web browsers to allow you to
+                          perform as many actions as you would want. You can share payloads
+                          across users on an instance. To allow for collaboration across
+                          penetration testers and bug bounty hunters. With each users dedicated
+                          customisable endpoint possibilities are endless between general
+                          request inspection code injection on the fly inside of dedicated
+                          endpoints and payload hosting.
+                        </p>
+                        <img class="img-fluid rounded" src="img/dashboard.png" alt="">
+                        <p></p>
+                        <p>
+                          With it's open source back-end xss_bomb allows you to easily
+                          understand and modify it's functionalities to allow a seamless
+                          penetration testing experience.
+                        </p>
+                        <p>
+                          As of August 2023 I started working on xss_bomb 3 years ago
+                          originally as a mobile app to get notified when a payload would be triggered
+                          during a blind xss exploitation. Since the project has evolved a lot.
+                          I had many ideas and functionalities that I would have needed during
+                          either penetration tests or just overall testing things in general
+                          which is why now xss_bomb might look like a bit of a mess :) Hopefully
+                          this page should explain and clear up most of the confusion people have
+                          when I first showcase them this project. The source code is as usual available
+                          on github <a href="https://github.com/p4p1/xss_bomb">here</a>. Like
+                          most of my projects this one included comes as is I do not intend this
+                          to be my full time job and is mainly a passion project If you wish to
+                          contribute it is obviously welcome and can be done through pull requests
+                          on github. I mainly advertise the back-end of xss_bomb and not the front-end
+                          (aka this website) since the website is not and never will be open source
+                          in the collaborative sense. I invite you to build your own front-end this one
+                          you are reading this page on is mainly here for demo purpose so not everything
+                          is perfect. But you can still use it by changing the server on the left to your
+                          own.
+                        </p>
+                        <img class="img-fluid rounded" src="img/change_server.png" alt="">
+                        <p></p>
+
+                        <h2 class="mt-4" id="navigation">Navigation</h2>
+                        <p>
+                          Navigating through xss_bomb is made simple with the left
+                          panel that has links to all of the main pages.
+                        </p>
+                        <img class="img-fluid rounded" src="img/menu_pannel.png" alt="" style="height:500px">
+                        <p></p>
+                        <p>
+                          You can also login/register and logout through the top right buttons.
+                        </p>
+                        <h3 class="mt-4">Dashboard</h3>
+                        <p>
+                          The dashboard page is the main first page of xss_bomb and
+                          has all of the main information you will need to access
+                          with the endpoints that are linked to your account, the
+                          requests that are made to that endpoint and the websocket
+                          feed where you can retrieve the websocket ex filtrated data
+                          from it's respective endpoint. See <a href="#endpoints">endpoints</a>
+                          for more information about the endpoints.
+                        </p>
+                        <img class="img-fluid rounded" src="img/dashboard.png" alt="">
+                        <p></p>
+                        <h3 class="mt-4">Endpoints</h3>
+                        <p>
+                          This page is used to generate custom endpoint links see
+                          more information <a href="#endpoints">here</a> about how
+                          endpoints are used. With the endpoint generator you can
+                          fully customise the behaviour of your links if you need
+                          to quickly embed code inside of them on the fly here it
+                          can be done in a simple way.
+                        </p>
+                        <img class="img-fluid rounded" src="img/generating_endpoints.png" alt="">
+                        <p></p>
+                        <h3 class="mt-4">My payload</h3>
+                        <p>
+                          Inside of the provided endpoints there is a specific code
+                          endpoint this endpoint is used to store a single file online
+                          and can be retrieved through the /code URI. This file
+                          can do anything you please and be used in any way possible
+                          for example you could combine a javascript script uploaded
+                          on the /code endpoint to ex filtrate data browser through
+                          your websocket link.
+                        </p>
+                        <img class="img-fluid rounded" src="img/uploading_xss_payloads.png" alt="">
+                        <p></p>
+                        <h3 class="mt-4">Shared payloads</h3>
+                        <p>
+                          On the my payload section there is an option to share a
+                          payload and this is then available publicly to every user
+                          of the instance inside of this page where you can click on
+                          a title to apply the code directly to your /code endpoint
+                          link.
+                        </p>
+                        <img class="img-fluid rounded" src="img/shared_payload_sample.png" alt="">
+                        <p></p>
+                        <h3 class="mt-4">My profile</h3>
+                        <p>
+                          This simple page exists to change your username and password
+                          for xss_bomb.
+                        </p>
+                        <img class="img-fluid rounded" src="img/edit_profile.png" alt="">
+                        <p></p>
+
+                        <h2 class="mt-4" id="endpoints">Endpoints</h2>
+                        <p>
+                          Each user has a token generated and assigned to him on
+                          each register. This token is present to allow requests
+                          made to the /api/token endpoint to be logged in to this
+                          specific user. These requests logged can then be fully
+                          inspected by the user after successful login.
+                        </p>
+                        <img class="img-fluid rounded" src="img/inspecting_requests.png" alt="">
+                        <p></p>
+                        <p>
+                          The requests are shown on the left and on the right is the
+                          inspector. If a user clicks on the paper plane icon this
+                          will load the other requests present in the database (10 by 10 are loaded).
+                          A single user is provided a total of 5 different endpoints.
+                          Four of those are present on the main dashboard:
+                        </P>
+                        <img class="img-fluid rounded" src="img/user_endpoints.png" alt="">
+                        <p></p>
+                        <p>
+                          The endpoint with just the api token provided to the user
+                          after registration is the main endpoint with no specific
+                          features. This endpoint can be requested with (GET, POST, PATCH, PUT and DELETE)
+                          these requests can then be inspected in the inspector on
+                          the dashboard. The picture endpoint is a 1px by 1px picture
+                          that can be used on XSS with img html tags to view who accesses
+                          the invisible image. The /code endpoint is the one where
+                          your uploaded javascript file is stored. The last endpoint
+                          is the websocket endpoint where this can be used to upload
+                          bigger amounts of data to xss_bomb for ex filtration.
+                        </p>
+                        <p>
+                          The last main endpoint is the /iframe endpoint and can
+                          be seen inside of the endpoint generator (found <a href="endpoint.html">here</a>).
+                          To correctly use this endpoint you need to provide a URL
+                          to where the iframe inside of the page is going to load
+                          from a title for the webpage and optionally code that can
+                          be injected in the page to control the behaviour of the
+                          iframe:
+                        </p>
+                        <img class="img-fluid rounded" src="img/iframe_sample.png" alt="">
+                        <p></p>
+
+                        <h2 class="mt-4" id="backend">Backend</h2>
+                        <p>
+                          The backend API of xss_bomb can be found <a target="_blank" href="https://documenter.getpostman.com/view/10616927/Tz5p6y9A">here</a>
+                          and the source code is available on github. I have documented
+                          the API on my blog a little bit so provided is a collection of
+                          links that explain the development process and the original
+                          legacy mobile app that does not work at all anymore sadly.
+                        </p>
+                        <p>
+                          <a href="/blog/xss-bomb.html" target="_blank">XSS Bomb first release post</a>,
+                          <a href="/blog/xss-bomb-devlog1.html" target="_blank">XSS Bomb social media post</a>
+                        </p>
+
+                    </div>
+                </main>
+                <footer class="py-4 bg-dark mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Leo Smith 2023</div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    <!-- Modal Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="inputUsername">Username</label>
+              <input type="text" class="form-control" id="login_username" placeholder="Enter Username">
+            </div>
+            <div class="form-group">
+              <label for="inputPassword">Password</label>
+              <input type="password" class="form-control" id="login_password" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <label for="inputPassword">otp</label>
+              <input type="number" class="form-control" id="login_otp" placeholder="One Time Password">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onClick="login_user()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Register-->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+          </div>
+          <div class="modal-body" id="register_modal_body">
+            <div id="register_alert"></div>
+            <div class="form-group">
+              <label for="inputUsernameRegister">Username</label>
+              <input type="text" class="form-control" id="username_register" placeholder="Enter Username">
+            </div>
+            <div class="form-group">
+              <label for="inputPasswordRegister">Password</label>
+              <input type="password" class="form-control" id="password_register" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <label for="inputPasswordRepeatRegister">Repeat Password</label>
+              <input type="password" class="form-control" id="repeat_password_register" placeholder="Password">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="register_button_submit" type="button" class="btn btn-primary" onClick="register_user()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Server -->
+    <div class="modal fade" id="serverModal" tabindex="-1" role="dialog" aria-labelledby="serverModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Choose API server</h5>
+          </div>
+          <div class="modal-body">
+            <ul id="server_list" class="list-group">
+            </ul>
+            <hr />
+            <div class="form-group">
+              <label for="inputUsername">Manual:</label>
+              <input type="text" class="form-control" id="url_input" placeholder="https://xss.api.com/">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" data-dismiss="modal" onClick="manual_instance()" class="btn btn-primary">Save typed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="js/server.js"></script>
+        <script src="js/register.js"></script>
+        <script src="js/login.js"></script>
+    </body>
+</html>
